@@ -12,7 +12,7 @@ This file documents the cryptographic proof of authorship for the thesis:
 
 ## 🔒 SHA-256 Hash of the Thesis PDF
 
-3a31db1ab7950001b7a2a3cccd96ecfb74501e3e8811dfb1b18241630e83bf4f
+b97bf187214b14f7be997bebbd3d69b65bb3ed7ee5b4d4431d930904187429dc
 
 This hash uniquely identifies the original file `Orch-OS.pdf`.
 

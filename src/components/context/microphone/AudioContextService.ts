@@ -486,7 +486,8 @@ export class AudioContextService implements IAudioContextService {
     try {
       // Create the context with ideal parameters for speech processing
       this.audioContext = new AudioContext({
-        latencyHint: this.LATENCY_HINT
+        latencyHint: this.LATENCY_HINT,
+        sampleRate: 16000
       });
       
       // Verify if the context started correctly

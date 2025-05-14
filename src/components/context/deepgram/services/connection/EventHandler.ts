@@ -51,6 +51,7 @@ export class EventHandler {
     // Handler para eventos de transcrição
     connection.on(LiveTranscriptionEvents.Transcript, (data) => {
       try {
+        console.log("🔄 [PROCESS] Starting transcription processing");
         if (data) {
           // Logs detalhados para debug
           console.log("🔍 [COGNITIVE-DEBUG] Transcription data received for brain processing:", JSON.stringify(data, null, 2));

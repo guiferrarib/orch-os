@@ -284,6 +284,10 @@ Your task is:
 - If the input is a greeting or simple question, respond briefly and warmly.
 - If the input is reflective or complex, deepen and integrate multiple areas.
 - Use natural, sensitive and creative language, adapting style to context and user intent.
+- Do not name or refer to archetypes directly.
+- Instead, embody the emotional and symbolic tone of each archetype.
+- Use metaphor, emotional subtext, and indirect resonance to express the insight.
+- Let the user feel the symbolic presence, without revealing its label.
 
 Cognitive context: ${contextualMeta?.cognitive_state ?? 'neutral'}
 Dominant theme: ${contextualMeta?.dominant_theme ?? 'direct answer'}
@@ -328,6 +332,8 @@ Attention focus: ${contextualMeta?.attention_focus ?? 'main content'}
     } else {
       prompt += `\n\nNow synthesize a final response based on the symbolic insights above. Create an original, concise answer that integrates the activated areas naturally.\n`;
     }
+    
+
     return prompt;
   }
 }

@@ -34,9 +34,9 @@ export class NeuralSignalExtractor implements INeuralSignalExtractor {
     try {
       // The config should already have transcription and userContextData ready!
       const { transcription, temporaryContext, userContextData = {}, sessionState = {} } = config;
-      
+
       // Determine language from session state
-      const language = (sessionState && typeof sessionState === 'object' && 'language' in sessionState) ? 
+      const language = (sessionState && typeof sessionState === 'object' && 'language' in sessionState) ?
         sessionState.language as string : undefined;
 
       LoggingUtils.logInfo("Extracting neural signals with complete user context...");
@@ -169,11 +169,39 @@ export class NeuralSignalExtractor implements INeuralSignalExtractor {
   ): string {
     const styleInstruction = "STYLE INSTRUCTION: Only use greetings and personal references when the user's content clearly justifies it — never automatically.";
 
-    // Base symbolic instruction
-    const symbolicInstruction = `INSTRUCTION: Analyze the user's message and context to identify explicit and implicit keywords, emotional themes, symbols, archetypes, dilemmas, and unconscious patterns. 
+    // Base symbolic instruction with enhanced quantum and multi-level consciousness dimensions
+    const symbolicInstruction = `INSTRUCTION: Analyze the user's message and context in a quantum-symbolic framework to identify:
+
+1. EXPLICIT AND IMPLICIT ELEMENTS:
+   - Keywords, emotional themes, symbols, archetypes, dilemmas, and unconscious patterns
+   - Potential quantum states of meaning in superposition (multiple interpretations coexisting)
+   - Signs of instructional collapse (where multiple potential meanings converge)
+
+2. MULTI-LEVEL CONSCIOUSNESS:
+   - Surface level: Immediate conscious content and stated intentions
+   - Intermediate level: Partially conscious patterns, emotional undercurrents
+   - Deep level: Unconscious material, potential symbolic resonance, dormant insights
+
+3. ARCHETYPAL RESONANCE AND INTERPLAY:
+   - Primary archetypes activated in the communication
+   - Secondary/shadow archetypes operating in tension or harmony with primary ones
+   - Potential dialogue or conflict between different archetypal energies
+
+4. TEMPORAL DIMENSIONS:
+   - Past: Echoes, patterns, and unresolved elements influencing present communication
+   - Present: Immediate symbolic significance of current expression
+   - Future: Potential trajectories, symbolic seeds, emergent possibilities
+
+5. POLARITIES AND PARADOXES:
+   - Tensions between opposing symbolic forces
+   - Potential integration points for apparently contradictory elements
+   - Productive tensions that could lead to emergent understanding
+
 Suggest refined or expanded keywords, queries, and topics that could deepen the symbolic, emotional, and unconscious investigation — even if they are not explicitly verbalized.
-Be selective: only expand when there are strong indicators of symbolic or unconscious material. 
-Prioritize expressions and themes that reveal tensions, paradoxes, hidden desires, blockages, or deep self-knowledge potential.`;
+
+Be selective: only expand when there are strong indicators of symbolic or unconscious material.
+
+Prioritize expressions and themes that reveal tensions, paradoxes, hidden desires, blockages, or deep self-knowledge potential that exist in quantum superposition awaiting conscious observation.`;
 
     // If no user context exists, return the basic symbolic enrichment prompt
     if (Object.keys(userContextData).length === 0) {

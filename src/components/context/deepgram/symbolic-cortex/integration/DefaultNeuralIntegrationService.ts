@@ -59,7 +59,8 @@ export class DefaultNeuralIntegrationService implements INeuralIntegrationServic
       insights: Record<string, unknown>;
     }>,
     originalInput: string,
-    contextualMeta: Record<string, unknown>
+    contextualMeta: Record<string, unknown>,
+    language: string = 'pt-BR' // Default to pt-BR if not provided
   ): Promise<string> {
     if (!neuralResults || neuralResults.length === 0) {
       return originalInput;
@@ -326,12 +327,6 @@ export class DefaultNeuralIntegrationService implements INeuralIntegrationServic
       // Pattern processing failure should not block the main flow
       LoggingUtils.logError(`[NeuralIntegration] Error in pattern analysis: ${e}`);
     }
-
-    symbolicCognitionTimelineLogger.logEmergentPatterns(["dd"], {
-      archetypalStability: cycleMetrics.archetypalStability,
-      cycleEntropy: cycleMetrics.cycleEntropy,
-      insightDepth: cycleMetrics.insightDepth
-    });
     
     // Add any additional properties based on the answer content if needed
     if ((finalAnswer.contradictionScore ?? 0) > 0.7 && !emergentProperties.some(p => p.includes('Contradiction'))) {
@@ -419,6 +414,9 @@ Attention focus: ${contextualMeta?.attention_focus ?? 'main content'}
     } else {
       prompt += `\n\nNow synthesize a final response based on the symbolic insights above. Create an original, concise answer that integrates the activated areas naturally.\n`;
     }
+    
+    // Always specify the language for consistency
+    prompt += `\n\nIMPORTANT: Respond in ${language}.\n`;
     
 
     return prompt;

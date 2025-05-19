@@ -61,7 +61,7 @@ export class AudioProcessor {
         return { buffer: null, valid: false };
       }
       
-      // Converter para ArrayBuffer sem fazer nenhuma modificação
+      // Converter para ArrayBuffer
       let buffer: ArrayBufferLike;
       if (blob instanceof Uint8Array) {
         buffer = blob.buffer;
@@ -69,14 +69,22 @@ export class AudioProcessor {
         buffer = await blob.arrayBuffer();
       }
       
-      // Não modificar o buffer de forma alguma - enviar exatamente como recebido
+      // For raw PCM, we need to ensure data is interpreted correctly
+      // We can verify format and adjust if necessary
       if (shouldLog) {
-        this.logger.info(`Enviando buffer sem modificações: ${buffer.byteLength} bytes`);
+        this.logger.info(`Sending PCM buffer: ${buffer.byteLength} bytes (16-bit linear PCM mono, 16kHz)`);
+        
+        // Log first bytes for debugging (optional)
+        const view = new Uint8Array(buffer);
+        const firstBytes = Array.from(view.slice(0, 16))
+          .map(b => b.toString(16).padStart(2, '0'))
+          .join(' ');
+        this.logger.debug(`First bytes of PCM: ${firstBytes}`);
       }
       
       return { buffer: buffer as ArrayBuffer, valid: true };
     } catch (error) {
-      this.logger.handleError("Erro no processamento do áudio", error);
+      this.logger.handleError("Error processing audio", error);
       return { buffer: null, valid: false };
     }
   }
@@ -87,7 +95,7 @@ export class AudioProcessor {
   public checkAudioFormat(buffer: ArrayBufferLike): void {
     const view = new Uint8Array(buffer);
     
-    // Verificar se é um formato de container (WAV, MP3, etc)
+    // Check if it's a container format (WAV, MP3, etc)
     const isWav = view.length > 12 && 
                   view[0] === 0x52 && view[1] === 0x49 && // "RI"
                   view[2] === 0x46 && view[3] === 0x46 && // "FF"
@@ -106,21 +114,21 @@ export class AudioProcessor {
                  (view[0] === 0xFF && (view[1] & 0xF0) === 0xF0);
     
     if (isWav || isMP3 || isOGG || isAAC) {
-      this.logger.warning(`Formato detectado: ${isWav ? 'WAV' : isMP3 ? 'MP3' : isOGG ? 'OGG' : 'AAC'}. Deepgram espera PCM bruto!`);
+      this.logger.warning(`Format detected: ${isWav ? 'WAV' : isMP3 ? 'MP3' : isOGG ? 'OGG' : 'AAC'}. Deepgram expects raw PCM!`);
       console.log(`⚠️ [COGNITIVE-AUDIO] Inadequate format detected. Deepgram expects raw Linear PCM (not WAV/MP3/OGG/AAC files). Artificial brain audio input rejected.`);
     }
     
-    // Verificar se o PCM parece válido
+    // Check if the PCM seems valid
     if (!isWav && !isMP3 && !isOGG && !isAAC) {
-      // Contar bytes não-zero (se tudo for zero, o áudio é silêncio)
+      // Count non-zero bytes (if all zero, the audio is silence)
       const nonZeroCount = Array.from(view.slice(0, Math.min(1000, view.length)))
                          .filter(val => val !== 0).length;
       
       if (nonZeroCount === 0) {
-        this.logger.warning("Áudio detectado como silêncio total (todos bytes são zero)");
+        this.logger.warning("Audio detected as complete silence (all bytes are zero)");
         console.log("⚠️ [COGNITIVE-AUDIO] Silence detected: all bytes are zero! No cognitive input for brain memory.");
       } else if (nonZeroCount < 10) {
-        this.logger.warning("Áudio com muito pouca variação (quase silêncio)");
+        this.logger.warning("Audio with very little variation (nearly silence)");
         console.log("⚠️ [COGNITIVE-AUDIO] Nearly silent audio: few non-zero bytes. Weak input for cognitive memory.");
       }
     }
@@ -130,7 +138,7 @@ export class AudioProcessor {
    * Generate a silence frame (kept for compatibility)
    */
   public generateSilenceFrame(): ArrayBuffer {
-    // Criar um pequeno buffer vazio apenas para compatibilidade
+    // Create a small empty buffer just for compatibility
     return new ArrayBuffer(0);
   }
 }

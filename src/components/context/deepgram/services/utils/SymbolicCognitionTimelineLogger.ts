@@ -156,11 +156,33 @@ export class SymbolicCognitionTimelineLogger {
     return this.timeline;
   }
 
+  /**
+   * Logs detected emergent symbolic patterns.
+   * This is part of the Orch-OS scientific introspection layer for tracking
+   * emergent cognitive phenomena across processing cycles.
+   * 
+   * @param patterns Array of emergent symbolic pattern descriptions
+   * @param metrics Scientific metrics associated with the patterns
+   */
+  logEmergentPatterns(patterns: string[], metrics?: { 
+    archetypalStability?: number; 
+    cycleEntropy?: number; 
+    insightDepth?: number 
+  }): void {
+    this.timeline.push({
+      type: 'emergent_patterns',
+      timestamp: this.now(),
+      patterns,
+      metrics
+    });
+    
+    // Log para debugging/monitoramento
+    LoggingUtils.logInfo(`[Timeline] Logged ${patterns.length} emergent patterns`);
+  }
+
   clear() {
     this.timeline = [];
   }
-
-
 }
 
 export default SymbolicCognitionTimelineLogger;

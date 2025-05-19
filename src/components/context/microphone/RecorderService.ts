@@ -10,12 +10,12 @@ import { IRecorderService } from "../interfaces/IRecorderService";
 
 // Configuration constants for audio recording
 const RECORDER_CONFIG = {
-  TIMESLICE: 1000,  // milliseconds between audio chunks
-  AUDIO_BIT_RATE: 128000,
+  TIMESLICE: 2000,  // milliseconds between audio chunks
+  AUDIO_BIT_RATE: 256000,  // 16 bits * 16000Hz * 1 channel = 256kbps (aligned with Deepgram sample_rate)
   MIME_TYPES: [
+    "audio/wav",              // WAV - uncompressed format with headers (more stable for testing)
+    "audio/webm;codecs=pcm",  // PCM uncompressed - ideal for STT (alternative if WAV fails)
     "audio/webm",             // WebM - modern format supported and widely compatible
-    "audio/webm;codecs=pcm",  // PCM uncompressed - ideal for STT
-    "audio/wav",              // WAV - uncompressed format
     "audio/ogg;codecs=opus"   // Ogg Opus - last resort
   ]
 };
@@ -220,11 +220,15 @@ export class RecorderService implements IRecorderService {
       // Convert the Blob to ArrayBuffer
       const arrayBuffer = await event.data.arrayBuffer();
       
-      // Convert to Uint8Array as expected by the API
+      // Convert to Uint8Array as expected by the API - enviar diretamente sem processamento
       const audioData = new Uint8Array(arrayBuffer);
       
+      // Log the format being used (only for debugging)
+      if (Math.random() < 0.05) { // Reduce log frequency
+        console.log(`🎤 [COGNITIVE-RECORDER] Sending ${audioData.length} bytes of audio (format: ${this.activeMimeType || 'unknown'})`);
+      }
+      
       // Send the audio without additional modifications
-      // This allows Deepgram to detect the format automatically
       if (window.electronAPI) {
         window.electronAPI.sendAudioChunk(audioData);
         
@@ -251,4 +255,5 @@ export class RecorderService implements IRecorderService {
       this.activeMimeType = null;
     }, 100);
   }
+
 } 

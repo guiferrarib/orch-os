@@ -111,6 +111,8 @@ const getEventColor = (type: string): string => {
       return 'bg-indigo-900 text-indigo-100';
     case 'gpt_response':
       return 'bg-red-900 text-red-100';
+    case 'emergent_patterns':
+      return 'bg-teal-900 text-teal-100';
     default:
       return 'bg-gray-700 text-gray-100';
   }
@@ -134,6 +136,32 @@ const renderEventDetails = (event: CognitionEvent): React.ReactNode => {
         </span>
       );
     
+    case 'emergent_patterns':
+      if ('patterns' in event && event.patterns) {
+        return (
+          <div>
+            <div>
+              <span className="font-semibold">Emergent Patterns</span>
+              {event.metrics && <span className="ml-2 text-gray-400">
+                <span className="text-teal-400 tooltip" title="Archetypal Stability">AS: {(event.metrics.archetypalStability || 0).toFixed(3)}</span>
+                {' | '}<span className="text-amber-400 tooltip" title="Cycle Entropy">CE: {(event.metrics.cycleEntropy || 0).toFixed(3)}</span>
+                {' | '}<span className="text-cyan-400 tooltip" title="Insight Depth">ID: {(event.metrics.insightDepth || 0).toFixed(3)}</span>
+              </span>}
+            </div>
+            {event.patterns.length > 0 && (
+              <div className="mt-1">
+                <ul className="list-disc list-inside pl-1">
+                  {event.patterns.map((pattern, i) => (
+                    <li key={i} className="text-xs text-teal-300">{truncateText(pattern, 80)}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        );
+      }
+      return <span>No patterns detected</span>;
+
     case 'symbolic_retrieval': {
       return (
         <div>

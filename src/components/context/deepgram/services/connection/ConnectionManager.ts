@@ -180,16 +180,14 @@ export class ConnectionManager {
         language: this.language,
         smart_format: true,
         multichannel: true,
-        interim_results: false,
-        sample_rate: 16000
+        diarize: true,
       });
       
       console.log("📊 [COGNITIVE-CONFIG] Connection parameters for cognitive audio stream:", {
         idioma: this.language,
         modelo: "nova-2",
-        detecção_automática: true,
-        multicanal: true,
-        resultados_interinos: false
+        smart_format: true,
+        multicanal: true
       });
       
       this.logger.info("Using automatic audio format detection");

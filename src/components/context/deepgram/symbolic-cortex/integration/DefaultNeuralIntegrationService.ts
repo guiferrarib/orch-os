@@ -9,6 +9,8 @@ import { ICollapseStrategyService } from './ICollapseStrategyService';
 import { INeuralIntegrationService } from './INeuralIntegrationService';
 import { OpenAICollapseStrategyService } from './OpenAICollapseStrategyService';
 import { SuperpositionLayer } from './SuperpositionLayer';
+import { SymbolicPatternAnalyzer, CognitiveMetrics } from '../patterns/SymbolicPatternAnalyzer';
+import { LoggingUtils } from '../../utils/LoggingUtils';
 
 function asNumber(val: unknown, fallback: number): number {
   return typeof val === 'number' ? val : fallback;
@@ -17,10 +19,12 @@ function asNumber(val: unknown, fallback: number): number {
 export class DefaultNeuralIntegrationService implements INeuralIntegrationService {
   private embeddingService: OpenAIEmbeddingService;
   private collapseStrategyService: ICollapseStrategyService;
+  private patternAnalyzer: SymbolicPatternAnalyzer; // Detector de padrões simbólicos emergentes entre ciclos
 
   constructor(private openAIService: IOpenAIService) {
     this.embeddingService = new OpenAIEmbeddingService(openAIService);
     this.collapseStrategyService = new OpenAICollapseStrategyService(openAIService);
+    this.patternAnalyzer = new SymbolicPatternAnalyzer();
   }
   
   /**
@@ -257,6 +261,77 @@ export class DefaultNeuralIntegrationService implements INeuralIntegrationServic
 
     // 3. Use emergent properties from the OpenAI function call
     const emergentProperties: string[] = strategyDecision.emergentProperties || [];
+    
+    // === Orch-OS: Symbolic Pattern Analysis & Memory Integration ===
+    // Atualizar o analisador de padrões com o contexto/métricas do ciclo atual
+    // Capturar métricas cognitivas completas para análise científica
+    const cycleMetrics: CognitiveMetrics = {
+      // Métricas fundamentais para detecção de padrões
+      contradictionScore: finalAnswer.contradictionScore ?? averageContradictionScore,
+      coherenceScore: finalAnswer.narrativeCoherence ?? avgCoherence,
+      emotionalWeight: finalAnswer.emotionalWeight ?? averageEmotionalWeight,
+      
+      // Métricas ampliadas para tese Orch-OS (com valores heurísticos quando não disponíveis)
+      archetypalStability: neuralResults.reduce((sum, r) => 
+        sum + asNumber((r.insights as any)?.archetypal_stability, 0.5), 0) / neuralResults.length,
+      cycleEntropy: Math.min(1, 0.3 + (numCandidates / 10)), // Heurística baseada em diversidade de candidatos
+      insightDepth: Math.max(...neuralResults.map(r => 
+        asNumber((r.insights as any)?.insight_depth, 0.4))),
+      phaseAngle: explicitPhase // Reutilizando ângulo de fase calculado anteriormente
+    };
+    
+    try {
+      // [3. Recursive Memory Update]
+      // Registrar contexto atual no analisador de padrões (para detecção entre ciclos)
+      // A propriedade text pode não existir diretamente, então usamos toString() para segurança
+      const contextText = typeof finalAnswer.text === 'string' ? finalAnswer.text : finalAnswer.toString();
+      this.patternAnalyzer.recordCyclicData(contextText, cycleMetrics);
+      
+      // [4. Pattern Detection Across Cycles]
+      // Analisar padrões emergentes (drift, loops, buildup, interferência)
+      const emergentPatterns = this.patternAnalyzer.analyzePatterns();
+      
+      // [2. Comprehensive Emergent Property Tracking]
+      // Converter padrões para formato legível e adicionar às propriedades emergentes
+      const patternStrings = emergentPatterns.length > 0 ? this.patternAnalyzer.formatPatterns(emergentPatterns) : [];
+      if (patternStrings.length > 0) {
+        // Adicionar padrões detectados às propriedades emergentes para influenciar o output
+        emergentProperties.push(...patternStrings);
+        LoggingUtils.logInfo(`[NeuralIntegration] Detected ${patternStrings.length} emergent symbolic patterns: ${patternStrings.join(', ')}`);
+      }
+      
+      // [5. Trial-Based Logging]
+      // Register complete patterns and metrics for scientific analysis
+      if (patternStrings.length > 0) {
+        // Add to emergentProperties of neural collapse (already recorded via logNeuralCollapse)
+        patternStrings.forEach(pattern => {
+          if (!emergentProperties.includes(pattern)) {
+            emergentProperties.push(pattern);
+          }
+        });
+        
+        // Log to scientific timeline - kept for compatibility
+        symbolicCognitionTimelineLogger.logEmergentPatterns(patternStrings, {
+          archetypalStability: cycleMetrics.archetypalStability,
+          cycleEntropy: cycleMetrics.cycleEntropy,
+          insightDepth: cycleMetrics.insightDepth
+        });
+        
+        // Add specific emergent properties for detected patterns
+        if (!emergentProperties.some(p => p.includes('symbolic_pattern'))) {
+          emergentProperties.push(`Symbolic pattern analysis: ${patternStrings.length} emergent patterns detected`);
+        }
+      }
+    } catch (e) {
+      // Pattern processing failure should not block the main flow
+      LoggingUtils.logError(`[NeuralIntegration] Error in pattern analysis: ${e}`);
+    }
+
+    symbolicCognitionTimelineLogger.logEmergentPatterns(["dd"], {
+      archetypalStability: cycleMetrics.archetypalStability,
+      cycleEntropy: cycleMetrics.cycleEntropy,
+      insightDepth: cycleMetrics.insightDepth
+    });
     
     // Add any additional properties based on the answer content if needed
     if ((finalAnswer.contradictionScore ?? 0) > 0.7 && !emergentProperties.some(p => p.includes('Contradiction'))) {

@@ -22,6 +22,8 @@ import ConnectionDiagnostics from "./components/ConnectionDiagnostics";
 import ImportModal from "./components/ImportModal";
 import { useChatGptImport } from "./hooks/useChatGptImport";
 import { useToast } from "../../../App";
+// Módulo cortical para cards expansíveis/colapsáveis
+import CollapsibleCard from "../CollapsibleCard/CollapsibleCard";
 import './TranscriptionPanel.css';
 // Quantum consciousness visualization import
 import { QuantumVisualizationContainer } from '../QuantumVisualization/QuantumVisualizationContainer';
@@ -102,9 +104,9 @@ const TranscriptionPanel: React.FC<TranscriptionPanelProps> = ({ onClose, width 
 
   // --- Render ---
   return (
-    <div
-      className={`transcription-panel ${width ? '' : 'panel-width'}`}
-    >
+    <div className="transcription-panel-root">
+      <div className="orchos-anim-bg" />
+      <div className="orchos-quantum-bg" />
       <PanelHeader
         onClose={() => {
           if (window?.electronAPI?.closeWindow) {
@@ -129,19 +131,33 @@ const TranscriptionPanel: React.FC<TranscriptionPanelProps> = ({ onClose, width 
       <div className="relative flex items-center justify-end mb-2">
         <button
           ref={settingsBtnRef}
-          className="relative rounded-full bg-white/70 hover:shadow-gold transition-all p-1 mr-2"
+          className="orchos-btn-circle mr-2"
           onClick={() => setShowSettings((v) => !v)}
           aria-label="Settings"
           title="Settings"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#222">
-            <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+          {/* Modern glassy gear icon with glowing effect */}
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" className="orchos-btn-icon orchos-icon-glow">
+            <circle cx="11" cy="11" r="10" fill="rgba(0,255,255,0.10)" stroke="#00faff" strokeWidth="1.5" />
+            <g filter="url(#glow)">
+              <path d="M16.24 13.12c.12-.41.19-.85.19-1.3s-.07-.89-.19-1.3l1.57-1.23a.5.5 0 00.12-.65l-1.5-2.6a.5.5 0 00-.61-.23l-1.85.74a5.06 5.06 0 00-1.12-.65l-.28-1.98A.5.5 0 0011 3.5h-3a.5.5 0 00-.5.42l-.28 1.98a5.06 5.06 0 00-1.12.65l-1.85-.74a.5.5 0 00-.61.23l-1.5 2.6a.5.5 0 00.12.65l1.57 1.23c-.12.41-.19.85-.19 1.3s.07.89.19 1.3l-1.57 1.23a.5.5 0 00-.12.65l1.5 2.6c.13.23.4.32.61.23l1.85-.74c.34.26.71.48 1.12.65l.28 1.98c.04.26.25.42.5.42h3c.25 0 .46-.16.5-.42l.28-1.98c.41-.17.78-.39 1.12-.65l1.85.74c.21.09.48 0 .61-.23l1.5-2.6a.5.5 0 00-.12-.65l-1.57-1.23zM11 14a3 3 0 110-6 3 3 0 010 6z" stroke="#00faff" strokeWidth="1.3" fill="none"/>
+              <circle cx="11" cy="11" r="2" fill="#00faff" fillOpacity="0.5"/>
+            </g>
+            <defs>
+              <filter id="glow" x="-2" y="-2" width="26" height="26" filterUnits="userSpaceOnUse">
+                <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+                <feMerge>
+                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
           </svg>
         </button>
         {showSettings && (
-          <div className="absolute z-50 right-0 top-full mt-2 bg-white/90 rounded-lg shadow-xl p-4 backdrop-blur-md border border-gray-200 flex flex-col gap-2 min-w-[220px]" style={{ minWidth: 220 }}>
+          <div className="absolute z-50 right-0 top-full mt-2 bg-white/90 rounded-lg shadow-xl p-4 backdrop-blur-md border border-gray-200 flex flex-col gap-2 min-w-[220px] orchos-min-width-220">
             <div className="mb-2 border-b pb-2">
-              <h3 className="text-sm font-medium">Settings</h3>
+              <h3 className="orchos-title">Settings</h3>
             </div>
             <LanguageSelector
               language={language}
@@ -174,27 +190,22 @@ const TranscriptionPanel: React.FC<TranscriptionPanelProps> = ({ onClose, width 
         />
       )}
 
-      {/* Visualização Quântica - Design minimalista com foco na experiência */}
-      <div className="my-4 hover-elevate">
-        {/* Container com bordas sutis e sombra elegante */}
-        <div className="rounded-lg overflow-hidden bg-quantum-dark">
-          <div className="quantum-visualization-wrapper">
-            <QuantumVisualizationContainer 
-              cognitionEvents={cognitionEvents}
-              height="100%"
-              width="100%"
-              lowPerformanceMode={false}
-              showLegend={true}
-            />
-          </div>
-        </div>
+      {/* Visualização Quântica - Centralizada e responsiva */}
+      <div className="quantum-visualization-homogeneous orchos-full-width orchos-overflow-visible quantum-visualization-center">
+        <QuantumVisualizationContainer 
+          cognitionEvents={cognitionEvents}
+          height="320px"
+          width="100%"
+          lowPerformanceMode={false}
+          showLegend={true}
+        />
       </div>
 
-      {/* Contexto Temporário com design minimalista */}
-      <div className="mb-4">
-        <div className="rounded-lg bg-white/70 border border-white/10 shadow-sm overflow-hidden hover-elevate">
+      {/* Grid responsivo de cards */}
+      <div className="transcription-panel-grid">
+        <CollapsibleCard title="Temporary Context" defaultOpen={true} type="context" icon={<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#ffe066" strokeWidth="2"/><path d="M10 5v5l3 3" stroke="#ffe066" strokeWidth="2" strokeLinecap="round"/></svg>}>
           <TextEditor
-            label="Temporary Context:"
+            label=""
             value={temporaryContext}
             onChange={setTemporaryContext}
             onClear={() => setTemporaryContext("")}
@@ -203,56 +214,85 @@ const TranscriptionPanel: React.FC<TranscriptionPanelProps> = ({ onClose, width 
             rows={3}
             placeholder="Add situational context (e.g., 'I'm in a neural session' or 'Help me stay focused')"
           />
-        </div>
+        </CollapsibleCard>
+        <CollapsibleCard title="Transcription" defaultOpen={true} type="transcription" icon={<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 10h16" stroke="#00faff" strokeWidth="2"/><path d="M6 6c2-2 6-2 8 0" stroke="#00faff" strokeWidth="2"/><path d="M6 14c2 2 6 2 8 0" stroke="#00faff" strokeWidth="2"/></svg>}>
+          <TextEditor
+            label=""
+            value={texts.transcription}
+            onChange={(value) => {
+              setTexts(prev => ({ ...prev, transcription: value }));
+            }}
+            onClear={clearTranscription}
+            fontSize={fontSize}
+            toggleFontSize={toggleFontSize}
+            forwardedRef={transcriptionRef as React.RefObject<HTMLTextAreaElement>}
+            readOnly={true}
+          />
+          <button
+              className="orchos-btn-circular orchos-btn-fab orchos-btn-glass orchos-btn-ripple w-full mt-4 flex items-center justify-center gap-2 text-white font-bold text-lg shadow-lg transition-all duration-200 hover:scale-105 focus:scale-105 focus:ring-4 focus:ring-cyan-400/60 animate-pulse"
+              onClick={e => {
+                const btn = e.currentTarget;
+                const ripple = document.createElement('span');
+                ripple.className = 'ripple';
+                ripple.style.left = `${e.nativeEvent.offsetX}px`;
+                ripple.style.top = `${e.nativeEvent.offsetY}px`;
+                btn.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+                handleSendPrompt();
+              }}
+              aria-label="Send Neural Signal"
+              type="button"
+              style={{
+                background: "rgba(24,24,40,0.82)",
+                border: "3px solid #00faff",
+                boxShadow: "0 0 24px 8px #00faff33, 0 0 0 0 #fff0"
+              }}
+            >
+              <span className="mr-2 flex items-center">
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                  <ellipse cx="14" cy="14" rx="10" ry="7" stroke="#00faff" strokeWidth="2"/>
+                  <circle cx="11" cy="14" r="2" fill="#00faff"/>
+                  <circle cx="17" cy="14" r="2" fill="#00faff"/>
+                  <path d="M13 14 Q14 17 15 14" stroke="#00faff" strokeWidth="1.3" fill="none"/>
+                  <path d="M14 7 L14 2" stroke="#00faff" strokeWidth="2" strokeLinecap="round"/>
+                  <circle cx="14" cy="2" r="1" fill="#00faff"/>
+                </svg>
+              </span>
+              <span>Send Neural Signal</span>
+            </button>
+           {/* Botão de gravação centralizado na base do painel */}
+           <div className="flex w-full justify-center mt-8 mb-2">
+             <RecordingControl
+               connectionState={connectionState}
+               microphoneState={microphoneState}
+               toggleRecording={toggleRecording}
+             />
+           </div>
+        </CollapsibleCard>
+        <CollapsibleCard title="Cognition Log" defaultOpen={true} type="cognition" icon={<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><ellipse cx="10" cy="10" rx="8" ry="6" stroke="#7c4dff" strokeWidth="2"/><circle cx="10" cy="10" r="3" fill="#7c4dff"/></svg>}>
+          <CognitionLogSection
+            cognitionEvents={cognitionEvents}
+            exporters={exporters}
+            exportEvents={exportEvents}
+            clearEvents={clearEvents}
+          />
+        </CollapsibleCard>
+        <CollapsibleCard title="AI Suggested Response" defaultOpen={true} type="ai" icon={<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="4" y="4" width="12" height="12" rx="4" stroke="#ff80ab" strokeWidth="2"/><circle cx="10" cy="10" r="2" fill="#ff80ab"/></svg>}>
+          <TextEditor
+            label={""}
+            value={texts.aiResponse}
+            onChange={(value) => {
+              setTexts(prev => ({ ...prev, aiResponse: value }));
+            }}
+            onClear={clearAiResponse}
+            fontSize={fontSize}
+            toggleFontSize={toggleFontSize}
+            toggleExpand={toggleExpand}
+            isExpanded={isExpanded}
+            useAutosize={true}
+          />
+        </CollapsibleCard>
       </div>
-      <div className="bg-white/70 rounded-2xl shadow-xl p-4 mb-4 backdrop-blur-xl border border-white/20">
-        <TextEditor
-          label="Transcription:"
-          value={texts.transcription}
-          onChange={(value) => {
-            setTexts(prev => ({ ...prev, transcription: value }));
-          }}
-          onClear={clearTranscription}
-          fontSize={fontSize}
-          toggleFontSize={toggleFontSize}
-          forwardedRef={transcriptionRef as React.RefObject<HTMLTextAreaElement>}
-        />
-        <button
-          className="w-full py-2.5 text-center mt-4 bg-white/60 text-[#222] rounded-lg hover:shadow-gold transition-all font-medium backdrop-blur-md border border-yellow-300/30"
-          onClick={handleSendPrompt}
-        >
-          Send Prompt
-        </button>
-      </div>
-      <div className="bg-white/70 rounded-2xl shadow-xl p-4 mb-4 backdrop-blur-xl border border-white/20">
-        <CognitionLogSection
-          cognitionEvents={cognitionEvents}
-          exporters={exporters}
-          exportEvents={exportEvents}
-          clearEvents={clearEvents}
-        />
-      </div>
-      <div className="bg-white/70 rounded-2xl shadow-xl p-4 mb-4 backdrop-blur-xl border border-white/20">
-        <TextEditor
-          label="AI Suggested Response:"
-          value={texts.aiResponse}
-          onChange={(value) => {
-            setTexts(prev => ({ ...prev, aiResponse: value }));
-          }}
-          onClear={clearAiResponse}
-          fontSize={fontSize}
-          toggleFontSize={toggleFontSize}
-          toggleExpand={toggleExpand}
-          isExpanded={isExpanded}
-          useAutosize={true}
-        />
-      </div>
-      <RecordingControl
-        connectionState={connectionState}
-        microphoneState={microphoneState}
-        toggleRecording={toggleRecording}
-      />
-
       {showImportModal && (
         <ImportModal
           show={showImportModal}

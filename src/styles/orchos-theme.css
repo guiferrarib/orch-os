@@ -1,0 +1,111 @@
+:root {
+  /* Cognição Quântica Theme */
+  --orchos-bg: #0A0A23;
+  --orchos-card-bg: rgba(20, 20, 40, 0.72);
+  --orchos-primary: #00F0FF;
+  --orchos-secondary: #8F00FF;
+  --orchos-gold: #FFD700;
+  --orchos-white: #FFFFFF;
+  --orchos-gradient: linear-gradient(90deg, #00F0FF 0%, #8F00FF 100%);
+  --orchos-glass-blur: 18px;
+  --orchos-border: rgba(0,240,255,0.18);
+  --orchos-card-shadow: 0 8px 32px 0 rgba(0, 240, 255, 0.18);
+  --orchos-divider: rgba(255,255,255,0.08);
+  --orchos-text-main: #E3F6FF;
+  --orchos-text-muted: #8A9EB7;
+  --orchos-anim-wave: #00F0FF44;
+}
+
+html, body, #root {
+  background: var(--orchos-bg) !important;
+  color: var(--orchos-text-main);
+  font-family: 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
+}
+
+
+.orchos-card {
+  background: var(--orchos-card-bg);
+  box-shadow: var(--orchos-card-shadow);
+  border-radius: 18px;
+  border: 1.5px solid var(--orchos-border);
+  -webkit-backdrop-filter: blur(var(--orchos-glass-blur));
+  backdrop-filter: blur(var(--orchos-glass-blur));
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  transition: box-shadow 0.3s, border-color 0.3s;
+  color: var(--orchos-text-main);
+}
+.orchos-card:hover, .orchos-card:focus-within {
+  box-shadow: 0 8px 32px 0 var(--orchos-secondary), 0 0 0 2px var(--orchos-primary);
+  border-color: var(--orchos-primary);
+}
+
+
+.orchos-title {
+  color: var(--orchos-primary);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  font-size: 1.35rem;
+}
+
+.orchos-divider {
+  border: none;
+  border-top: 1.5px solid var(--orchos-divider);
+  margin: 1.2rem 0;
+}
+
+.orchos-btn-primary {
+  background: var(--orchos-gradient);
+  color: var(--orchos-white);
+  border: none;
+  border-radius: 10px;
+  padding: 0.7em 1.3em;
+  font-weight: 600;
+  box-shadow: 0 2px 8px 0 var(--orchos-anim-wave);
+  transition: background 0.3s, box-shadow 0.3s;
+}
+.orchos-btn-primary:hover, .orchos-btn-primary:focus {
+  background: var(--orchos-primary);
+  color: var(--orchos-bg);
+  box-shadow: 0 4px 16px 0 var(--orchos-anim-wave);
+}
+
+.orchos-label {
+  color: var(--orchos-gold);
+  font-size: 0.99rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-shadow: 0 1px 8px var(--orchos-secondary), 0 0 2px var(--orchos-primary);
+}
+
+.orchos-text-main {
+  color: var(--orchos-text-main) !important;
+}
+
+.orchos-text-muted {
+  color: var(--orchos-text-muted) !important;
+}
+
+.orchos-synapse-line {
+  stroke: var(--orchos-primary);
+  stroke-width: 2.5;
+  opacity: 0.44;
+  filter: drop-shadow(0px 0px 6px var(--orchos-secondary));
+}
+
+
+.orchos-anim-bg {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  z-index: -10;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 60% 40%, #00F0FF22 0%, transparent 75%),
+              radial-gradient(ellipse at 30% 70%, #8F00FF22 0%, transparent 80%);
+  animation: orchos-bg-wave 16s linear infinite alternate;
+}
+
+@keyframes orchos-bg-wave {
+  0% { filter: blur(0px); opacity: 0.85; }
+  100% { filter: blur(6px); opacity: 1; }
+}

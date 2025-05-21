@@ -1,0 +1,31 @@
+.orchos-btn-glass {
+  background: rgba(24, 24, 40, 0.55);
+  border: 2px solid #00faff;
+  border-radius: 999px !important;
+  box-shadow: 0 0 12px 2px #00faff44, 0 0 0 1.5px #00faff22;
+  color: #00faff;
+  transition: box-shadow 0.18s, background 0.18s, border-color 0.18s;
+}
+.orchos-btn-glass:focus,
+.orchos-btn-glass:hover {
+  background: rgba(0, 245, 255, 0.12);
+  box-shadow: 0 0 16px 4px #00faff77, 0 0 0 2.5px #00faff55;
+  border-color: #00faff;
+}
+
+.orchos-btn-glow {
+  box-shadow: 0 0 8px 2px #00faff77;
+}
+
+.orchos-btn-action {
+  font-weight: 500;
+  font-size: 1rem;
+  border-radius: 999px !important;
+  padding-left: 1.1em;
+  padding-right: 1.1em;
+  min-height: 36px;
+  min-width: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

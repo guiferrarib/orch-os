@@ -3,12 +3,17 @@
 
 .quantum-visualization-container {
   position: relative;
-  border-radius: 8px;
-  overflow: visible; /* Changed from hidden to visible to allow content to overflow */
+  border-radius: 0;
+  overflow: visible;
   width: 100%;
   height: 100%;
-  /* Lowering z-index to ensure quantum visualization doesn't block UI controls */
+  background: transparent !important;
   z-index: 2;
+}
+
+.quantum-visualization-homogeneous {
+  background: transparent !important;
+  border-radius: 0 !important;
 }
 
 .quantum-visualization-container.fixed-height {

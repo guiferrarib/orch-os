@@ -8,5 +8,5 @@
   height: 100%;
   z-index: 9999;
   overflow: auto;
-  background-color: #fff;
+  background: var(--orchos-bg);
 }

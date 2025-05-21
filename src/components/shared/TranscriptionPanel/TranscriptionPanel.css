@@ -1,62 +1,55 @@
-/* SPDX-License-Identifier: MIT OR Apache-2.0 */
-/* Copyright (c) 2025 Guilherme Ferrari Brescia */
-
-.transcription-panel {
-  padding-right: 1rem;
-  padding-bottom: 1rem;
-  padding-left: 1rem;
-  min-height: 100vh;
-  background-image: linear-gradient(to bottom right, white, #DCE0E5);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #222;
-  box-sizing: border-box;
-  position: relative;
+.transcription-panel-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2.5rem;
+  margin: 0 auto;
+  max-width: 1200px;
+  align-items: flex-start;
+  padding: 0 1.5rem 2.5rem 1.5rem;
 }
 
-.transcription-panel.panel-width {
-  width: 100%;
-  min-width: 384px;
-  max-width: 36rem;
+@media (max-width: 1100px) {
+  .transcription-panel-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    max-width: 700px;
+    padding: 0 0.5rem 2rem 0.5rem;
+  }
 }
 
-/* Quantum visualization container styles */
-.quantum-visualization-wrapper {
-  height: 280px;
-  position: relative;
-  width: 100%;
-  overflow: hidden;
+.orchos-btn-circular, .orchos-btn-fab, .orchos-btn-glass, .orchos-btn-ripple {
+  border-radius: 999px !important;
 }
 
-/* Design system gradients */
-.bg-quantum-dark {
-  background: linear-gradient(to right, rgba(17, 17, 17, 0.9), rgba(26, 26, 26, 0.9));
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+.orchos-btn-fab {
+  background: rgba(24,24,40,0.82);
+  border: 3px solid #00faff;
+  box-shadow: 0 0 24px 8px #00faff33, 0 0 0 0 #fff0;
+  color: #00faff;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: box-shadow 0.22s, background 0.22s, border-color 0.22s;
+}
+.orchos-btn-fab:focus, .orchos-btn-fab:hover {
+  background: rgba(0, 245, 255, 0.12);
+  box-shadow: 0 0 36px 12px #00faff77, 0 0 0 3px #00faff55;
+  border-color: #00faff;
 }
 
-/* Subtle hover effects */
-.hover-elevate {
-  transition: all 0.2s ease;
+.orchos-btn-circular {
+  background: rgba(24, 24, 40, 0.60);
+  border: 2px solid #00faff;
+  box-shadow: 0 2px 16px 0 rgba(0,245,255,0.12);
+  color: #00faff;
+  min-width: 48px;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow 0.18s, background 0.18s, border-color 0.18s;
 }
-
-.hover-elevate:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-}
-
-.connection-diagnostic-container {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background-color: rgba(255, 255, 255, 0.9);
-  border-bottom-left-radius: 8px;
-  padding: 10px;
-  width: 360px;
-  max-height: 80vh;
-  overflow-y: auto;
-  box-shadow: -2px 2px 10px rgba(0, 0, 0, 0.1);
-  font-size: 12px;
-  z-index: 1000;
+.orchos-btn-circular:focus, .orchos-btn-circular:hover {
+  background: rgba(0, 245, 255, 0.12);
+  box-shadow: 0 0 16px 4px #00faff77;
+  border-color: #00faff;
 }

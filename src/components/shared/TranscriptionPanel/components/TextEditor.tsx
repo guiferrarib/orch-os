@@ -20,6 +20,22 @@ interface TextEditorProps {
   useAutosize?: boolean;
 }
 
+interface TextEditorProps {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  onClear: () => void;
+  fontSize: string;
+  toggleFontSize: () => void;
+  rows?: number;
+  placeholder?: string;
+  isExpanded?: boolean;
+  toggleExpand?: () => void;
+  forwardedRef?: React.RefObject<HTMLTextAreaElement>;
+  useAutosize?: boolean;
+  readOnly?: boolean;
+}
+
 const TextEditor: React.FC<TextEditorProps> = ({
   label,
   value,
@@ -32,7 +48,8 @@ const TextEditor: React.FC<TextEditorProps> = ({
   isExpanded,
   toggleExpand,
   forwardedRef,
-  useAutosize = false
+  useAutosize = false,
+  readOnly = false
 }) => {
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     onChange(e.target.value);
@@ -51,21 +68,27 @@ const TextEditor: React.FC<TextEditorProps> = ({
       
       {useAutosize ? (
         <textarea
-          className={`${commonClasses} resize-none ${isExpanded ? 'max-h-96' : 'max-h-60'} overflow-y-auto`}
+          className={`${commonClasses} orchos-textarea-neural resize-none ${isExpanded ? 'max-h-96' : 'max-h-60'} overflow-y-auto`}
           value={value}
-          onChange={handleChange}
+          onChange={readOnly ? undefined : (e => onChange(e.target.value))}
+          readOnly={readOnly}
           rows={isExpanded ? 10 : rows}
-          placeholder={placeholder}
           ref={forwardedRef}
+          placeholder={placeholder}
+          title={readOnly ? "Transcription text (read-only)" : label}
+          aria-label={readOnly ? "Transcription text (read-only)" : label}
         />
       ) : (
         <textarea
-          className={`${commonClasses} resize-none`}
+          className={`${commonClasses} orchos-textarea-neural resize-none`}
           value={value}
-          onChange={handleChange}
+          onChange={readOnly ? undefined : (e => onChange(e.target.value))}
+          readOnly={readOnly}
           rows={rows}
-          placeholder={placeholder}
           ref={forwardedRef}
+          placeholder={placeholder}
+          title={readOnly ? "Transcription text (read-only)" : label}
+          aria-label={readOnly ? "Transcription text (read-only)" : label}
         />
       )}
     </div>

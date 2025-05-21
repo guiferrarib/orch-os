@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 // Copyright (c) 2025 Guilherme Ferrari Brescia
 
+import "./styles/orchos-theme.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import React, { createContext, useContext, useRef, useState } from "react"
 import {

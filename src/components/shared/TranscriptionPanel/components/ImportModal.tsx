@@ -29,7 +29,7 @@ const ImportModal: React.FC<ImportModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
       <div className="bg-gray-900 rounded-lg shadow-lg p-8 w-full max-w-md relative">
         <button
-          className="absolute top-2 right-2 text-white/60 hover:text-white"
+          className="orchos-btn-circle absolute top-2 right-2"
           onClick={handleCloseImportModal}
           title="Fechar"
         >
@@ -81,7 +81,7 @@ const ImportModal: React.FC<ImportModalProps> = ({
           </label>
         </div>
         <button
-          className="w-full py-2 bg-blue-700 text-white rounded hover:bg-blue-800 font-semibold mb-4 disabled:opacity-60"
+          className="orchos-btn-blue w-full mb-4"
           onClick={() => {
             console.log('[TranscriptionPanel] Button of import clicked. importMode:', importMode);
             handleStartImport(importUserName);
@@ -95,8 +95,8 @@ const ImportModal: React.FC<ImportModalProps> = ({
             <div className="w-full bg-gray-700 rounded h-6 overflow-hidden relative">
               {/* Background progress bar */}
               <div
-                className={styles.progressBar}
-                style={{ width: `${importProgress}%` }}
+                className={`${styles.progressBar} ${styles.progressBarWidth}`}
+                data-progress={importProgress}
               ></div>
               {/* Centered percentage text (fixed position) */}
               <div className="absolute inset-0 flex items-center justify-center text-white text-sm font-medium z-20">

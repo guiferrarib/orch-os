@@ -180,7 +180,6 @@ export class ConnectionManager {
         language: this.language,
         smart_format: true,
         multichannel: true,
-        diarize: true,
       });
       
       console.log("📊 [COGNITIVE-CONFIG] Connection parameters for cognitive audio stream:", {

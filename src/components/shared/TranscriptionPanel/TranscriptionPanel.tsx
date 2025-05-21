@@ -126,7 +126,7 @@ const TranscriptionPanel: React.FC<TranscriptionPanelProps> = ({ onClose, width 
       />
 
       {/* Settings button near import conversations */}
-      <div className="flex items-center justify-end mb-2">
+      <div className="relative flex items-center justify-end mb-2">
         <button
           ref={settingsBtnRef}
           className="relative rounded-full bg-white/70 hover:shadow-gold transition-all p-1 mr-2"
@@ -139,18 +139,9 @@ const TranscriptionPanel: React.FC<TranscriptionPanelProps> = ({ onClose, width 
           </svg>
         </button>
         {showSettings && (
-          <div className="absolute z-50 right-0 top-12 bg-white/90 rounded-lg shadow-xl p-4 backdrop-blur-md border border-gray-200 flex flex-col gap-2 min-w-[220px]">
-            <div className="flex justify-between items-center mb-2 border-b pb-2">
+          <div className="absolute z-50 right-0 top-full mt-2 bg-white/90 rounded-lg shadow-xl p-4 backdrop-blur-md border border-gray-200 flex flex-col gap-2 min-w-[220px]" style={{ minWidth: 220 }}>
+            <div className="mb-2 border-b pb-2">
               <h3 className="text-sm font-medium">Settings</h3>
-              <button 
-                onClick={() => setShowSettings(false)}
-                className="text-gray-500 hover:text-gray-700"
-                aria-label="Close settings"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                </svg>
-              </button>
             </div>
             <LanguageSelector
               language={language}

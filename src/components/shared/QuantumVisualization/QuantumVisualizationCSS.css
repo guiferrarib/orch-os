@@ -1,0 +1,253 @@
+/* 
+  Visualização Quântica CSS
+*/
+
+.quantum-three-canvas {
+  width: 100%;
+  height: 280px;
+  min-height: 200px;
+  display: block;
+}
+
+  Implementação de efeitos quânticos usando CSS puro para 
+  garantir visibilidade mesmo sem suporte a WebGL
+*/
+
+.quantum-visualization-css {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgb(2,0,36) 0%, rgb(9,9,121) 35%, rgb(0,25,60) 100%);
+}
+
+.quantum-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.7;
+  background: 
+    radial-gradient(circle at 30% 30%, rgba(45, 85, 255, 0.1) 0%, rgba(5, 5, 30, 0) 50%),
+    radial-gradient(circle at 70% 60%, rgba(120, 70, 255, 0.1) 0%, rgba(5, 5, 30, 0) 50%),
+    radial-gradient(circle at 50% 50%, rgba(10, 10, 40, 0.3) 0%, rgba(5, 5, 30, 0) 100%);
+  animation: pulse 15s ease-in-out infinite alternate;
+}
+
+/* Elementos quânticos de visualização para o QuantumModel */
+.quantum-element-1 {
+  position: absolute;
+  top: 25%;
+  left: 10%;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,90,255,1) 0%, rgba(0,50,200,0.7) 50%, rgba(0,0,150,0) 100%);
+  filter: blur(2px);
+  opacity: 0.8;
+  animation: float 4s ease-in-out infinite;
+}
+
+.quantum-element-2 {
+  position: absolute;
+  top: 45%;
+  left: 40%;
+  width: 120px;
+  height: 15px;
+  background: linear-gradient(90deg, rgba(200,0,200,0.9) 0%, rgba(255,100,255,0.7) 50%, rgba(200,0,255,0.9) 100%);
+  box-shadow: 0 0 15px rgba(200, 0, 255, 0.8);
+  animation: glow 3s infinite alternate;
+  transform: rotate(-15deg);
+  transform-origin: left center;
+}
+
+.quantum-element-3 {
+  position: absolute;
+  top: 30%;
+  right: 20%;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid rgba(100, 255, 255, 0.8);
+  box-shadow: 0 0 20px rgba(100, 255, 255, 0.5), inset 0 0 20px rgba(100, 255, 255, 0.5);
+  animation: collapse 3s infinite;
+  opacity: 0.8;
+}
+
+.quantum-element-4 {
+  position: absolute;
+  top: 65%;
+  left: 60%;
+  width: 90px;
+  height: 30px;
+  border-radius: 40%;
+  background: radial-gradient(ellipse, rgba(180,255,140,0.7) 0%, rgba(120,200,100,0.3) 70%, rgba(0,0,0,0) 100%);
+  filter: blur(5px);
+  animation: float 5s infinite alternate;
+  transform: rotate(20deg);
+}
+
+.quantum-element-5 {
+  position: absolute;
+  top: 40%;
+  left: 70%;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,100,0.9) 0%, rgba(255,200,50,0.3) 70%, rgba(0,0,0,0) 100%);
+  box-shadow: 0 0 10px rgba(255, 255, 0, 0.8);
+  animation: pulse2 2s infinite alternate;
+  opacity: 0.8;
+}
+
+.quantum-element-6 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 30% 30%, rgba(0,40,80,0.6) 0%, rgba(0,10,20,0.1) 70%);
+  opacity: 0.4;
+  animation: shift 15s infinite alternate;
+}
+
+.quantum-particles-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* Classes de posicionamento para as partículas */
+.quantum-particle-pos-1 {
+  left: 15%;
+  top: 20%;
+}
+
+.quantum-particle-pos-2 {
+  left: 35%;
+  top: 35%;
+}
+
+.quantum-particle-pos-3 {
+  left: 65%;
+  top: 25%;
+}
+
+.quantum-particle-pos-4 {
+  left: 80%;
+  top: 60%;
+}
+
+.quantum-particle-pos-5 {
+  left: 45%;
+  top: 75%;
+}
+
+/* Classes de atraso para animações das partículas */
+.quantum-particle-delay-1 {
+  animation-delay: 0.5s;
+}
+
+.quantum-particle-delay-2 {
+  animation-delay: 1.2s;
+}
+
+.quantum-particle-delay-3 {
+  animation-delay: 2.3s;
+}
+
+.quantum-particle-delay-4 {
+  animation-delay: 3.1s;
+}
+
+.quantum-particle-delay-5 {
+  animation-delay: 4.5s;
+}
+
+/* Partículas quânticas - representam estados quânticos em superposição */
+.quantum-particle {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(1px);
+  transform-origin: center center;
+  transition: all 0.5s ease;
+  pointer-events: none;
+  animation: quantum-flicker 3s ease-in-out infinite alternate;
+}
+
+/* Linhas de conexão - representam entrelamento quântico */
+.quantum-connection {
+  position: absolute;
+  filter: blur(1px);
+  transform-origin: left center;
+  pointer-events: none;
+  animation: quantum-pulse 4s ease-in-out infinite alternate;
+}
+
+/* Colapso de onda - representa redução objetiva */
+.quantum-wave-collapse {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid rgba(100, 200, 255, 0.8);
+  box-shadow: 0 0 10px rgba(120, 180, 255, 0.5), inset 0 0 15px rgba(100, 200, 255, 0.3);
+  background: transparent;
+  pointer-events: none;
+  animation: collapse-pulse 3s ease-in-out infinite;
+}
+
+/* Animações quânticas */
+@keyframes quantum-flicker {
+  0%, 100% {
+    transform: scale(1);
+    filter: blur(1px);
+  }
+  50% {
+    transform: scale(1.2);
+    filter: blur(2px);
+  }
+}
+
+@keyframes quantum-pulse {
+  0%, 100% {
+    opacity: 0.3;
+    filter: blur(1px);
+  }
+  50% {
+    opacity: 0.7;
+    filter: blur(2px);
+  }
+}
+
+@keyframes collapse-pulse {
+  0% {
+    transform: scale(0.1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* Adaptações para diferentes tamanhos */
+@media screen and (max-width: 768px) {
+  .quantum-visualization-css {
+    min-height: 200px;
+  }
+}

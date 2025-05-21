@@ -1,0 +1,167 @@
+/* SPDX-License-Identifier: MIT OR Apache-2.0 */
+/* Copyright (c) 2025 Guilherme Ferrari Brescia */
+
+.quantum-visualization-container {
+  position: relative;
+  border-radius: 8px;
+  overflow: visible; /* Changed from hidden to visible to allow content to overflow */
+  width: 100%;
+  height: 100%;
+  /* Lowering z-index to ensure quantum visualization doesn't block UI controls */
+  z-index: 2;
+}
+
+.quantum-visualization-container.fixed-height {
+  height: 280px;
+}
+
+.quantum-visualization-container.fixed-width {
+  width: 100%;
+}
+
+/* Classes for custom sizes */
+.quantum-visualization-container[data-width],
+.quantum-visualization-container[data-height] {
+  width: var(--custom-width, 100%);
+  height: var(--custom-height, 280px);
+}
+
+.quantum-model-container {
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
+}
+
+/* Styles for quantum legend */
+.quantum-legend {
+  position: absolute;
+  top: 10px; /* Moved to top right corner for better visibility */
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background-color: rgba(0, 0, 0, 0.75); /* Slightly more opaque for better readability */
+  border-radius: 8px;
+  padding: 10px;
+  -webkit-backdrop-filter: blur(10px); /* Increased blur for glass effect */
+  backdrop-filter: blur(10px);
+  z-index: 5; /* Increased to ensure it's above other elements but below UI controls */
+  max-width: 180px;
+  font-size: 11px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Subtle shadow for better depth */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border for glass effect */
+  transition: opacity 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+  opacity: 0.85; /* Slightly transparent by default */
+}
+
+.quantum-legend:hover {
+  opacity: 1; /* Fully opaque on hover */
+  transform: translateY(-2px); /* Subtle lift on hover */
+}
+
+.quantum-legend-item {
+  display: flex;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.7);
+  transition: all 0.3s ease;
+  opacity: 0.6;
+}
+
+.quantum-legend-item.active {
+  color: rgba(255, 255, 255, 1);
+  opacity: 1;
+}
+
+.quantum-legend-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+}
+
+.quantum-legend-item.active .quantum-legend-indicator {
+  box-shadow: 0 0 8px currentColor;
+}
+
+/* Specific colors for each quantum phenomenon - scientifically based on the frequencies and phenomena they represent */
+/* Superposition: Violeta (frequência alta - terahertz) - baseado no espectro eletromagnético */
+.quantum-color-quantum-superposition {
+  background-color: #9D6AFF;
+}
+
+/* Objective Reduction: Azul esverdeado (colapso de função de onda) - baseado nas distribuições de probabilidade */
+.quantum-color-objective-reduction {
+  background-color: #00B4D8;
+}
+
+/* Quantum Entanglement: Magenta (fenômeno não-local) - baseado no espectro de ressonância magnética */
+.quantum-color-quantum-entanglement {
+  background-color: #E63B7A;
+}
+
+/* Conscious State: Verde (emergente) - baseado nos sinais EEG de consciência */
+.quantum-color-conscious-state {
+  background-color: #3BE669;
+}
+
+/* Tubulin Coherence: Ouro/Amarelo (oscilações de Fröhlich) - baseado na frequência ressonante 4-8 MHz */
+.quantum-color-tubulin-coherence {
+  background-color: #FFD166;
+}
+
+/* Orchestration: Turquesa (coordenação de múltiplos processos) - baseado na modulação de polarização */
+.quantum-color-orchestration {
+  background-color: #00CBD1;
+}
+
+/* Observer: Branco (luz completa - todos comprimentos de onda) - baseado na física do observador quântico */
+.quantum-color-observer {
+  background-color: #FFFFFF;
+}
+
+/* Legend toggle button */
+.quantum-legend-toggle {
+  position: absolute;
+  top: 10px; /* Match position with legend */
+  right: 195px; /* Positioned to the left of the legend */
+  background-color: rgba(0, 0, 0, 0.75); /* Match legend background */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  z-index: 5; /* Same as legend */
+  -webkit-backdrop-filter: blur(10px); /* Match legend blur */
+  backdrop-filter: blur(10px);
+  transition: all 0.2s ease; 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Match legend shadow */
+  opacity: 0.85; /* Slightly transparent by default */
+}
+
+/* Estilo para o ícone de visibilidade - sem texto, apenas símbolo */
+.quantum-legend-toggle .material-symbols-outlined {
+  font-size: 18px !important;
+  line-height: 1;
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  font-family: 'Material Symbols Outlined';
+  -webkit-font-feature-settings: 'liga';
+  font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.quantum-legend-toggle:hover {
+  opacity: 1;
+  transform: translateY(-2px) scale(1.02);
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.quantum-legend-toggle .material-symbols-outlined {
+  font-size: 16px;
+}

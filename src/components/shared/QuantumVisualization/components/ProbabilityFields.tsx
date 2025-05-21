@@ -16,7 +16,13 @@ import * as THREE from 'three';
  * Nesta representação, cada partícula representa um componente do campo de probabilidade
  * quântica descrito pela equação de Schrödinger, antes da redução objetiva.
  */
-export function ProbabilityFields({ particleCount = 150 }) {
+interface ProbabilityFieldsProps {
+  particleCount?: number;
+  coherence?: number;
+  collapseActive?: boolean;
+}
+
+export function ProbabilityFields({ particleCount = 150, coherence = 0.3, collapseActive = false }: ProbabilityFieldsProps) {
   const particles = useRef<THREE.Points>(null);
   
   // Criando posições iniciais para partículas
@@ -107,11 +113,12 @@ export function ProbabilityFields({ particleCount = 150 }) {
           args={[colors, 3]}
         />
       </bufferGeometry>
+      {/* Opacidade mínima muito baixa em repouso (0.03), crescendo suavemente com coherence */}
       <pointsMaterial 
         size={0.05} 
         vertexColors 
         transparent 
-        opacity={0.7} 
+        opacity={collapseActive ? 1 : (0.03 + 0.8 * coherence)} 
         sizeAttenuation 
       />
     </points>

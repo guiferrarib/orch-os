@@ -21,7 +21,12 @@ import * as THREE from 'three';
  * 4. A interferência quântica conecta o processamento quântico nos microtúbulos
  *    a fenômenos de campo mais amplos na atividade neural global
  */
-export function InterferencePatterns() {
+interface InterferencePatternsProps {
+  coherence?: number;
+  collapseActive?: boolean;
+}
+
+export function InterferencePatterns({ coherence = 0.3, collapseActive = false }: InterferencePatternsProps) {
   const patterns = useRef<THREE.Group>(null);
   
   // Criando conjuntos de ondas circulares que representam
@@ -42,7 +47,9 @@ export function InterferencePatterns() {
         
         // Pulsação da opacidade - representa flutuações quânticas
         // Na teoria Orch OR, os estados quânticos oscilam antes do colapso
-        material.opacity = 0.3 + Math.sin(t * (0.5 + i * 0.2)) * 0.2;
+        // Opacidade dos anéis modulada por coerência global e evento OR
+// Opacidade mínima muito baixa em repouso (0.01), crescendo suavemente com coherence
+material.opacity = collapseActive ? 1 : (0.01 + 0.9 * coherence) + Math.sin(t * (collapseActive ? 1.2 : (0.5 + i * 0.2))) * 0.2;
         
         // Animar escala para simular propagação de onda quântica
         // Representa a propagação da informação quântica através dos microtúbulos

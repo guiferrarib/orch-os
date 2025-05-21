@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 // Copyright (c) 2025 Guilherme Ferrari Brescia
 
-import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback } from 'react';
 import { nanoid } from 'nanoid';
 
 // Define the type for cognition cores - represents different regions/modules of the brain's quantum processing
@@ -70,7 +70,7 @@ export interface QuantumVisualizationContextType {
   setPlanckScaleFeedback: (active: boolean) => void;
   
   // Effect management
-  clearAllEffects: () => void;
+  clearAllEffects: (preserveBasalState?: boolean, resetLevel?: number) => void;
 }
 
 export const QuantumVisualizationContext = createContext<QuantumVisualizationContextType | null>(null);
@@ -321,27 +321,38 @@ export const QuantumVisualizationProvider: React.FC<QuantumVisualizationProvider
       Math.min(1.0, weightedSum / (totalEffects * 0.5)) : 0;
       
     setOrchestrationIntensity(normalizedIntensity);
-  }, [quantumSuperpositions, quantumEntanglements, objectiveReductions, consciousStates]);
-
+  }, [quantumSuperpositions, quantumEntanglements, objectiveReductions, consciousStates, setOrchestrationIntensity]);
+  
   /**
-   * Manter um estado base de atividade quântica conforme teoria Orch-OR
-   * Na teoria Orch-OR, mesmo em estado de repouso há atividade quântica nos microtúbulos
-   * Chamado para limpar efeitos cognitivos significativos, mas preserva um estado quântico basal
+   * Limpa todos os efeitos quânticos, com opção de manter ou não um estado basal
+   * @param preserveBasalState Se true, mantém um estado quântico basal conforme teoria Orch-OR 
+   * @param resetLevel Nível de coerência para resetar (0-1)
    */
-  const clearAllEffects = React.useCallback(() => {
+  const clearAllEffects = useCallback((preserveBasalState = true, resetLevel = 0.3) => {
     try {
-      if (process.env.NODE_ENV !== 'production') {
-        console.log('[OrchOR] clearAllEffects - preserving base quantum state', new Date().toISOString());
-      }
-      
       // Primeiro limpar todos os estados existentes
       setQuantumSuperpositions([]);
       setQuantumEntanglements([]);
       setObjectiveReductions([]);
       setConsciousStates([]);
       
+      // Se não está preservando estado basal, apenas zera tudo e retorna
+      if (!preserveBasalState) {
+        if (process.env.NODE_ENV !== 'production') {
+          console.log('[OrchOR] clearAllEffects - full reset (no basal state)');
+        }
+        setTubulinCoherenceLevel(0.1); // Ainda mantém um mínimo de coerência (10%)
+        setOrchestrationIntensity(0.1);
+        setActiveRegion(null);
+        return;
+      }
+      
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('[OrchOR] clearAllEffects - preserving basal quantum state');
+      }
+      
       // Imediatamente adicionar o estado quântico basal (Orch-OR)
-      // Duas superposições quânticas (oscilações de Fröhlich nos microtúbulos)
+      // Duas superposições quânticas (oscilações de Fröhlich nos microtuúbulos)
       const baseSuper1: QuantumEffect = {
         id: nanoid(),
         core: 'THALAMUS', // Tálamo como base essencial da consciência quântica
@@ -349,7 +360,7 @@ export const QuantumVisualizationProvider: React.FC<QuantumVisualizationProvider
         frequencyBand: QuantumFrequencyBand.MEGAHERTZ, // 8MHz (banda Fröhlich)
         tripletLevel: 'primary',
         tripletGroup: 1,
-        amplitude: 0.3,
+        amplitude: 0.2,  // Reduzido um pouco para não ser tão intenso
         phaseCoherence: 0.2,
         createdAt: Date.now()
       };
@@ -361,7 +372,7 @@ export const QuantumVisualizationProvider: React.FC<QuantumVisualizationProvider
         frequencyBand: QuantumFrequencyBand.MEGAHERTZ,
         tripletLevel: 'primary',
         tripletGroup: 1,
-        amplitude: 0.25,
+        amplitude: 0.15,  // Reduzido um pouco para não ser tão intenso
         phaseCoherence: 0.2,
         createdAt: Date.now()
       };
@@ -374,35 +385,18 @@ export const QuantumVisualizationProvider: React.FC<QuantumVisualizationProvider
         frequencyBand: QuantumFrequencyBand.MEGAHERTZ,
         tripletLevel: 'primary',
         tripletGroup: 1,
-        amplitude: 0.3,
-        phaseCoherence: 0.4,
+        amplitude: 0.2,  // Reduzido um pouco para não ser tão intenso
+        phaseCoherence: 0.3,
         createdAt: Date.now()
       };
       
-      // Um evento de redução objetiva (OR) espontânea
-      const baseOR: QuantumEffect = {
-        id: nanoid(),
-        core: 'VISUAL',
-        orchORState: OrchORState.OBJECTIVE_REDUCTION,
-        frequencyBand: QuantumFrequencyBand.KILOHERTZ,
-        tripletLevel: 'primary',
-        tripletGroup: 1,
-        amplitude: 0.2,
-        phaseCoherence: 0.1,
-        createdAt: Date.now(),
-        collapseThreshold: 0.8,
-        planckScale: false,
-        nonComputable: false
-      };
-      
-      // Aplicar os estados quânticos basais
+      // Adicionar estado quântico basal
       setQuantumSuperpositions([baseSuper1, baseSuper2]);
       setQuantumEntanglements([baseEntanglement]);
-      setObjectiveReductions([baseOR]);
       
-      // Definir níveis de coerência e orquestração basais (nunca zero)
-      setTubulinCoherenceLevel(0.3); // Coerência basal moderada-baixa
-      setOrchestrationIntensity(0.2); // Orquestração basal moderada-baixa
+      // Atualizar coerência basal (Faixa típica de repouso em Orch-OR)
+      setTubulinCoherenceLevel(resetLevel); // Nível de coerência configurado
+      setOrchestrationIntensity(resetLevel - 0.1); // Ligeiramente menor que a coerência
       
       // Manter o tálamo como região ativa mesmo em repouso
       setActiveRegion('THALAMUS');

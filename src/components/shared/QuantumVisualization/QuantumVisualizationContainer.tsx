@@ -3,44 +3,36 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import './QuantumVisualization.css';
-import { QuantumVisualizationProvider, useQuantumVisualization, QuantumFrequencyBand } from './QuantumVisualizationContext';
+import { QuantumVisualizationProvider, useQuantumVisualization, QuantumFrequencyBand, QuantumCore } from './QuantumVisualizationContext';
 import { CognitionEvent } from '../../context/deepgram/types/CognitionEvent';
 import { QuantumModel } from './index';
 import { QuantumLegend } from './QuantumLegend';
-
-// Define cognition event types as constants (since there's no enum)
-const EVENT_TYPES = {
-  RAW_PROMPT: 'raw_prompt',
-  TEMPORARY_CONTEXT: 'temporary_context',
-  NEURAL_SIGNAL: 'neural_signal',
-  SYMBOLIC_RETRIEVAL: 'symbolic_retrieval',
-  FUSION_INITIATED: 'fusion_initiated',
-  NEURAL_COLLAPSE: 'neural_collapse',
-  SYMBOLIC_CONTEXT_SYNTHESIZED: 'symbolic_context_synthesized',
-  GPT_RESPONSE: 'gpt_response',
-  EMERGENT_PATTERNS: 'emergent_patterns'
-};
+// Import científico refinado da tradução cognitiva para fenômenos quânticos
+import { mapCognitionEventToQuantumProperties } from './utils/CognitionMapper';
 
 interface QuantumVisualizationContainerProps {
   cognitionEvents: CognitionEvent[] | null;
   width?: string;
   height?: string;
   showLegend?: boolean;
-  resetDelay?: number; // Atraso para resetar efeitos (ms)
   lowPerformanceMode?: boolean; // Modo de baixa performance para dispositivos menos potentes
 }
 
 /**
- * Container component for the 3D quantum consciousness visualization
- * This component sets up all the necessary context and event handling
- * while presenting a quantum-based representation instead of an anthropomorphic brain
+ * Container principal para visualização quântica de eventos cognitivos segundo a teoria Orch-OR
+ * 
+ * Este componente implementa a interface visual para a teoria Penrose-Hameroff de
+ * Redução Objetiva Orquestrada (Orch-OR), modelando a transformação de sinais neurais 
+ * em fenômenos quânticos como superposição, emaranhamento e colapso (OR).
+ * 
+ * Simbolicamente, representa o conector entre processos neurais simbólicos e fenômenos quânticos,
+ * servindo como interface cortical entre cognição e estruturas quânticas de Planck.
  */
 export const QuantumVisualizationContainer: React.FC<QuantumVisualizationContainerProps> = ({
   cognitionEvents,
   width = '100%',
   height = '280px',
   showLegend = true,
-  resetDelay = 2000, // Valor padrão de 2000ms
   lowPerformanceMode = false
 }) => {
   return (
@@ -50,6 +42,7 @@ export const QuantumVisualizationContainer: React.FC<QuantumVisualizationContain
         width={width} 
         height={height}
         showLegend={showLegend}
+        lowPerformanceMode={lowPerformanceMode}
       />
     </QuantumVisualizationProvider>
   );
@@ -61,35 +54,29 @@ const QuantumVisualizationContent: React.FC<QuantumVisualizationContainerProps> 
   width,
   height,
   showLegend,
-  resetDelay = 2000,
   lowPerformanceMode = false
 }) => {
-  // Get quantum context functions from the Orch OR model
+  // Get quantum context functions from the Orch OR model - apenas os realmente utilizados
   const {
-    // Quantum states based on Orchestrated Objective Reduction theory
+    // Estados quânticos realmente utilizados na renderização ou processamento
     quantumSuperpositions,
     quantumEntanglements,
     objectiveReductions,
     consciousStates,
     
-    // Observer states
-    activeRegion,
-    observerState,
-    
-    // Orch OR-specific methods
+    // Métodos para adicionar efeitos quânticos
     addQuantumSuperposition,
     addQuantumEntanglement,
     addObjectiveReduction,
     addConsciousState,
-    setObserverState,
     setActiveRegion,
     
-    // Orchestration metrics
+    // Métricas de orquestração utilizadas no processamento
     tubulinCoherenceLevel,
     orchestrationIntensity,
     setPlanckScaleFeedback,
     
-    // Effect management
+    // Gerenciamento de efeitos
     clearAllEffects,
     setTubulinCoherenceLevel,
     setOrchestrationIntensity
@@ -103,14 +90,14 @@ const QuantumVisualizationContent: React.FC<QuantumVisualizationContainerProps> 
     // Evitar múltiplas inicializações
     if (initializedRef.current) {
       if (process.env.NODE_ENV !== 'production') {
-        console.log('[OrchORContainer] Quantum effects already initialized, skipping', new Date().toISOString());
+        console.log('[OrchORContainer] Quantum effects already initialized, skipping');
       }
       return;
     }
     
     // Configurar o estado quântico base apenas uma vez na montagem inicial
     if (process.env.NODE_ENV !== 'production') {
-      console.log('[OrchORContainer] INITIALIZING quantum state (one-time)', new Date().toISOString());
+      console.log('[OrchORContainer] INITIALIZING quantum state (one-time)');
     }
     
     // Apenas reseta os estados uma vez para garantir início limpo
@@ -119,17 +106,13 @@ const QuantumVisualizationContent: React.FC<QuantumVisualizationContainerProps> 
     // Marcar como inicializado para evitar chamadas repetidas
     initializedRef.current = true;
     
-    // Coerencia e orquestração nos níveis MÁXIMOS para maior visualização
-    setTubulinCoherenceLevel(0.9); // Máxima coerência
-    setOrchestrationIntensity(0.95); // Máxima orquestração
+    // Coerencia e orquestração nos níveis iniciais adequados
+    setTubulinCoherenceLevel(0.3); // Coerência inicial moderada 
+    setOrchestrationIntensity(0.5); // Orquestração inicial moderada
     
-    // Active region - tudo ativo para maior visualização
+    // Active region inicial - tálamo como integrador central
     setActiveRegion('THALAMUS');
-    
-    // Observer sempre ativo
-    setObserverState('active');
-  }, [clearAllEffects, addQuantumSuperposition, addQuantumEntanglement, addObjectiveReduction, 
-      addConsciousState, setTubulinCoherenceLevel, setOrchestrationIntensity, setActiveRegion, setObserverState]);
+  }, [clearAllEffects, setTubulinCoherenceLevel, setOrchestrationIntensity, setActiveRegion]);
   
   // State to control whether the legend is visible
   const [legendVisible, setLegendVisible] = useState(showLegend);
@@ -137,197 +120,175 @@ const QuantumVisualizationContent: React.FC<QuantumVisualizationContainerProps> 
   // Ref para o container DOM
   const containerRef = React.useRef<HTMLDivElement>(null);
   
-  // Event processing - runs only once for each batch of events
-  const eventsRef = React.useRef<CognitionEvent[] | null>(null);
+  // Event processing - rastreia eventos processados por seus timestamps
+  const processedEventTimestampsRef = React.useRef<Set<string>>(new Set());
   
-  // Função de utilidade para comparar arrays de eventos de forma eficiente
-  const areEventArraysEqual = (a: CognitionEvent[] | null, b: CognitionEvent[] | null): boolean => {
-    if (a === b) return true;
-    if (!a || !b) return false;
-    if (a.length !== b.length) return false;
-    
-    // Comparação baseada em tipo e timestamp dos eventos (mais eficiente que JSON.stringify)
-    return a.every((event, index) => {
-      const eventA = a[index];
-      const eventB = b[index];
-      // Comparar propriedades essenciais em vez do objeto inteiro
-      return eventA.type === eventB.type && 
-             eventA.timestamp === eventB.timestamp && 
-             (('core' in eventA && 'core' in eventB) ? eventA.core === eventB.core : true) &&
-             (('selectedCore' in eventA && 'selectedCore' in eventB) ? eventA.selectedCore === eventB.selectedCore : true);
-    });
+  // Ref para controle de processamento
+  const processingEventRef = React.useRef<boolean>(false);
+  
+  // Utilidade para identificar eventos de forma única por timestamp e tipo
+  const getEventKey = (event: CognitionEvent): string => {
+    return `${event.type}-${event.timestamp}`;
   };
   
-  useEffect(() => {
-    try {
-      if (process.env.NODE_ENV !== 'production') {
-        console.log('[OrchORContainer] cognitionEvents received:', cognitionEvents, new Date().toISOString());
-      }
+  // REMOVIDO: O timer automático de reset estava causando problemas, fazendo tudo desaparecer
+  
+  /**
+   * Processa um evento cognitivo e o traduz para fenômenos quânticos segundo a teoria Orch-OR
+   * Esta função implementa a tradução científica entre cognição e fenômenos quânticos
+   */
+  const handleCognitionEvent = React.useCallback((event: CognitionEvent) => {
+    // Usa o CognitionMapper para traduzir o evento cognitivo para propriedades quânticas
+    const quantumProperties = mapCognitionEventToQuantumProperties(event);
+    
+    // Ajusta a coerência e intensidade de orquestração baseado no evento
+    if (event.type === 'neural_collapse') {
+      // Eventos de colapso reduzem temporariamente a coerência e aumentam orquestração
+      const newCoherence = Math.max(0.1, tubulinCoherenceLevel * 0.7);
+      setTubulinCoherenceLevel(newCoherence);
       
-      // Se modo de baixa performance, reduzir processamento
-      if (lowPerformanceMode && cognitionEvents && cognitionEvents.length > 3) {
-        // No modo de baixa performance, processa apenas os 3 eventos mais recentes
-        cognitionEvents = cognitionEvents.slice(-3);
-      }
+      const newIntensity = Math.min(1, orchestrationIntensity * 1.3);
+      setOrchestrationIntensity(newIntensity);
       
-      // Verifica se há efeitos quânticos ativos baseado na teoria Orch OR
-      const hasActiveEffects =
-        quantumSuperpositions.length > 0 ||
-        quantumEntanglements.length > 0 ||
-        objectiveReductions.length > 0 ||
-        consciousStates.length > 0;
+      // No momento do colapso, adiciona um efeito de reduction (OR)
+      addObjectiveReduction(quantumProperties.core as QuantumCore);
       
-      // Se não há eventos cognitivos, mas já iniciamos a visualização de repouso, não fazer nada
-      // Isso permite que os efeitos quânticos de repouso que adicionamos permaneçam ativos
-      if (!cognitionEvents || cognitionEvents.length === 0) {
-        if (process.env.NODE_ENV !== 'production') {
-          console.log('[OrchORContainer] No cognitionEvents, keeping base quantum state', new Date().toISOString());
-        }
-        // Não limpar efeitos - permitir que a visualização mantenha seu estado base
-        return;
-      }
+      // Com cada colapso, atualizamos a região ativa
+      setActiveRegion(quantumProperties.core as QuantumCore);
+    } 
+    else if (event.type === 'neural_signal') {
+      // Sinais neurais aumentam a coerência quântica e superposição
+      const newCoherence = Math.min(0.95, tubulinCoherenceLevel + 0.1);
+      setTubulinCoherenceLevel(newCoherence);
       
-      // Skip if these are the same events we already processed - usando comparação otimizada
-      if (areEventArraysEqual(eventsRef.current, cognitionEvents)) {
-        if (process.env.NODE_ENV !== 'production') {
-          console.log('[OrchORContainer] cognitionEvents already processed', new Date().toISOString());
-        }
-        return;
-      }
-      
-      // Save current events to avoid reprocessing
-      eventsRef.current = cognitionEvents;
-      
-      // Sinaliza quando devemos ativar feedback da escala de Planck
-      // Segundo a teoria Orch OR, alguns fenômenos ocorrem na escala quântica fundamental
-      let hasPlanckScaleActivity = false;
-      
-      // Process each event in the batch
-      cognitionEvents.forEach(event => {
-        try {
-          // Extract core (região cerebral/módulo cognitivo)
-          let core = "unknown";
-          if ('core' in event) core = event.core;
-          else if ('selectedCore' in event) core = event.selectedCore;
-          
-          // Determina a banda de frequência baseada no tipo de evento
-          // De acordo com a teoria Orch OR, diferentes fenômenos ocorrem em diferentes bandas
-          let frequencyBand: QuantumFrequencyBand;
-          
-          if (process.env.NODE_ENV !== 'production') {
-            console.log('[OrchORContainer] Processing event:', event, 'core:', core, new Date().toISOString());
-          }
-          
-          // Mapeia os eventos cognitivos aos fenômenos da teoria Orch OR
-          switch (event.type) {
-            // Pré-Consciente: Superposições Quânticas (alta frequência - nível de tubulina)
-            case EVENT_TYPES.NEURAL_SIGNAL:
-              // Sinais neurais são processados como superposições quânticas nas maiores frequências
-              frequencyBand = QuantumFrequencyBand.TERAHERTZ;
-              addQuantumSuperposition(core, frequencyBand);
-              hasPlanckScaleActivity = true; // Ocorre na escala de Planck (fundamental)
-              break;
-
-            case EVENT_TYPES.EMERGENT_PATTERNS:
-              // Padrões emergentes são superposições quanticas em frequências um pouco menores
-              frequencyBand = QuantumFrequencyBand.GIGAHERTZ;
-              addQuantumSuperposition(core, frequencyBand);
-              break;
-            
-            // Coerência Quântica: Entanglement (sincronização de estados quânticos)
-            case EVENT_TYPES.FUSION_INITIATED:
-              // Eventos de fusão representam entrelamento quântico entre microtúbulos
-              frequencyBand = QuantumFrequencyBand.GIGAHERTZ;
-              addQuantumEntanglement(core, frequencyBand);
-              break;
-
-            // Redução Objetiva: Colapso da função de onda quântica (proto-consciência)
-            case EVENT_TYPES.NEURAL_COLLAPSE:
-              // Colapsos neurais representam redução objetiva (OR) nas frequências médias
-              frequencyBand = QuantumFrequencyBand.MEGAHERTZ;
-              addObjectiveReduction(core, frequencyBand);
-              break;
-
-            case EVENT_TYPES.SYMBOLIC_RETRIEVAL:
-              // Recuperação simbólica também representa redução objetiva (OR) mas em diferentes frequências
-              frequencyBand = QuantumFrequencyBand.KILOHERTZ;
-              addObjectiveReduction(core, frequencyBand);
-              break;
-            
-            // Estados Conscientes: Resultado pós-colapso quântico (consciência)
-            case EVENT_TYPES.SYMBOLIC_CONTEXT_SYNTHESIZED:
-              // Síntese de contexto representa um momento consciente resultante de OR
-              frequencyBand = QuantumFrequencyBand.KILOHERTZ;
-              addConsciousState(core, frequencyBand);
-              break;
-
-            case EVENT_TYPES.GPT_RESPONSE:
-              // Resposta GPT é um estado consciente pleno (nível macro)
-              frequencyBand = QuantumFrequencyBand.HERTZ;
-              addConsciousState(core, frequencyBand);
-              break;
-
-            case EVENT_TYPES.RAW_PROMPT:
-              // Prompt inicial também é um momento consciente, mas ativa o observador
-              setObserverState('active');
-              frequencyBand = QuantumFrequencyBand.HERTZ;
-              addConsciousState(core, frequencyBand);
-              break;
-          }
-          
-          // Set active region
-          setActiveRegion(core);
-            
-          // De acordo com Penrose-Hameroff, alguns fenômenos quânticos ocorrem na escala de Planck
-          if (hasPlanckScaleActivity) {
-            setPlanckScaleFeedback(true);
-          }
-        } catch (error) {
-          console.error('[OrchORContainer] Error processing event:', error);
-        }
-      });
-      
-      // Reset observer após um atraso configurável
-      // Na teoria Orch OR, este tempo corresponde aproximadamente a um "momento de consciência"
-      const timer = setTimeout(() => {
-        setObserverState('inactive');
-        setActiveRegion(null);
-        setPlanckScaleFeedback(false);
-      }, resetDelay);
-      
-      return () => clearTimeout(timer);
-    } catch (error) {
-      console.error('[OrchORContainer] Error in quantum event processing:', error);
+      // Adiciona superposição com propriedades mapeadas do evento
+      addQuantumSuperposition(
+        quantumProperties.core as QuantumCore, 
+        quantumProperties.frequencyBand as QuantumFrequencyBand
+      );
     }
-  }, [
-    cognitionEvents, 
-    clearAllEffects, 
-    addQuantumSuperposition, 
-    addQuantumEntanglement, 
-    addObjectiveReduction, 
-    addConsciousState,
-    setObserverState, 
-    setActiveRegion, 
-    setPlanckScaleFeedback,
-    quantumSuperpositions, 
-    quantumEntanglements, 
-    objectiveReductions, 
-    consciousStates,
-    resetDelay,
-    lowPerformanceMode
-  ]);
+    else if (event.type === 'symbolic_retrieval') {
+      // Recuperação simbólica cria entanglement entre regiões
+      addQuantumEntanglement(
+        'HIPPOCAMPUS' as QuantumCore, // Origem (hipocampo - memória)
+        quantumProperties.frequencyBand as QuantumFrequencyBand // Banda de frequência
+      );
+    }
+    else if (event.type === 'symbolic_context_synthesized' || event.type === 'fusion_initiated') {
+      // Síntese e fusão criam estados conscientes
+      addConsciousState(
+        quantumProperties.core as QuantumCore,
+        quantumProperties.frequencyBand as QuantumFrequencyBand
+      );
+    }
+    // NOVO: Padrões emergentes geram entrelamento complexo entre múltiplas regiões
+    else if (event.type === 'emergent_patterns') {
+      // Na teoria Orch-OR, padrões emergentes representam a formação de estados cognitivos complexos
+      // através de múltiplos entrelamentos quânticos
+      addQuantumEntanglement(
+        'PREFRONTAL' as QuantumCore,
+        QuantumFrequencyBand.KILOHERTZ
+      );
+      
+      // Segundo entrelamento para região relacionada à memória
+      addQuantumEntanglement(
+        'HIPPOCAMPUS' as QuantumCore,
+        QuantumFrequencyBand.MEGAHERTZ
+      );
+      
+      // Aumenta a orquestração global para refletir integração de informações
+      setOrchestrationIntensity(Math.min(1, orchestrationIntensity + 0.2));
+    }
+    // Nota: 'raw_prompt' não gera efeitos quânticos diretos conforme teoria Orch-OR
+    // Na teoria, processos quânticos só ocorrem após processamento neural inicial
+    
+    // MELHORADO: Eventos não-computáveis têm efeito quântico mais significativo
+    if (quantumProperties.nonComputable) {
+      setPlanckScaleFeedback(true); // Ativa o feedback de escala de Planck
+      
+      // Na teoria Orch-OR, eventos não-computáveis representam aspectos da consciência 
+      // que transcendem algoritmização e emergem da física quântica
+      addQuantumSuperposition(
+        quantumProperties.core as QuantumCore,
+        QuantumFrequencyBand.TERAHERTZ // Maior frequência - nível quântico fundamental
+      );
+      
+      // Aumento significativo de coerência - característico de eventos não-computáveis
+      setTubulinCoherenceLevel(Math.min(0.98, tubulinCoherenceLevel + 0.15));
+    }
+  }, [tubulinCoherenceLevel, orchestrationIntensity, setTubulinCoherenceLevel, 
+      setOrchestrationIntensity, addObjectiveReduction, addQuantumSuperposition, 
+      addQuantumEntanglement, addConsciousState, setActiveRegion, setPlanckScaleFeedback]);
+
+  // Processar novo evento cognitivo quando disponível - mantém o ciclo Orch-OR
+  useEffect(() => {
+    // Não processa se não houver eventos ou se ainda não inicializamos
+    if (!cognitionEvents || cognitionEvents.length === 0 || !initializedRef.current) {
+      return;
+    }
+    
+    // Identifica apenas os eventos novos que ainda não foram processados
+    const newEvents = cognitionEvents.filter(event => {
+      const eventKey = getEventKey(event);
+      return !processedEventTimestampsRef.current.has(eventKey);
+    });
+    
+    // Se não há eventos novos, não processa nada
+    if (newEvents.length === 0) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('[OrchORContainer] No new events to process');
+      }
+      return;
+    }
+    
+    // Se já estiver processando um evento, ignora para evitar sobreposições
+    if (processingEventRef.current) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.log(`[OrchORContainer] Ignorando processamento: já existe um evento em processamento`);
+      }
+      return;
+    }
+    
+    // Marca como em processamento
+    processingEventRef.current = true;
+
+    // Processa os novos eventos
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(`[OrchORContainer] Processing ${newEvents.length} new cognition events`);
+    }
+    
+    // Marca os eventos como processados e os processa
+    newEvents.forEach(event => {
+      // Adiciona o evento à lista de eventos já processados
+      const eventKey = getEventKey(event);
+      processedEventTimestampsRef.current.add(eventKey);
+      
+      // Processa o evento
+      handleCognitionEvent(event);
+    });
+    
+    // Limita o tamanho do set de eventos processados (evita memory leak)
+    if (processedEventTimestampsRef.current.size > 100) {
+      // Mantém apenas os 50 mais recentes se exceder 100 eventos
+      const keysArray = Array.from(processedEventTimestampsRef.current);
+      const toRemove = keysArray.slice(0, keysArray.length - 50);
+      toRemove.forEach(key => processedEventTimestampsRef.current.delete(key));
+    }
+    
+    // Libera para novo processamento depois que este for concluído
+    setTimeout(() => {
+      processingEventRef.current = false;
+    }, 100);
+  }, [cognitionEvents, handleCognitionEvent]);
 
   // Toggle legend visibility
   const toggleLegend = () => setLegendVisible(prev => !prev);
 
-  // Create custom CSS properties if custom sizes are needed (usando Ref em vez de querySelector)
+  // Create custom CSS properties if custom sizes are needed
   useEffect(() => {
-    try {
-      if (containerRef.current && width !== '100%' && height !== '280px') {
-        containerRef.current.setAttribute('style', `--custom-width: ${width}; --custom-height: ${height}`);
-      }
-    } catch (error) {
-      console.error('[QuantumVisualizationContainer] Error setting container styles:', error);
+    if (containerRef.current && (width !== '100%' || height !== '280px')) {
+      containerRef.current.style.setProperty('--custom-width', width || '100%');
+      containerRef.current.style.setProperty('--custom-height', height || '280px');
     }
   }, [width, height]);
 
@@ -335,25 +296,21 @@ const QuantumVisualizationContent: React.FC<QuantumVisualizationContainerProps> 
   const getOrchORClassNames = () => {
     const classNames = [];
     
-    // Classes refletindo intensidades
+    // Classes refletindo intensidades de coerência
     if (tubulinCoherenceLevel > 0.7) classNames.push('high-coherence');
     else if (tubulinCoherenceLevel > 0.3) classNames.push('medium-coherence');
     else classNames.push('low-coherence');
     
+    // Classes refletindo intensidades de orquestração
     if (orchestrationIntensity > 0.7) classNames.push('intense-orchestration');
     else if (orchestrationIntensity > 0.3) classNames.push('medium-orchestration');
     else classNames.push('minimal-orchestration');
     
     // Classes baseadas no estado predominante
-    const hasSuperpositions = quantumSuperpositions.length > 0;
-    const hasEntanglements = quantumEntanglements.length > 0;
-    const hasReductions = objectiveReductions.length > 0;
-    const hasConsciousStates = consciousStates.length > 0;
-    
-    if (hasSuperpositions) classNames.push('quantum-superposition-active');
-    if (hasEntanglements) classNames.push('quantum-entanglement-active');
-    if (hasReductions) classNames.push('objective-reduction-active');
-    if (hasConsciousStates) classNames.push('conscious-moment-active');
+    if (quantumSuperpositions.length > 0) classNames.push('quantum-superposition-active');
+    if (quantumEntanglements.length > 0) classNames.push('quantum-entanglement-active');
+    if (objectiveReductions.length > 0) classNames.push('objective-reduction-active');
+    if (consciousStates.length > 0) classNames.push('conscious-moment-active');
     
     return classNames.join(' ');
   };

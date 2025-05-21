@@ -16,12 +16,21 @@ import * as THREE from 'three';
  * 4. A natureza "não-computável" deste processo é central para explicar aspectos
  *    da consciência que, segundo Penrose, não podem ser simulados por algoritmos
  */
+interface WaveCollapseProps {
+  position?: [number, number, number];
+  active?: boolean;
+  color?: string;
+  isNonComputable?: boolean;
+  collapseActive?: boolean;
+}
+
 export function WaveCollapse({ 
   position = [0, 0, 0], 
   active = false, 
   color = "#00FFFF",
-  isNonComputable = false // Representa o aspecto não-computável da teoria de Penrose
-}) {
+  isNonComputable = false,
+  collapseActive = false
+}: WaveCollapseProps) {
   // Referências para animação
   const outerRing = useRef<THREE.Mesh>(null);
   const middleRing = useRef<THREE.Mesh>(null);
@@ -75,16 +84,19 @@ export function WaveCollapse({
     
     const t = clock.getElapsedTime();
     
-    // Simulação do colapso quântico de Penrose - t representa o tempo quântico
-    // A equação E = ħ/t de Penrose determina quando ocorre a redução objetiva
+    // Se o colapso ativo for forçado externamente, controlamos a fase diretamente
+    // Isso permite sincronização entre colapsos e eventos de OR (Objective Reduction)
+    let normalizedTime;
+    let period = 3;
     
-    // Período da oscilação completa (típico na teoria Orch OR: ~25ms)
-    // Convertido para segundos na animação
-    const period = 3; 
-    const normalizedTime = (t % period) / period;
-    
-    // Calculando a fase de colapso atual
-    const collapsePhase = Math.min(1, Math.pow(Math.sin(normalizedTime * Math.PI), 2) * 3);
+    if (collapseActive) {
+      // Se colapso está ativo externamente, focamos na fase principal do colapso (0.3-0.7)
+      normalizedTime = 0.5; // Meio do colapso - fase mais intensa
+    } else {
+      // Simulação normal do colapso quântico de Penrose
+      // A equação E = ħ/t de Penrose determina quando ocorre a redução objetiva
+      normalizedTime = (t % period) / period;
+    }
     
     // Animação dos anéis - representam a frente de onda quântica
     if (outerRing.current && middleRing.current && innerRing.current) {
@@ -229,25 +241,20 @@ export function WaveCollapse({
         vertices.push(distortedPoint);
       });
       
-      try {
-        // Tenta acessar a geometria do objeto filho (linha)
-        const lineObj = spacetime_curvature.current.children[0] as THREE.Line;
-        if (lineObj && lineObj.geometry) {
-          const lineGeometry = lineObj.geometry as THREE.BufferGeometry;
-          const positions = new Float32Array(vertices.length * 3);
-          
-          for (let i = 0; i < vertices.length; i++) {
-            positions[i * 3] = vertices[i].x;
-            positions[i * 3 + 1] = vertices[i].y;
-            positions[i * 3 + 2] = vertices[i].z;
-          }
-          
-          lineGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-          lineGeometry.attributes.position.needsUpdate = true;
+      // Atualiza a geometria da linha de espaço-tempo
+      const lineObj = spacetime_curvature.current.children[0] as THREE.Line;
+      if (lineObj && lineObj.geometry) {
+        const lineGeometry = lineObj.geometry as THREE.BufferGeometry;
+        const positions = new Float32Array(vertices.length * 3);
+        
+        for (let i = 0; i < vertices.length; i++) {
+          positions[i * 3] = vertices[i].x;
+          positions[i * 3 + 1] = vertices[i].y;
+          positions[i * 3 + 2] = vertices[i].z;
         }
-      } catch (error) {
-        // Ignora erros na atualização da geometria
-        console.warn('Erro ao atualizar geometria da linha:', error);
+        
+        lineGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        lineGeometry.attributes.position.needsUpdate = true;
       }
     }
   });
@@ -270,15 +277,21 @@ export function WaveCollapse({
       {/* Anéis de colapso quântico - representam a frente de onda durante OR */}
       <mesh ref={outerRing}>
         <torusGeometry args={[0.4, 0.02, 16, 100]} />
-        <meshBasicMaterial color={outerColor} transparent opacity={0.7} />
+        {/* Opacidade dos anéis modulada por evento OR */}
+{/* Opacidade mínima muito baixa em repouso (0.05), crescendo suavemente com collapseActive */}
+<meshBasicMaterial color={outerColor} transparent opacity={collapseActive ? 1 : 0.05} />
       </mesh>
       <mesh ref={middleRing}>
         <torusGeometry args={[0.3, 0.02, 16, 100]} />
-        <meshBasicMaterial color={middleColor} transparent opacity={0.7} />
+        {/* Opacidade dos anéis modulada por evento OR */}
+{/* Opacidade mínima muito baixa em repouso (0.05), crescendo suavemente com collapseActive */}
+<meshBasicMaterial color={middleColor} transparent opacity={collapseActive ? 1 : 0.05} />
       </mesh>
       <mesh ref={innerRing}>
         <torusGeometry args={[0.2, 0.02, 16, 100]} />
-        <meshBasicMaterial color={innerColor} transparent opacity={0.7} />
+        {/* Opacidade dos anéis modulada por evento OR */}
+{/* Opacidade mínima muito baixa em repouso (0.05), crescendo suavemente com collapseActive */}
+<meshBasicMaterial color={innerColor} transparent opacity={collapseActive ? 1 : 0.05} />
       </mesh>
       
       {/* Partículas quânticas que se condensam durante o colapso */}

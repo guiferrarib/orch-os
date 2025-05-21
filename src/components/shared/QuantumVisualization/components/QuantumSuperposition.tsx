@@ -18,7 +18,13 @@ import * as THREE from 'three';
  * - Típicamente 13 protofilamentos em arranjo hexagonal/circular
  * - Cada tubulina pode existir em superposição quântica, conforme Orch OR
  */
-export function QuantumSuperposition({ amount = 7 }) {
+interface QuantumSuperpositionProps {
+  amount?: number;
+  coherence?: number;
+  collapseActive?: boolean; // Sinaliza evento de Redução Objetiva (OR)
+}
+
+export function QuantumSuperposition({ amount = 7, coherence = 0.3, collapseActive = false }: QuantumSuperpositionProps) {
   const group = useRef<THREE.Group>(null);
   const tubuleRefs = useRef<THREE.Mesh[]>([]);
   
@@ -122,10 +128,30 @@ export function QuantumSuperposition({ amount = 7 }) {
         // Atualizando cor diretamente através do material
         if (mesh.material) {
           (mesh.material as THREE.MeshBasicMaterial).color.setHSL(hue/360, 0.8, 0.6 + 0.4 * intensity);
+// Opacidade mínima muito baixa em repouso (0.05), crescendo suavemente com coherence
+// Corrige: aplica opacidade e transparência apenas se material for MeshBasicMaterial ou array de MeshBasicMaterial
+// Durante evento OR (colapso), aumenta opacidade e pulsação, representando o "momento de consciência" da teoria Orch-OR
+if (Array.isArray(mesh.material)) {
+  mesh.material.forEach((mat) => {
+    if (mat instanceof THREE.MeshBasicMaterial) {
+      mat.transparent = true;
+      // Durante colapso (OR), opacidade máxima; em repouso, proporcional à coerência
+      mat.opacity = collapseActive ? 1 : (0.05 + 0.9 * coherence);
+    }
+  });
+} else if (mesh.material instanceof THREE.MeshBasicMaterial) {
+  mesh.material.transparent = true;
+  mesh.material.opacity = collapseActive ? 1 : (0.05 + 0.9 * coherence);
+}
         }
         
         // Atualiza escala para representar "expansão quântica"
-        mesh.scale.setScalar(0.6 + 0.4 * intensity);
+        // Escala modulada por intensidade local e coerência global
+// Durante evento OR (colapso), expansão máxima; em repouso, proporcional à intensidade e coerência
+// Represent a expansão temporal durante o colapso da função de onda (segundo Penrose)
+mesh.scale.setScalar(collapseActive ? 
+  (0.8 + 0.5 * intensity) : // Expansão máxima durante OR
+  (0.6 + 0.4 * intensity * (0.8 + 0.4 * coherence))); // Escala normal em coerência
       });
     }
   });

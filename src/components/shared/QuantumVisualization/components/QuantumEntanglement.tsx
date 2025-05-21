@@ -16,7 +16,13 @@ import * as THREE from 'three';
  * Este componente visualiza essas conexões quânticas não-locais que são
  * fundamentais para a integração de informação na teoria Orch OR.
  */
-export function QuantumEntanglement({ pairs = 8 }) {
+interface QuantumEntanglementProps {
+  pairs?: number;
+  coherence?: number;
+  collapseActive?: boolean;
+}
+
+export function QuantumEntanglement({ pairs = 8, coherence = 0.3, collapseActive = false }: QuantumEntanglementProps) {
   const lines = useRef<THREE.Group>(null);
   const points = useRef<THREE.Group>(null);
   
@@ -175,13 +181,17 @@ export function QuantumEntanglement({ pairs = 8 }) {
             {/* Primeira partícula do par emaranhado */}
             <mesh position={pair.point1}>
               <sphereGeometry args={[0.05, 8, 8]} />
-              <meshBasicMaterial color={pair.color} transparent opacity={0.8} />
+              {/* Opacidade modulada por coerência global e evento OR */}
+{/* Opacidade mínima muito baixa em repouso (0.05), crescendo suavemente conforme coherence aumenta. */}
+<meshBasicMaterial color={pair.color} transparent opacity={collapseActive ? 1 : (0.05 + 0.9 * coherence)} />
             </mesh>
             
             {/* Segunda partícula do par emaranhado */}
             <mesh position={pair.point2}>
               <sphereGeometry args={[0.05, 8, 8]} />
-              <meshBasicMaterial color={pair.color} transparent opacity={0.8} />
+              {/* Opacidade modulada por coerência global e evento OR */}
+{/* Opacidade mínima muito baixa em repouso (0.05), crescendo suavemente conforme coherence aumenta. */}
+<meshBasicMaterial color={pair.color} transparent opacity={collapseActive ? 1 : (0.05 + 0.9 * coherence)} />
             </mesh>
           </React.Fragment>
         ))}
@@ -205,12 +215,14 @@ export function QuantumEntanglement({ pairs = 8 }) {
                     ]), 3]}
                   />
                 </bufferGeometry>
-                <lineBasicMaterial 
-                  color={baseColor} 
-                  transparent 
-                  opacity={0.5 * pair.entanglementStrength} 
-                  linewidth={1}
-                />
+                {/* Opacidade da linha modulada por coerência e evento OR, e intensidade por entanglementStrength */}
+{/* Opacidade mínima muito baixa em repouso (0.05), crescendo suavemente conforme coherence aumenta. */}
+<lineBasicMaterial 
+  color={baseColor} 
+  transparent 
+  opacity={collapseActive ? 1 : ((0.05 + 0.9 * coherence) * pair.entanglementStrength)} 
+  linewidth={1}
+/>
               </line>
             </React.Fragment>
           );

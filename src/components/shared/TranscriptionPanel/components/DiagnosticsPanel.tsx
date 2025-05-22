@@ -3,63 +3,179 @@
 
 import React from 'react';
 import { ConnectionState, MicrophoneState } from '../../../context';
+import styles from './DiagnosticsPanel.module.css';
 
+// Mantendo o arquivo mais limpo sem os ícones
+
+/**
+ * DiagnosticsPanel - Interface cortical para monitoramento de estados neurais
+ * Representa os estados de conexão dos componentes de input neural (Deepgram e Microfone)
+ * seguindo a estética neural-simbólica do Orch-OS
+ */
 interface DiagnosticsPanelProps {
   connectionState: ConnectionState;
   microphoneState: MicrophoneState;
+  onDisconnect?: () => void;
+  onReconnect?: () => void;
 }
 
-const DiagnosticsPanel: React.FC<DiagnosticsPanelProps> = ({ connectionState, microphoneState }) => {
-  const getConnectionColor = () => {
-    switch (connectionState) {
+const DiagnosticsPanel: React.FC<DiagnosticsPanelProps> = ({
+  connectionState, 
+  microphoneState,
+  onDisconnect,
+  onReconnect
+}) => {
+  // Determina o estado geral do sistema baseado nos estados dos componentes
+  const isFullyConnected = 
+    connectionState === ConnectionState.OPEN && 
+    (microphoneState === MicrophoneState.Open || microphoneState === MicrophoneState.Ready);
+
+  // Mapeia valor de enum para string legível
+  const getConnectionStateText = (state: ConnectionState): string => {
+    switch (state) {
       case ConnectionState.OPEN:
-        return "bg-green-500";
+        return 'OPEN';
+      case ConnectionState.CLOSED:
+        return 'CLOSED';
       case ConnectionState.CONNECTING:
-        return "bg-yellow-500";
+        return 'CONNECTING';
       case ConnectionState.ERROR:
-        return "bg-red-500";
+        return 'ERROR';
       default:
-        return "bg-gray-500";
+        return 'UNKNOWN';
     }
   };
 
-  const getMicrophoneColor = () => {
-    switch (microphoneState) {
+  const getMicStateText = (state: MicrophoneState): string => {
+    switch (state) {
       case MicrophoneState.Open:
-        return "bg-green-500";
+        return 'OPEN';
       case MicrophoneState.Ready:
+        return 'READY';
       case MicrophoneState.Opening:
-        return "bg-yellow-500";
+        return 'OPENING';
       case MicrophoneState.Error:
-        return "bg-red-500";
+        return 'ERROR';
+      case MicrophoneState.NotSetup:
+        return 'NO';
       default:
-        return "bg-gray-500";
+        return 'UNKNOWN';
     }
+  };
+
+  // Mapeia estado para classe CSS neural-simbólica
+  const getConnectionStateClass = (state: ConnectionState): string => {
+    switch (state) {
+      case ConnectionState.OPEN:
+        return styles.statusYes;
+      case ConnectionState.CLOSED:
+        return styles.statusUnavailable; // Fechado deve usar o amarelo (warning)
+      case ConnectionState.CONNECTING:
+        return styles.statusUnavailable;
+      case ConnectionState.ERROR:
+        return styles.statusError;
+      default:
+        return styles.statusUnavailable;
+    }
+  };
+
+  const getMicStateClass = (state: MicrophoneState): string => {
+    switch (state) {
+      case MicrophoneState.Open:
+      case MicrophoneState.Ready:
+        return styles.statusYes;
+      case MicrophoneState.Opening:
+        return styles.statusUnavailable;
+      case MicrophoneState.Error:
+        return styles.statusError;
+      case MicrophoneState.NotSetup:
+        return styles.statusNo;
+      default:
+        return styles.statusUnavailable;
+    }
+  };
+
+  // Manipuladores de eventos para ações neurais
+  const handleDisconnect = () => {
+    if (onDisconnect) onDisconnect();
+  };
+
+  const handleReconnect = () => {
+    if (onReconnect) onReconnect();
   };
 
   return (
-    <div className="flex items-center space-x-4 text-xs mb-2">
-      {/* Deepgram Status */}
-      <div className="flex items-center gap-1">
-        <svg width="17" height="17" viewBox="0 0 17 17" fill="none" className={`orchos-status-icon ${connectionState === ConnectionState.OPEN ? 'animate-pulse' : ''}`}> 
-          <ellipse cx="8.5" cy="8.5" rx="7.5" ry="5.5" stroke={connectionState === ConnectionState.OPEN ? '#00faff' : connectionState === ConnectionState.CONNECTING ? '#ffe066' : '#ff416c'} strokeWidth="1.3"/>
-          {/* Plug icon */}
-          <rect x="7" y="4" width="3" height="6" rx="1" fill={connectionState === ConnectionState.OPEN ? '#00faff' : connectionState === ConnectionState.CONNECTING ? '#ffe066' : '#ff416c'}/>
-          <rect x="7.7" y="2.5" width="1.6" height="2" rx="0.7" fill={connectionState === ConnectionState.OPEN ? '#00faff' : connectionState === ConnectionState.CONNECTING ? '#ffe066' : '#ff416c'}/>
-        </svg>
-        <span className={`font-semibold ${connectionState === ConnectionState.OPEN ? 'text-cyan-300' : connectionState === ConnectionState.CONNECTING ? 'text-yellow-300' : 'text-pink-400'}`}>Deepgram:</span>
-        <span className={`${connectionState === ConnectionState.OPEN ? 'text-cyan-200' : connectionState === ConnectionState.CONNECTING ? 'text-yellow-200' : 'text-pink-300'} ml-1`}>{ConnectionState[connectionState]}</span>
-      </div>
-      {/* Microphone Status */}
-      <div className="flex items-center gap-1">
-        <svg width="17" height="17" viewBox="0 0 17 17" fill="none" className={`orchos-status-icon ${microphoneState === MicrophoneState.Open ? 'animate-pulse' : ''}`}>
-          <ellipse cx="8.5" cy="8.5" rx="7.5" ry="5.5" stroke={microphoneState === MicrophoneState.Open ? '#00faff' : microphoneState === MicrophoneState.Error ? '#ff416c' : '#ffe066'} strokeWidth="1.3"/>
-          {/* Mic icon */}
-          <rect x="7" y="5" width="3" height="6" rx="1.2" fill={microphoneState === MicrophoneState.Open ? '#00faff' : microphoneState === MicrophoneState.Error ? '#ff416c' : '#ffe066'}/>
-          <rect x="8" y="11.5" width="1" height="2" rx="0.5" fill={microphoneState === MicrophoneState.Open ? '#00faff' : microphoneState === MicrophoneState.Error ? '#ff416c' : '#ffe066'}/>
-        </svg>
-        <span className={`font-semibold ${microphoneState === MicrophoneState.Open ? 'text-cyan-300' : microphoneState === MicrophoneState.Error ? 'text-pink-400' : 'text-yellow-300'}`}>Microphone:</span>
-        <span className={`${microphoneState === MicrophoneState.Open ? 'text-cyan-200' : microphoneState === MicrophoneState.Error ? 'text-pink-300' : 'text-yellow-200'} ml-1`}>{MicrophoneState[microphoneState]}</span>
+    <div className={styles.diagnosticsPanel}>
+      <h3 className={styles.panelTitle}>Connection Diagnostics</h3>
+      
+      <table className={styles.statusTable}>
+        <tbody>
+          <tr className={styles.statusRow}>
+            <td className={styles.statusCell}>
+              <span className={styles.statusLabel}>Conn. state:</span>
+            </td>
+            <td className={styles.statusCell}>
+              <span className={`${styles.statusValue} ${getConnectionStateClass(connectionState)}`}>
+                {getConnectionStateText(connectionState)}
+              </span>
+            </td>
+          </tr>
+          <tr className={styles.statusRow}>
+            <td className={styles.statusCell}>
+              <span className={styles.statusLabel}>Self state:</span>
+            </td>
+            <td className={styles.statusCell}>
+              <span className={`${styles.statusValue} ${getConnectionStateClass(connectionState)}`}>
+                {getConnectionStateText(connectionState)}
+              </span>
+            </td>
+          </tr>
+          <tr className={styles.statusRow}>
+            <td className={styles.statusCell}>
+              <span className={styles.statusLabel}>Conn. obj.:</span>
+            </td>
+            <td className={styles.statusCell}>
+              <span className={`${styles.statusValue} ${styles.statusYes}`}>
+                {connectionState !== ConnectionState.ERROR ? 'AVAILABLE' : 'ERROR'}
+              </span>
+            </td>
+          </tr>
+          <tr className={styles.statusRow}>
+            <td className={styles.statusCell}>
+              <span className={styles.statusLabel}>Mic state:</span>
+            </td>
+            <td className={styles.statusCell}>
+              <span className={`${styles.statusValue} ${getMicStateClass(microphoneState)}`}>
+                {getMicStateText(microphoneState)}
+              </span>
+            </td>
+          </tr>
+          <tr className={styles.statusRow}>
+            <td className={styles.statusCell}>
+              <span className={styles.statusLabel}>Conn. active:</span>
+            </td>
+            <td className={styles.statusCell}>
+              <span className={`${styles.statusValue} ${isFullyConnected ? styles.statusYes : styles.statusNo}`}>
+                {isFullyConnected ? 'YES' : 'NO ✗'}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <div className={styles.buttonContainer}>
+        <button 
+          className={`${styles.button} ${styles.disconnectButton}`}
+          onClick={handleDisconnect}
+        >
+          Disconnect
+        </button>
+        <button 
+          className={`${styles.button} ${styles.reconnectButton}`}
+          onClick={handleReconnect}
+        >
+          Force Reconnect
+        </button>
       </div>
     </div>
   );

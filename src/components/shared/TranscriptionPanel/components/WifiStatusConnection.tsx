@@ -1,32 +1,66 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 // Copyright (c) 2025 Guilherme Ferrari Brescia
 
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { ConnectionState, MicrophoneState } from '../../../context';
 import styles from './WifiStatusConnection.module.css';
+import DiagnosticsPanel from './DiagnosticsPanel';
 
-// Interface following the symbolic neural design pattern
 interface WifiStatusConnectionProps {
   connectionState: ConnectionState;
-  microphoneState?: MicrophoneState;
+  microphoneState: MicrophoneState;
   signalStrength?: 'strong' | 'medium' | 'weak' | 'none';
   onStatusClick?: () => void;
   showDetailedText?: boolean;
   className?: string;
+  onDisconnect?: () => void;
+  onReconnect?: () => void;
 }
 
 /**
  * Neural signal visualization component for connection state
  * Symbolic intent: Interface neuron for connectivity visualization
  */
-const WifiStatusConnection: React.FC<WifiStatusConnectionProps> = ({
-  connectionState,
-  microphoneState = MicrophoneState.Stopped,
+const WifiStatusConnection: React.FC<WifiStatusConnectionProps> = ({ 
+  connectionState, 
+  microphoneState, 
   signalStrength = 'medium',
   onStatusClick,
   showDetailedText = false,
   className = '',
+  onDisconnect,
+  onReconnect
 }) => {
+  // Estado para controlar a visibilidade do painel de diagnósticos
+  const [showDiagnostics, setShowDiagnostics] = useState(false);
+  const diagnosticsPanelRef = useRef<HTMLDivElement>(null);
+  const iconRef = useRef<HTMLDivElement>(null);
+  
+  // Gerencia cliques fora do painel para fechá-lo
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        showDiagnostics && 
+        diagnosticsPanelRef.current && 
+        !diagnosticsPanelRef.current.contains(event.target as Node) &&
+        iconRef.current &&
+        !iconRef.current.contains(event.target as Node)
+      ) {
+        setShowDiagnostics(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showDiagnostics]);
+  
+  // Alterna a visibilidade do painel de diagnósticos
+  const toggleDiagnosticsPanel = () => {
+    setShowDiagnostics(prev => !prev);
+  };
+
   // Determinar se o sistema está completamente conectado (Deepgram + microfone)
   const isFullyConnected = () => {
     return (
@@ -196,9 +230,25 @@ const WifiStatusConnection: React.FC<WifiStatusConnectionProps> = ({
   return (
     <div 
       className={`${styles.wifiStatusConnection} ${connectionStateClass} ${className}`}
-      onClick={onStatusClick}
       title={statusText}
+      ref={iconRef}
+      onClick={toggleDiagnosticsPanel}
     >
+      {/* Painel de diagnósticos flutuante */}
+      {showDiagnostics && (
+        <div 
+          className={styles.diagnosticsPanelContainer} 
+          ref={diagnosticsPanelRef}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <DiagnosticsPanel 
+            connectionState={connectionState} 
+            microphoneState={microphoneState}
+            onDisconnect={onDisconnect}
+            onReconnect={onReconnect}
+          />
+        </div>
+      )}
       <div className={styles.wifiIconContainer}>
         {/* WiFi icon with neural aesthetic for Orch-OS */}
         <svg width="26" height="26" viewBox="0 0 26 26" fill="none" className={styles.neuralSignalIcon}>

@@ -51,9 +51,9 @@
   -webkit-user-select: none;
   user-select: none;
   position: relative;
-  background-color: rgba(157, 23, 77, 0.7);
-  border: 1px solid #f472b6;
-  box-shadow: 0 0 24px 3px rgba(255, 77, 210, 0.53), 0 0 0 2px rgba(255, 77, 210, 0.8);
+  background-color: rgba(155, 23, 23, 0.7);
+  border: 1px solid #ff6b78;
+  box-shadow: 0 0 24px 3px rgba(255, 68, 85, 0.53), 0 0 0 2px rgba(255, 68, 85, 0.8);
   -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   z-index: 20;

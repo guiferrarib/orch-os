@@ -29,6 +29,10 @@ const RecordingControl: React.FC<RecordingControlProps> = ({
             ? `${styles.recordButtonActive} animate-pulse` 
             : styles.recordButtonInactive
         }`}
+        style={{
+          border: microphoneState === MicrophoneState.Open ? '3px solid #ff4455' : '3px solid #00faff',
+          boxShadow: microphoneState === MicrophoneState.Open ? '0 0 32px 8px rgba(255, 68, 85, 0.33)' : '0 0 32px 8px rgba(0, 250, 255, 0.2)'
+        }}
         onClick={e => {
           // Create ripple effect - neural activation visualization
           const btn = e.currentTarget;
@@ -46,11 +50,11 @@ const RecordingControl: React.FC<RecordingControlProps> = ({
         {microphoneState === MicrophoneState.Open ? (
           // Ícone de STOP neural (quadrado com pulso)
           <svg width="38" height="38" viewBox="0 0 38 38" fill="none" className="orchos-icon-glow">
-            <ellipse cx="19" cy="19" rx="16" ry="12" stroke="#ff4dd2" strokeWidth="2.5"/>
-            <rect x="13" y="13" width="12" height="12" rx="3" fill="#ff4dd2"/>
-            <path d="M19 7 L19 3" stroke="#ff4dd2" strokeWidth="2" strokeLinecap="round"/>
-            <circle cx="19" cy="3" r="1.3" fill="#ff4dd2"/>
-            <path d="M17 19 Q19 23 21 19" stroke="#ff4dd2" strokeWidth="1.5" fill="none"/>
+            <ellipse cx="19" cy="19" rx="16" ry="12" stroke="#ff4455" strokeWidth="2.5"/>
+            <rect x="13" y="13" width="12" height="12" rx="3" fill="#ff4455"/>
+            <path d="M19 7 L19 3" stroke="#ff4455" strokeWidth="2" strokeLinecap="round"/>
+            <circle cx="19" cy="3" r="1.3" fill="#ff4455"/>
+            <path d="M17 19 Q19 23 21 19" stroke="#ff4455" strokeWidth="1.5" fill="none"/>
           </svg>
         ) : (
           // Ícone de microfone neural (START)
@@ -68,8 +72,8 @@ const RecordingControl: React.FC<RecordingControlProps> = ({
       {microphoneState === MicrophoneState.Open && (
         <div className={styles.recordingLabel}>
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="inline mr-1 align-text-bottom">
-            <ellipse cx="9" cy="9" rx="7" ry="5" stroke="#ff4dd2" strokeWidth="1.5"/>
-            <circle cx="9" cy="9" r="2" fill="#ff4dd2"/>
+            <ellipse cx="9" cy="9" rx="7" ry="5" stroke="#ff4455" strokeWidth="1.5"/>
+            <circle cx="9" cy="9" r="2" fill="#ff4455"/>
           </svg>
           Recording...
         </div>

@@ -1,0 +1,297 @@
+/* SPDX-License-Identifier: MIT OR Apache-2.0
+   Copyright (c) 2025 Guilherme Ferrari Brescia */
+
+/* Painel Principal de Diagnóstico - neural-simbólico Orch-OS refinado */
+.diagnosticsPanel {
+  background: rgba(11, 20, 38, 0.98);
+  border-radius: 12px;
+  box-shadow: 0 0 18px 2px #00faff22, inset 0 0 0 1px #00faff10;
+  padding: 12px 16px 8px 16px;
+  width: 100%;
+  max-width: 340px;
+  color: #eafcff;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border: 1px solid #00faff;
+  animation: panelFadeIn 0.3s ease-out, borderGlow 4s infinite alternate;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes borderGlow {
+  0% { border-color: #00faff80; }
+  50% { border-color: #00faff; }
+  100% { border-color: #00faff80; }
+}
+
+/* Efeito de borda brilhante */
+.diagnosticsPanel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 16px;
+  pointer-events: none;
+  z-index: -1;
+  box-shadow: 0 0 15px rgba(0, 250, 255, 0.5);
+}
+
+@keyframes panelFadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Título do Painel */
+.panelTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #00faff;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid;
+  border-image: linear-gradient(90deg, #00faff11, #00faff66, #00faff11) 1;
+  text-align: center;
+  font-family: 'Orbitron', 'Inter', -apple-system, sans-serif;
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 6px #00faff44;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.panelTitle::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 25%;
+  right: 25%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #00faff, transparent);
+  opacity: 0.6;
+  animation: glowLine 3s infinite alternate;
+}
+
+@keyframes glowLine {
+  0% { opacity: 0.3; }
+  100% { opacity: 0.8; }
+}
+
+/* Tabela de Status */
+.statusTable {
+  width: 100%;
+  border-spacing: 0 3px;
+  border-collapse: separate;
+  margin-bottom: 0.6rem;
+  table-layout: fixed;
+}
+
+.statusRow {
+  height: 24px;
+  position: relative;
+}
+
+.statusRow:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 8%;
+  right: 8%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #00faff22, transparent);
+}
+
+.statusCell {
+  padding: 0.15rem 0.1rem;
+  vertical-align: middle;
+}
+
+.statusCell:first-child {
+  text-align: left;
+  padding-right: 0.5rem;
+  width: 45%;
+}
+
+.statusCell:last-child {
+  text-align: right;
+  width: 55%;
+}
+
+/* Labels */
+.statusLabel {
+  display: inline-block;
+  white-space: nowrap;
+  text-align: left;
+  font-size: 0.88rem;
+  color: #00faff;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  opacity: 0.9;
+  transition: color 0.2s ease;
+}
+
+.statusLabel:hover {
+  color: #fff;
+  text-shadow: 0 0 4px rgba(0, 250, 255, 0.5);
+}
+
+/* Valores dos Estados */
+.statusValue {
+  display: inline-block;
+  font-size: 0.86rem;
+  font-weight: 700;
+  padding: 0.12rem 0.65rem;
+  border-radius: 4px;
+  min-width: 78px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  border-width: 1px;
+  border-style: solid;
+  background-color: rgba(11, 20, 38, 0.5);
+  font-family: 'Orbitron', 'Inter', -apple-system, sans-serif;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+  transform: translateY(0);
+  transition: transform 0.15s, filter 0.15s, background-color 0.15s;
+}
+
+/* Status CLOSED (amarelo neural) */
+.statusOpen, .statusReady, .statusUnavailable {
+  color: #ffe066;
+  border-color: #ffe066;
+  background-color: rgba(255, 224, 102, 0.06);
+  transition: all 0.3s;
+}
+
+.statusOpen:hover, .statusReady:hover, .statusUnavailable:hover {
+  background-color: rgba(255, 224, 102, 0.1);
+  box-shadow: 0 0 8px rgba(255, 224, 102, 0.3);
+}
+
+/* Status AVAILABLE (ciano neural) */
+.statusYes {
+  color: #00faff;
+  border-color: #00faff;
+  background-color: rgba(0, 250, 255, 0.06);
+  animation: statusPulse 2s infinite alternate;
+}
+
+@keyframes statusPulse {
+  0% {
+    box-shadow: 0 0 4px rgba(0, 250, 255, 0.2);
+    text-shadow: 0 0 0 transparent;
+  }
+  100% {
+    box-shadow: 0 0 6px rgba(0, 250, 255, 0.5);
+    text-shadow: 0 0 3px rgba(0, 250, 255, 0.3);
+  }
+}
+
+.statusYes:hover {
+  background-color: rgba(0, 250, 255, 0.1);
+  filter: brightness(1.1);
+}
+
+/* Status NO ✗ (vermelho neural) */
+.statusNo, .statusError {
+  color: #ff4455;
+  border-color: #ff4455;
+  background-color: rgba(255, 68, 85, 0.06);
+  transition: all 0.3s;
+}
+
+.statusNo:hover, .statusError:hover {
+  background-color: rgba(255, 68, 85, 0.1);
+  box-shadow: 0 0 8px rgba(255, 68, 85, 0.3);
+}
+
+/* Container de Botões */
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  margin-top: 0.8rem;
+  justify-content: flex-end;
+  padding: 0.1rem 0;
+}
+
+/* Botões de Ação neural-simbólico refinados */
+.button {
+  min-width: 124px;
+  max-width: 170px;
+  height: 36px;
+  padding: 0 1em;
+  border-radius: 10px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-align: center;
+  border: 1px solid transparent;
+  background: #101a2a;
+  color: #00faff;
+  box-shadow: 0 2px 8px 0 #00faff22;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.01em;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent 20%, rgba(255,255,255,0.1) 40%, transparent 60%);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+
+.button:hover::before {
+  transform: translateX(100%);
+}
+
+.button:active, .button:focus {
+  filter: brightness(1.06) drop-shadow(0 0 4px #00faff);
+  transform: translateY(-1px);
+}
+.disconnectButton {
+  border: 1px solid #ff4455;
+  color: #ff4455;
+  background: #17172a;
+}
+.disconnectButton:hover {
+  background: rgba(255, 68, 85, 0.15);
+  color: #fff;
+  border-color: #ff4455;
+  box-shadow: 0 2px 12px rgba(255, 68, 85, 0.3);
+}
+.disconnectButton:active {
+  background: rgba(255, 68, 85, 0.25);
+  transform: translateY(1px);
+}
+.reconnectButton {
+  border: 1px solid #00faff;
+  color: #fff;
+  background: linear-gradient(90deg, #00faff 0%, #1e90ff 100%);
+  min-width: 146px; /* Específico para garantir que caiba o texto 'Force Reconnect' */
+}
+.reconnectButton:hover {
+  filter: brightness(1.1) drop-shadow(0 0 8px #00faff60);
+  background: linear-gradient(90deg, #00e1f0 0%, #007cf0 100%);
+  color: #fff;
+  border-color: #00faff;
+}
+.reconnectButton:active {
+  background: linear-gradient(90deg, #00d1e0 0%, #006ce0 100%);
+  transform: translateY(1px);
+}
+

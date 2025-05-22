@@ -21,6 +21,22 @@
   margin-left: 0.25rem;
 }
 
+/* Container para o painel de diagnósticos */
+.diagnosticsPanelContainer {
+  position: absolute;
+  top: 100%;
+  right: -40px;
+  margin-top: 0.5rem;
+  z-index: 50;
+  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+  animation: fadeInPanel 0.2s ease-out;
+}
+
+@keyframes fadeInPanel {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 /* Neural Signal Icon Base */
 .neuralSignalIcon {
   overflow: visible; /* Allow glow effects to extend beyond SVG boundaries */

@@ -106,9 +106,6 @@ const TranscriptionPanel: React.FC<TranscriptionPanelProps> = ({ onClose, width 
       <div className="orchos-anim-bg" />
       <div className="orchos-quantum-bg" />
       <PanelHeader
-        connectionState={connectionState}
-        microphoneState={microphoneState}
-        hasActiveConnection={hasActiveConnection}
         onClose={() => {
           if (window?.electronAPI?.closeWindow) {
             window.electronAPI.closeWindow();
@@ -119,13 +116,17 @@ const TranscriptionPanel: React.FC<TranscriptionPanelProps> = ({ onClose, width 
         onToggleDiagnostics={() => setShowDetailedDiagnostics(!showDetailedDiagnostics)}
         onShowImportModal={() => setShowImportModal(true)}
         onMinimize={() => {
-          if (window?.electronAPI?.minimizeWindow) {
+          if (toggleExpand) {
+            toggleExpand();
+          } else if (window?.electronAPI?.minimizeWindow) {
             window.electronAPI.minimizeWindow();
-          } else if (window?.require) {
-            const { remote } = window.require('electron');
-            remote.getCurrentWindow().minimize();
           }
         }}
+        connectionState={connectionState}
+        microphoneState={microphoneState}
+        hasActiveConnection={hasActiveConnection}
+        onDisconnect={disconnectFromDeepgram}
+        onReconnect={connectToDeepgram}
       />
 
 

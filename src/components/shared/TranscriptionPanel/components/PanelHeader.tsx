@@ -5,6 +5,11 @@ import React from 'react';
 import WifiStatusConnection from './WifiStatusConnection';
 import { ConnectionState, MicrophoneState } from '../../../context';
 
+/**
+ * Interface cortical para o cabeçalho do painel de transcrição
+ * Representa os controles principais de interface com usuário
+ * seguindo a estética neural-simbólica do Orch-OS
+ */
 interface PanelHeaderProps {
   onClose: () => void;
   onToggleDiagnostics: () => void;
@@ -13,6 +18,8 @@ interface PanelHeaderProps {
   connectionState: ConnectionState;
   microphoneState: MicrophoneState;
   hasActiveConnection?: () => boolean;
+  onDisconnect?: () => void;
+  onReconnect?: () => void;
 }
 
 const PanelHeader: React.FC<PanelHeaderProps> = ({
@@ -22,7 +29,9 @@ const PanelHeader: React.FC<PanelHeaderProps> = ({
   onMinimize,
   connectionState,
   microphoneState,
-  hasActiveConnection = () => false
+  hasActiveConnection = () => false,
+  onDisconnect,
+  onReconnect
 }) => {
   return (
     <div className="flex justify-between items-center mb-4">
@@ -54,6 +63,8 @@ const PanelHeader: React.FC<PanelHeaderProps> = ({
           onStatusClick={onToggleDiagnostics}
           showDetailedText={false}
           className="mr-1"
+          onDisconnect={onDisconnect}
+          onReconnect={onReconnect}
         />
         {onMinimize && (
           <button

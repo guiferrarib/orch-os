@@ -116,10 +116,13 @@ const TranscriptionPanel: React.FC<TranscriptionPanelProps> = ({ onClose, width 
         onToggleDiagnostics={() => setShowDetailedDiagnostics(!showDetailedDiagnostics)}
         onShowImportModal={() => setShowImportModal(true)}
         onMinimize={() => {
-          if (toggleExpand) {
-            toggleExpand();
-          } else if (window?.electronAPI?.minimizeWindow) {
+          // Verificar se estamos em contexto Electron e usar a API nativa para minimizar
+          if (window?.electronAPI?.minimizeWindow) {
             window.electronAPI.minimizeWindow();
+          } 
+          // Caso contrário, usar o toggleExpand como fallback
+          else if (toggleExpand) {
+            toggleExpand();
           }
         }}
         connectionState={connectionState}

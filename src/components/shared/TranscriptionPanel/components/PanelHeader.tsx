@@ -29,11 +29,15 @@ const PanelHeader: React.FC<PanelHeaderProps> = ({
       </h3>
       <div className="flex items-center space-x-3">
         <button
-          title="Import ChatGPT Conversations"
+          title="Import Neural Data"
           onClick={onShowImportModal}
-          className="text-white/70 hover:text-white bg-blue-700 px-2 py-1.5 rounded-md font-medium"
+          className="flex items-center gap-2 px-4 py-1.5 mt-2 mr-4 rounded-full font-bold text-base bg-gradient-to-r from-cyan-400 via-blue-700 to-purple-600 shadow-[0_0_24px_4px_rgba(0,240,255,0.25)] hover:shadow-cyan-400/80 hover:scale-105 transition-all duration-200 ring-2 ring-cyan-400/30 backdrop-blur text-white focus:outline-none focus:ring-4 focus:ring-cyan-400/60"
         >
-          Import ChatGPT Conversations
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <circle cx="10" cy="10" r="8" stroke="#00F0FF" strokeWidth="1.5" />
+            <path d="M10 6v5m0 0l2.5-2.5M10 11l-2.5-2.5" stroke="#8F00FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          Import Neural Data
         </button>
         <button
           title="Toggle Diagnostics"

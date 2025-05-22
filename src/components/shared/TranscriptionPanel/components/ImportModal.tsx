@@ -27,7 +27,7 @@ const ImportModal: React.FC<ImportModalProps> = ({
   if (!show) return null;
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-      <div className="bg-gray-900 rounded-lg shadow-lg p-8 w-full max-w-md relative">
+      <div className="bg-gray-900/90 rounded-2xl shadow-2xl p-8 w-full max-w-md relative backdrop-blur-lg ring-2 ring-cyan-400/10">
         <button
           className="orchos-btn-circle absolute top-2 right-2"
           onClick={handleCloseImportModal}
@@ -37,78 +37,91 @@ const ImportModal: React.FC<ImportModalProps> = ({
             <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
           </svg>
         </button>
-        <h2 className="text-lg font-bold mb-4 text-white">Import ChatGPT Conversations</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center tracking-wide bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent drop-shadow-[0_0_12px_rgba(0,240,255,0.5)]" style={{fontFamily:'Orbitron, Inter, sans-serif'}}>Import Neural Data</h2>
         <input
           data-testid="import-user-name"
           type="text"
-          className="mb-2 w-full text-white bg-gray-800 rounded p-2"
+          className="mb-4 w-full text-white bg-black/30 border-2 border-cyan-400/40 rounded-full p-3 focus:outline-none focus:ring-2 focus:ring-cyan-400/60 placeholder:text-cyan-200/60 text-lg shadow-inner backdrop-blur"
           placeholder="Main user name"
           disabled={isImporting}
           value={importUserName || ''}
           onChange={e => setImportUserName(e.target.value)}
         />
-        <input
-          data-testid="import-user-input"
-          type="file"
-          accept="application/json"
-          onChange={handleFileChange}
-          className="mb-4 w-full text-white bg-gray-800 rounded p-2"
-          disabled={isImporting}
-          title="Select the JSON file exported from ChatGPT"
-          placeholder="Select the JSON file"
-        />
-        <div className="mb-4">
-          <label className="text-white/80 mr-4">Import Mode:</label>
-          <label className="mr-2">
+        <label className="block mb-6">
+          <span className="block text-cyan-200/80 mb-2 font-medium">Select file</span>
+          <div className="flex items-center gap-3">
             <input
-              type="radio"
-              name="importMode"
-              value="overwrite"
-              checked={importMode === 'overwrite'}
-              onChange={() => setImportMode('overwrite')}
+              data-testid="import-user-input"
+              type="file"
+              accept="application/json"
+              onChange={handleFileChange}
+              className="hidden"
+              id="orchos-upload-neural"
               disabled={isImporting}
-            /> Overwrite all
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="importMode"
-              value="increment"
-              checked={importMode === 'increment'}
-              onChange={() => setImportMode('increment')}
-              disabled={isImporting}
-            /> Increment (add only new)
-          </label>
+            />
+            <label htmlFor="orchos-upload-neural" className="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500 via-blue-700 to-purple-600 text-white font-semibold shadow-lg cursor-pointer hover:scale-105 transition-all duration-150">
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#00F0FF" strokeWidth="1.5" /><path d="M10 6v5m0 0l2.5-2.5M10 11l-2.5-2.5" stroke="#8F00FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              {importFile ? importFile.name : 'Choose file'}
+            </label>
+          </div>
+        </label>
+        <div className="mb-6 px-4 py-3 bg-black/30 rounded-xl flex flex-col items-center gap-2 ring-1 ring-cyan-400/10">
+          <span className="text-cyan-200/90 font-medium mb-1">Import Mode:</span>
+          <div className="flex gap-4">
+            <label className="flex items-center gap-2 cursor-pointer text-white/90 hover:text-cyan-300 transition-all">
+              <input
+                type="radio"
+                name="importMode"
+                value="overwrite"
+                checked={importMode === 'overwrite'}
+                onChange={() => setImportMode('overwrite')}
+                disabled={isImporting}
+                className="accent-cyan-400 w-4 h-4"
+              />
+              <span>Overwrite all</span>
+            </label>
+            <label className="flex items-center gap-2 cursor-pointer text-white/90 hover:text-cyan-300 transition-all">
+              <input
+                type="radio"
+                name="importMode"
+                value="increment"
+                checked={importMode === 'increment'}
+                onChange={() => setImportMode('increment')}
+                disabled={isImporting}
+                className="accent-purple-400 w-4 h-4"
+              />
+              <span>Increment <span className="text-xs text-cyan-200/60">(add only new)</span></span>
+            </label>
+          </div>
         </div>
         <button
-          className="orchos-btn-blue w-full mb-4"
+          type="button"
+          className="flex items-center gap-2 justify-center w-full py-3 mt-2 rounded-full font-bold text-lg bg-gradient-to-r from-cyan-400 via-blue-700 to-purple-600 shadow-[0_0_18px_2px_rgba(0,240,255,0.18)] hover:shadow-cyan-400/70 hover:scale-105 transition-all duration-200 ring-2 ring-cyan-400/20 backdrop-blur text-white focus:outline-none focus:ring-4 focus:ring-cyan-400/60 disabled:opacity-60 disabled:cursor-not-allowed mb-4"
           onClick={() => {
-            console.log('[TranscriptionPanel] Button of import clicked. importMode:', importMode);
             handleStartImport(importUserName);
           }}
           disabled={!importFile || isImporting}
         >
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="#00F0FF" strokeWidth="1.5" /><path d="M10 6v5m0 0l2.5-2.5M10 11l-2.5-2.5" stroke="#8F00FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
           {isImporting ? 'Importing...' : 'Start Import'}
         </button>
         {isImporting && (
-          <div className="w-full mb-4 relative">
-            <div className="w-full bg-gray-700 rounded h-6 overflow-hidden relative">
-              {/* Background progress bar */}
+          <div className="w-full flex flex-col items-center mb-6">
+            <div className="relative w-full h-9 rounded-full bg-gradient-to-r from-cyan-900/40 via-blue-900/30 to-purple-900/40 shadow-inner overflow-hidden mt-2 mb-3 ring-1 ring-cyan-400/10">
               <div
-                className={`${styles.progressBar} ${styles.progressBarWidth}`}
-                data-progress={importProgress}
-              ></div>
-              {/* Centered percentage text (fixed position) */}
-              <div className="absolute inset-0 flex items-center justify-center text-white text-sm font-medium z-20">
-                {importProgress}%
+                className="absolute top-0 left-0 h-full bg-gradient-to-r from-cyan-400 via-blue-700 to-purple-600 shadow-[0_0_18px_2px_rgba(0,240,255,0.18)] transition-all duration-300"
+                style={{ width: `${importProgress}%`, minWidth: importProgress > 0 ? '2.5rem' : 0, borderRadius: '9999px' }}
+              >
               </div>
+              <div className="absolute top-0 left-0 h-full w-full pointer-events-none"></div>
             </div>
+            <span className="text-cyan-300 text-sm font-semibold mt-3 drop-shadow">{importProgress}%</span>
           </div>
         )}
         {isImporting && (
-          <div className="mb-2 text-white/80 flex items-center">
-            <span className="mr-2">Current stage:</span>
-            <span className="font-semibold">
+          <div className="mb-2 flex items-center justify-center text-base">
+            <span className="mr-2 text-white/70 font-medium">Current stage:</span>
+            <span className="font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent drop-shadow-[0_0_8px_rgba(0,240,255,0.3)] animate-pulse">
               {(() => {
                 switch (importStage) {
                   case 'parsing': return 'Reading messages';

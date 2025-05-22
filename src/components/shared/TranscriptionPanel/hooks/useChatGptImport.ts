@@ -42,14 +42,35 @@ export const useChatGptImport = (
       const fileBuffer = await importFile.arrayBuffer();
       
       type ProgressData = { processed: number; total: number; percentage?: number; stage?: string };
+
+      // Vamos usar a solução original com uma pequena modificação
+      // para evitar pulos bruscos
+      
+      // Armazenar o último percentual para evitar regressão
+      let lastPercent = 0;
+      
       const result = await window.electronAPI.importChatHistory({
         fileBuffer,
         mode: importMode,
         user: userName,
         onProgress: (data: ProgressData) => {
-          const percent = data.percentage ?? Math.round((data.processed / Math.max(1, data.total)) * 100);
+          // Usar o percentual enviado ou calcular
+          let percent = data.percentage !== undefined 
+            ? data.percentage 
+            : Math.round((data.processed / Math.max(1, data.total)) * 100);
+          
+          // Garantir que o progresso nunca regride
+          if (percent < lastPercent && lastPercent < 95) {
+            percent = lastPercent;
+          } else {
+            lastPercent = percent;
+          }
+          
+          // Atualizar o estado
           setImportProgress(percent);
           if (data.stage) setImportStage(data.stage);
+          
+          // Atualizar o título e log
           document.title = `Importing... ${percent}%`;
           console.log(`[RENDERER] Progress: ${percent}% (${data.processed}/${data.total}) | Stage: ${data.stage || ''}`);
         },

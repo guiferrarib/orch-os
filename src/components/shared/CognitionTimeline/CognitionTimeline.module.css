@@ -1,0 +1,163 @@
+/* SPDX-License-Identifier: MIT OR Apache-2.0 */
+/* Copyright (c) 2025 Guilherme Ferrari Brescia */
+
+/* Animations for cognition timeline component */
+.fadeIn {
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.slideIn {
+  animation: slideIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+/* Modal padding */
+.modalPadding {
+  padding: 2vh 1rem;
+}
+
+/* Modal body content */
+.modalBody {
+  padding: 1.5rem;
+  overflow-y: auto;
+  max-height: calc(90vh - 160px);
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(99, 102, 241, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+  }
+}
+
+.eventCard {
+  transition: all 0.2s ease;
+}
+
+.eventCard:hover {
+  transform: translateY(-1px);
+}
+
+/* Neural glow effects for different event types */
+.neuralGlow {
+  position: relative;
+  overflow: hidden;
+}
+
+.neuralGlow::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(99, 102, 241, 0.15) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.5s;
+  pointer-events: none;
+}
+
+.neuralGlow:hover::after {
+  opacity: 1;
+}
+
+/* Modal backdrop animation */
+.modalBackdrop {
+  -webkit-backdrop-filter: blur(0px);
+  backdrop-filter: blur(0px);
+  background-color: rgba(0, 0, 0, 0);
+  transition: -webkit-backdrop-filter 0.3s ease, backdrop-filter 0.3s ease, background-color 0.3s ease;
+}
+
+.modalBackdropActive {
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Modal layout styles */
+.modalWrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 2vh 1rem;
+  background-color: rgba(0, 0, 0, 0.7);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  overflow-y: auto;
+}
+
+.modalContent {
+  position: relative;
+  background-color: #1f2937;
+  border-radius: 0.5rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  max-width: 48rem;
+  width: 100%;
+  max-height: 96vh;
+  display: flex;
+  flex-direction: column;
+  margin: 2vh 0;
+}
+
+/* Event type indicator dot animation */
+.eventIndicator {
+  position: relative;
+}
+
+.eventIndicator::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: currentColor;
+  box-shadow: 0 0 0 rgba(255, 255, 255, 0.7);
+  animation: indicatorPulse 2s infinite;
+}
+
+@keyframes indicatorPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  }
+}

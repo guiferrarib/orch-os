@@ -2,32 +2,35 @@
 // Copyright (c) 2025 Guilherme Ferrari Brescia
 
 import React from 'react';
-import { ConnectionState, MicrophoneState } from '../../../context';
-import DiagnosticsPanel from './DiagnosticsPanel';
+import { MicrophoneState } from '../../../context';
+import styles from './RecordingControl.module.css';
 
+/**
+ * Neural activation interface for audio recording control
+ */
 interface RecordingControlProps {
-  connectionState: ConnectionState;
   microphoneState: MicrophoneState;
   toggleRecording: () => Promise<void>;
 }
 
+/**
+ * Recording control component - Neural activation interface
+ * Symbolic intent: Neural impulse control for audio signal capture
+ */
 const RecordingControl: React.FC<RecordingControlProps> = ({
-  connectionState,
   microphoneState,
   toggleRecording
 }) => {
   return (
-    <div className="orchos-recording-fab-container w-full flex flex-col items-center justify-center relative" >
-      <DiagnosticsPanel
-        connectionState={connectionState}
-        microphoneState={microphoneState}
-      />
+    <div className={styles.recordingContainer}>
       <button
-        className={
-          `orchos-btn-circular orchos-btn-fab orchos-btn-glass orchos-btn-ripple orchos-btn-rel flex items-center justify-center shadow-lg transition-all duration-200` +
-          (microphoneState === MicrophoneState.Open ? " orchos-btn-fab-active animate-pulse" : " orchos-btn-fab-inactive")
-        }
+        className={`orchos-btn-circular orchos-btn-fab orchos-btn-glass orchos-btn-ripple orchos-btn-rel flex items-center justify-center shadow-lg transition-all duration-200 ${styles.recordButton} ${
+          microphoneState === MicrophoneState.Open 
+            ? `${styles.recordButtonActive} animate-pulse` 
+            : styles.recordButtonInactive
+        }`}
         onClick={e => {
+          // Create ripple effect - neural activation visualization
           const btn = e.currentTarget;
           const ripple = document.createElement('span');
           ripple.className = 'ripple orchos-ripple-electric';
@@ -39,7 +42,6 @@ const RecordingControl: React.FC<RecordingControlProps> = ({
         }}
         title={microphoneState === MicrophoneState.Open ? 'Stop Recording' : 'Start Recording'}
         aria-label={microphoneState === MicrophoneState.Open ? 'Stop Recording' : 'Start Recording'}
-        style={{ width: 72, height: 72, minWidth: 72, minHeight: 72, border: microphoneState === MicrophoneState.Open ? '3px solid #ff4dd2' : '3px solid #00faff', background: 'rgba(24,24,40,0.82)', boxShadow: microphoneState === MicrophoneState.Open ? '0 0 32px 8px #ff4dd255' : '0 0 32px 8px #00faff33' }}
       >
         {microphoneState === MicrophoneState.Open ? (
           // Ícone de STOP neural (quadrado com pulso)
@@ -62,11 +64,13 @@ const RecordingControl: React.FC<RecordingControlProps> = ({
           </svg>
         )}
       </button>
-      {/* Label de status acima do botão */}
+      {/* Neural state indicator - active recording status */}
       {microphoneState === MicrophoneState.Open && (
-        <div className="orchos-recording-label orchos-recording-label-fab text-xs font-bold animate-pulse select-none relative mt-4 px-4 py-1.5 rounded-full bg-pink-900/70 border border-pink-400 shadow-2xl drop-shadow-[0_0_16px_#ff4dd2cc] backdrop-blur-md z-20"
-          style={{letterSpacing: '0.02em', minWidth: 110, boxShadow: '0 0 24px 3px #ff4dd288, 0 0 0 2px #ff4dd2cc'}}>
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="inline mr-1 align-text-bottom"><ellipse cx="9" cy="9" rx="7" ry="5" stroke="#ff4dd2" strokeWidth="1.5"/><circle cx="9" cy="9" r="2" fill="#ff4dd2"/></svg>
+        <div className={styles.recordingLabel}>
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="inline mr-1 align-text-bottom">
+            <ellipse cx="9" cy="9" rx="7" ry="5" stroke="#ff4dd2" strokeWidth="1.5"/>
+            <circle cx="9" cy="9" r="2" fill="#ff4dd2"/>
+          </svg>
           Recording...
         </div>
       )}

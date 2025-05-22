@@ -106,6 +106,9 @@ const TranscriptionPanel: React.FC<TranscriptionPanelProps> = ({ onClose, width 
       <div className="orchos-anim-bg" />
       <div className="orchos-quantum-bg" />
       <PanelHeader
+        connectionState={connectionState}
+        microphoneState={microphoneState}
+        hasActiveConnection={hasActiveConnection}
         onClose={() => {
           if (window?.electronAPI?.closeWindow) {
             window.electronAPI.closeWindow();
@@ -276,7 +279,6 @@ const TranscriptionPanel: React.FC<TranscriptionPanelProps> = ({ onClose, width 
            {/* Botão de gravação centralizado na base do painel */}
            <div className="flex w-full justify-center mt-8 mb-2">
              <RecordingControl
-               connectionState={connectionState}
                microphoneState={microphoneState}
                toggleRecording={toggleRecording}
              />

@@ -1,0 +1,204 @@
+/* SPDX-License-Identifier: MIT OR Apache-2.0
+   Copyright (c) 2025 Guilherme Ferrari Brescia */
+
+/* Base Styles - Neural Signal Connectivity Interface */
+.wifiStatusConnection {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+}
+
+/* Neural Icon Container */
+.wifiIconContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  width: 28px;
+  margin-right: 0.5rem;
+  margin-left: 0.25rem;
+}
+
+/* Neural Signal Icon Base */
+.neuralSignalIcon {
+  overflow: visible; /* Allow glow effects to extend beyond SVG boundaries */
+  transform: scale(1.05); /* Slightly larger to enhance visibility */
+}
+
+/* Neural Field Animation */
+@keyframes neuralFieldPulse {
+  0% {
+    opacity: 0.05;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.15;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 0.05;
+    transform: scale(1);
+  }
+}
+
+.neuralField {
+  transform-origin: center;
+}
+
+.neuralFieldActive {
+  animation: neuralFieldPulse 3s infinite ease-in-out;
+}
+
+/* Neural Connection States - Color Definitions */
+:global(.wifi-status-fully-connected) .neuralSignalIcon {
+  color: #00faff; /* Cyan - Neural connection fully active */
+  filter: drop-shadow(0 0 5px rgba(0, 250, 255, 0.9)) drop-shadow(0 0 10px rgba(0, 250, 255, 0.5));
+}
+
+:global(.wifi-status-partially-connected) .neuralSignalIcon {
+  color: #00e1f0; /* Ciano mais vibrante - Neural connection partially active */
+  filter: drop-shadow(0 0 4px rgba(0, 225, 240, 0.7)) drop-shadow(0 0 8px rgba(0, 225, 240, 0.4));
+}
+
+:global(.wifi-status-connecting) .neuralSignalIcon {
+  color: #ffe066; /* Yellow - Neural connection forming */
+  filter: drop-shadow(0 0 4px rgba(255, 224, 102, 0.7)) drop-shadow(0 0 8px rgba(255, 224, 102, 0.4));
+}
+
+:global(.wifi-status-error) .neuralSignalIcon {
+  color: #ff4455; /* Red - Neural connection disrupted */
+  filter: drop-shadow(0 0 4px rgba(255, 68, 85, 0.7)) drop-shadow(0 0 8px rgba(255, 68, 85, 0.4));
+}
+
+:global(.wifi-status-disconnected) .neuralSignalIcon,
+:global(.wifi-status-unknown) .neuralSignalIcon {
+  color: #aaaaaa; /* Cinza mais claro para melhor visibilidade quando desconectado */
+  filter: drop-shadow(0 0 3px rgba(170, 170, 170, 0.6)) drop-shadow(0 0 5px rgba(170, 170, 170, 0.3));
+}
+
+/* Neural Ring Animation */
+@keyframes neuralRingPulse {
+  0% {
+    stroke-opacity: 0.7;
+    stroke-width: 1.5;
+  }
+  50% {
+    stroke-opacity: 1;
+    stroke-width: 2;
+  }
+  100% {
+    stroke-opacity: 0.7;
+    stroke-width: 1.5;
+  }
+}
+
+.neuralRing {
+  transition: all 0.3s ease-in-out;
+  transform-origin: center center;
+}
+
+.neuralRingActive {
+  animation: neuralRingPulse 3s infinite ease-in-out;
+}
+
+/* Neural Wave Animation */
+@keyframes neuralWavePulse {
+  0% {
+    stroke-opacity: 0.7;
+    transform: translateY(0);
+  }
+  50% {
+    stroke-opacity: 1;
+    transform: translateY(-0.5px);
+  }
+  100% {
+    stroke-opacity: 0.7;
+    transform: translateY(0);
+  }
+}
+
+.neuralWave {
+  stroke-opacity: 0.7;
+  transform-origin: center;
+}
+
+:global(.wifi-status-fully-connected) .neuralWave {
+  animation: neuralWavePulse 2.5s infinite ease-in-out;
+}
+
+/* Neural Core Animation */
+@keyframes neuralCorePulse {
+  0% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+}
+
+.neuralCore {
+  transform-origin: center;
+}
+
+.neuralCoreActive {
+  animation: neuralCorePulse 2s infinite ease-in-out;
+}
+
+/* Inner Core Animation */
+@keyframes neuralInnerCorePulse {
+  0% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+}
+
+.neuralInnerCore {
+  transform-origin: center;
+  animation: neuralInnerCorePulse 1.5s infinite ease-in-out;
+}
+
+/* Status Text Styling */
+.statusText {
+  margin-left: 0.25rem;
+  font-size: 0.75rem;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  letter-spacing: 0.02em;
+  transition: color 0.3s ease;
+}
+
+/* Status text styling */
+.statusText {
+  font-size: 0.75rem;
+}
+
+.statusConnected {
+  color: var(--color-green-400);
+}
+
+.statusConnecting {
+  color: var(--color-yellow-400);
+}
+
+.statusDisconnected {
+  color: var(--color-red-400);
+}
+
+.statusUnknown {
+  color: var(--color-gray-400);
+}

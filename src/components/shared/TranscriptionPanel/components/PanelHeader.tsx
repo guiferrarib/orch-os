@@ -2,19 +2,27 @@
 // Copyright (c) 2025 Guilherme Ferrari Brescia
 
 import React from 'react';
+import WifiStatusConnection from './WifiStatusConnection';
+import { ConnectionState, MicrophoneState } from '../../../context';
 
 interface PanelHeaderProps {
   onClose: () => void;
   onToggleDiagnostics: () => void;
   onShowImportModal: () => void;
   onMinimize?: () => void;
+  connectionState: ConnectionState;
+  microphoneState: MicrophoneState;
+  hasActiveConnection?: () => boolean;
 }
 
 const PanelHeader: React.FC<PanelHeaderProps> = ({
   onClose,
   onToggleDiagnostics,
   onShowImportModal,
-  onMinimize
+  onMinimize,
+  connectionState,
+  microphoneState,
+  hasActiveConnection = () => false
 }) => {
   return (
     <div className="flex justify-between items-center mb-4">
@@ -39,15 +47,14 @@ const PanelHeader: React.FC<PanelHeaderProps> = ({
           </svg>
           Import Neural Data
         </button>
-        <button
-          title="Toggle Diagnostics"
-          onClick={onToggleDiagnostics}
-          className="text-white/70 hover:text-white bg-gray-700 p-1.5 rounded-md"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-          </svg>
-        </button>
+        <WifiStatusConnection 
+          connectionState={connectionState}
+          microphoneState={microphoneState}
+          signalStrength={hasActiveConnection() ? 'strong' : 'none'}
+          onStatusClick={onToggleDiagnostics}
+          showDetailedText={false}
+          className="mr-1"
+        />
         {onMinimize && (
           <button
             title="Minimize"

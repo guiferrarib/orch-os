@@ -1,3 +1,23 @@
+/* Neural text inputs with rounded borders */
+textarea.orchos-textarea-neural,
+.orchos-textarea-neural {
+  border-radius: 1.1rem !important;
+  background: rgba(10, 20, 40, 0.88);
+  border: 2px solid #00faff33;
+  color: #e3f6ff;
+  font-size: 1.08rem;
+  padding: 1.1rem 1.2rem;
+  transition: border-color 0.18s, box-shadow 0.18s;
+  box-shadow: 0 2px 12px 0 #00faff22;
+  outline: none;
+  resize: none;
+}
+
+.orchos-textarea-neural:focus {
+  border-color: #00faff;
+  box-shadow: 0 0 0 2px #00faff44;
+}
+
 .transcription-panel-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -17,7 +37,31 @@
   }
 }
 
-.orchos-btn-circular, .orchos-btn-fab, .orchos-btn-glass, .orchos-btn-ripple {
+.orchos-settings-popup {
+  background: linear-gradient(135deg, rgba(0,255,255,0.09) 0%, rgba(80,0,255,0.06) 80%, transparent 100%), rgba(18,24,40,0.92);
+  -webkit-backdrop-filter: blur(22px) saturate(1.2);
+  backdrop-filter: blur(22px) saturate(1.2);
+  border: 1.5px solid #00faff;
+  box-shadow: 0 8px 48px 6px rgba(0,255,255,0.22), 0 0 0 2px rgba(0,255,255,0.14) inset;
+  border-radius: 1.3rem;
+  min-width: 270px;
+  padding: 2.2rem 2.2rem 2rem 2.2rem;
+  transition: all 0.18s cubic-bezier(.4,1.4,.5,1);
+}
+
+.orchos-btn-toggle {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.chevron-icon-center {
+  display: inline-flex;
+  align-items: center;
+}
+
+.orchos-btn-circular, .orchos-btn-fab, .orchos-btn-glass {
   border-radius: 999px !important;
 }
 
@@ -52,4 +96,65 @@
   background: rgba(0, 245, 255, 0.12);
   box-shadow: 0 0 16px 4px #00faff77;
   border-color: #00faff;
+}
+
+.transcription-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  background: none;
+}
+
+.transcription-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.22em;
+  height: 1em;
+  line-height: 1;
+
+  margin-right: 0.4rem;
+  position: relative;
+  top: -1px;
+}
+
+.transcription-card-icon svg {
+  height: 1em;
+  width: 1em;
+  vertical-align: middle;
+  display: block;
+}
+
+
+.transcription-card-chevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3em;
+  height: 1.4em;
+  width: 1.4em;
+  position: relative;
+  top: -1px;
+}
+.transcription-card-chevron svg {
+  height: 1em;
+  width: 1em;
+  display: block;
+}
+
+.transcription-card-title {
+  font-family: 'Orbitron', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif !important;
+  display: flex;
+  align-items: baseline;
+  flex: 1 1 auto;
+  font-weight: 600;
+  font-size: 1.15rem;
+  color: #fff;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: 0.2rem;
 }

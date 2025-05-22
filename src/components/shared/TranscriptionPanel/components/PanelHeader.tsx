@@ -18,7 +18,15 @@ const PanelHeader: React.FC<PanelHeaderProps> = ({
 }) => {
   return (
     <div className="flex justify-between items-center mb-4">
-      <h3 className="font-medium text-base">Orch-OS</h3>
+      <h3 className="font-bold text-xl tracking-wider flex items-center ml-2" style={{ fontFamily: 'Orbitron, Inter, sans-serif', background: 'linear-gradient(90deg, #00F0FF, #8F00FF)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', textShadow: '0 0 15px rgba(0,240,255,0.3)' }}>
+        <span className="mr-2" style={{ fontSize: '0.8em' }}>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="8" stroke="#00F0FF" strokeWidth="1.5" />
+            <circle cx="10" cy="10" r="3" fill="#8F00FF" />
+          </svg>
+        </span>
+        Orch-OS
+      </h3>
       <div className="flex items-center space-x-3">
         <button
           title="Import ChatGPT Conversations"

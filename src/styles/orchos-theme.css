@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap');
+
 :root {
   /* Cognição Quântica Theme */
   --orchos-bg: #0A0A23;
@@ -42,6 +44,7 @@ html, body, #root {
 
 
 .orchos-title {
+  font-family: 'Orbitron', 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif !important;
   color: var(--orchos-primary);
   font-weight: 700;
   letter-spacing: 0.02em;

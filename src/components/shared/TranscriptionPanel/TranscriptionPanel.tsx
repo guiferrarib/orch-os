@@ -127,54 +127,7 @@ const TranscriptionPanel: React.FC<TranscriptionPanelProps> = ({ onClose, width 
         }}
       />
 
-      {/* Settings button near import conversations */}
-      <div className="relative flex items-center justify-end mb-2">
-        <button
-          ref={settingsBtnRef}
-          className="orchos-btn-circle mr-2"
-          onClick={() => setShowSettings((v) => !v)}
-          aria-label="Settings"
-          title="Settings"
-        >
-          {/* Modern glassy gear icon with glowing effect */}
-          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" className="orchos-btn-icon orchos-icon-glow">
-            <circle cx="11" cy="11" r="10" fill="rgba(0,255,255,0.10)" stroke="#00faff" strokeWidth="1.5" />
-            <g filter="url(#glow)">
-              <path d="M16.24 13.12c.12-.41.19-.85.19-1.3s-.07-.89-.19-1.3l1.57-1.23a.5.5 0 00.12-.65l-1.5-2.6a.5.5 0 00-.61-.23l-1.85.74a5.06 5.06 0 00-1.12-.65l-.28-1.98A.5.5 0 0011 3.5h-3a.5.5 0 00-.5.42l-.28 1.98a5.06 5.06 0 00-1.12.65l-1.85-.74a.5.5 0 00-.61.23l-1.5 2.6a.5.5 0 00.12.65l1.57 1.23c-.12.41-.19.85-.19 1.3s.07.89.19 1.3l-1.57 1.23a.5.5 0 00-.12.65l1.5 2.6c.13.23.4.32.61.23l1.85-.74c.34.26.71.48 1.12.65l.28 1.98c.04.26.25.42.5.42h3c.25 0 .46-.16.5-.42l.28-1.98c.41-.17.78-.39 1.12-.65l1.85.74c.21.09.48 0 .61-.23l1.5-2.6a.5.5 0 00-.12-.65l-1.57-1.23zM11 14a3 3 0 110-6 3 3 0 010 6z" stroke="#00faff" strokeWidth="1.3" fill="none"/>
-              <circle cx="11" cy="11" r="2" fill="#00faff" fillOpacity="0.5"/>
-            </g>
-            <defs>
-              <filter id="glow" x="-2" y="-2" width="26" height="26" filterUnits="userSpaceOnUse">
-                <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
-                <feMerge>
-                  <feMergeNode in="coloredBlur"/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-              </filter>
-            </defs>
-          </svg>
-        </button>
-        {showSettings && (
-          <div className="absolute z-50 right-0 top-full mt-2 bg-white/90 rounded-lg shadow-xl p-4 backdrop-blur-md border border-gray-200 flex flex-col gap-2 min-w-[220px] orchos-min-width-220">
-            <div className="mb-2 border-b pb-2">
-              <h3 className="orchos-title">Settings</h3>
-            </div>
-            <LanguageSelector
-              language={language}
-              setLanguage={setLanguage}
-            />
-            <AudioControls
-              isMicrophoneOn={isMicrophoneOn}
-              setIsMicrophoneOn={setIsMicrophoneOn}
-              isSystemAudioOn={isSystemAudioOn}
-              setIsSystemAudioOn={setIsSystemAudioOn}
-              audioDevices={audioDevices}
-              selectedDevices={selectedDevices}
-              handleDeviceChange={handleDeviceChange}
-            />
-          </div>
-        )}
-      </div>
+
 
       {showDetailedDiagnostics && (
         <ConnectionDiagnostics
@@ -215,7 +168,73 @@ const TranscriptionPanel: React.FC<TranscriptionPanelProps> = ({ onClose, width 
             placeholder="Add situational context (e.g., 'I'm in a neural session' or 'Help me stay focused')"
           />
         </CollapsibleCard>
-        <CollapsibleCard title="Transcription" defaultOpen={true} type="transcription" icon={<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 10h16" stroke="#00faff" strokeWidth="2"/><path d="M6 6c2-2 6-2 8 0" stroke="#00faff" strokeWidth="2"/><path d="M6 14c2 2 6 2 8 0" stroke="#00faff" strokeWidth="2"/></svg>}>
+        <CollapsibleCard
+          title="Transcription"
+          defaultOpen={true}
+          type="transcription"
+          icon={<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 10h16" stroke="#00faff" strokeWidth="2"/><path d="M6 6c2-2 6-2 8 0" stroke="#00faff" strokeWidth="2"/><path d="M6 14c2 2 6 2 8 0" stroke="#00faff" strokeWidth="2"/></svg>}
+          headerActions={
+            <div className="relative">
+              <button
+                ref={settingsBtnRef}
+                className="orchos-btn-circle mr-2"
+                onClick={() => setShowSettings((v) => !v)}
+                aria-label="Settings"
+                title="Settings"
+                type="button"
+              >
+                {/* Modern glassy gear icon with glowing effect */}
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none" className="orchos-btn-icon orchos-icon-glow">
+  <circle cx="14" cy="14" r="12" fill="rgba(0,255,255,0.10)" stroke="#00faff" strokeWidth="2.2" />
+  <circle cx="14" cy="14" r="5.2" stroke="#00faff" strokeWidth="1.5" fill="rgba(0,255,255,0.14)" />
+  <g filter="url(#settings-glow)">
+    <g>
+      <line x1="14" y1="3.5" x2="14" y2="7.5" stroke="#00faff" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="14" y1="20.5" x2="14" y2="24.5" stroke="#00faff" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="3.5" y1="14" x2="7.5" y2="14" stroke="#00faff" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="20.5" y1="14" x2="24.5" y2="14" stroke="#00faff" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="7.8" y1="7.8" x2="10.5" y2="10.5" stroke="#00faff" strokeWidth="1.1" strokeLinecap="round" />
+      <line x1="17.5" y1="17.5" x2="20.2" y2="20.2" stroke="#00faff" strokeWidth="1.1" strokeLinecap="round" />
+      <line x1="17.5" y1="10.5" x2="20.2" y2="7.8" stroke="#00faff" strokeWidth="1.1" strokeLinecap="round" />
+      <line x1="7.8" y1="20.2" x2="10.5" y2="17.5" stroke="#00faff" strokeWidth="1.1" strokeLinecap="round" />
+    </g>
+    <circle cx="14" cy="14" r="2.8" fill="#00faff" fillOpacity="0.6" />
+  </g>
+  <defs>
+    <filter id="settings-glow" x="-2" y="-2" width="32" height="32" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+</svg>
+              </button>
+              {showSettings && (
+                <div className="absolute z-50 right-0 top-full mt-3 orchos-settings-popup flex flex-col gap-5 orchos-min-width-220">
+
+                  <div className="mb-2 border-b pb-2">
+                    <h3 className="orchos-title">Settings</h3>
+                  </div>
+                  <LanguageSelector
+                    language={language}
+                    setLanguage={setLanguage}
+                  />
+                  <AudioControls
+                    isMicrophoneOn={isMicrophoneOn}
+                    setIsMicrophoneOn={setIsMicrophoneOn}
+                    isSystemAudioOn={isSystemAudioOn}
+                    setIsSystemAudioOn={setIsSystemAudioOn}
+                    audioDevices={audioDevices}
+                    selectedDevices={selectedDevices}
+                    handleDeviceChange={handleDeviceChange}
+                  />
+                </div>
+              )}
+            </div>
+          }
+        >
           <TextEditor
             label=""
             value={texts.transcription}
@@ -290,6 +309,7 @@ const TranscriptionPanel: React.FC<TranscriptionPanelProps> = ({ onClose, width 
             toggleExpand={toggleExpand}
             isExpanded={isExpanded}
             useAutosize={true}
+            readOnly={true}
           />
         </CollapsibleCard>
       </div>

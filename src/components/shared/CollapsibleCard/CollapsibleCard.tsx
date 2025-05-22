@@ -14,6 +14,8 @@ export type CollapsibleCardProps = CollapsibleModuleProps & {
   type?: 'context' | 'transcription' | 'cognition' | 'ai';
   /** Optional icon (JSX.Element) to show in header */
   icon?: React.ReactNode;
+  /** Optional actions (e.g., buttons) to render in the header, right-aligned */
+  headerActions?: React.ReactNode;
 };
 
 /**
@@ -35,7 +37,7 @@ const ICONS: Record<string, React.ReactNode> = {
   )
 };
 
-const CollapsibleCard: React.FC<CollapsibleCardProps> = ({ title, defaultOpen = false, children, debugBorder, type, icon }) => {
+const CollapsibleCard: React.FC<CollapsibleCardProps> = ({ title, defaultOpen = false, children, debugBorder, type, icon, headerActions = undefined }) => {
   // Estado de expansão do módulo cortical
   const [open, setOpen] = useState(defaultOpen);
   
@@ -53,33 +55,38 @@ const CollapsibleCard: React.FC<CollapsibleCardProps> = ({ title, defaultOpen = 
       data-debugborder={debugBorder ? "true" : undefined}
       data-type={type}
     >
-      <button
-        type="button"
-        className="transcription-card-header flex items-center gap-2 rounded-[1.3rem] text-left focus:outline-none group"
-        onClick={handleToggle}
-        aria-expanded={open ? "true" : "false"}
-        aria-controls={contentId}
-        title={open ? `Collapse ${title}` : `Expand ${title}`}
-      >
-        <span
-          className={`chevron-icon transition-transform duration-200 ${open ? "rotate-90" : "rotate-0"}`}
-          aria-hidden="true"
-          style={{ display: "inline-flex", alignItems: "center" }}
+      <div className="transcription-card-header flex items-center gap-2 rounded-[1.3rem] text-left focus:outline-none group w-full justify-between">
+        <button
+          type="button"
+          className="orchos-btn-toggle"
+          title={open ? `Collapse ${title}` : `Expand ${title}`}
+          onClick={handleToggle}
+          aria-expanded={open ? "true" : "false"}
+          aria-controls={contentId}
         >
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path d="M7 8l3 3 3-3" stroke="#00faff" strokeWidth="2" fill="none"/>
-          </svg>
-        </span>
+          <span
+            className={`transcription-card-chevron chevron-icon transition-transform duration-200 ${open ? "rotate-90" : "rotate-0"} chevron-icon-center`}
+            aria-hidden="true"
+          >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M7 8l3 3 3-3" stroke="#00faff" strokeWidth="2" fill="none"/>
+            </svg>
+          </span>
+        </button>
         {type && ICONS[type] && (
-          <span className="transcription-card-icon ml-1" aria-hidden="true">
+          <span className="transcription-card-icon" aria-hidden="true">
             {ICONS[type]}
           </span>
         )}
-        <span className="transcription-card-title ml-2 text-lg font-bold tracking-wide">
+        <span className="transcription-card-title flex-1 text-lg font-bold tracking-wide truncate">
           {title}
         </span>
-        {/* Error/warning icon can be inserted here if needed */}
-      </button>
+        {headerActions && (
+          <div className="transcription-card-header-actions flex items-center ml-auto">
+            {headerActions}
+          </div>
+        )}
+      </div>
       {/* Conteúdo do card colapsável */}
       <div 
         className={`transcription-card-content${open ? " open" : ""}`} 

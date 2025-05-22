@@ -45,7 +45,6 @@ export const useTranscriptionManager = () => {
   const [showDetailedDiagnostics, setShowDetailedDiagnostics] = useState(false);
   const [connectionDetails, setConnectionDetails] = useState<Record<string, unknown> | null>(null);
   const [temporaryContext, setTemporaryContext] = useState<string>("");
-  const [fontSize, setFontSize] = useState<string>("text-sm");
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const temporaryContextRef = useRef<string>("");
   const transcriptionRef = useRef<HTMLTextAreaElement>(null);
@@ -192,13 +191,6 @@ export const useTranscriptionManager = () => {
   const clearTranscription = () => setTexts((prev) => ({ ...prev, transcription: "" }));
   const clearAiResponse = () => setTexts((prev) => ({ ...prev, aiResponse: "" }));
 
-  const toggleFontSize = () => {
-    const sizes = ["text-sm", "text-base", "text-lg"];
-    const currentIndex = sizes.indexOf(fontSize);
-    const nextIndex = (currentIndex + 1) % sizes.length;
-    setFontSize(sizes[nextIndex]);
-  };
-
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
@@ -212,9 +204,7 @@ export const useTranscriptionManager = () => {
     handleSendPrompt,
     clearTranscription,
     clearAiResponse,
-    toggleFontSize,
     toggleExpand,
-    fontSize,
     isExpanded,
     temporaryContext,
     setTemporaryContext,

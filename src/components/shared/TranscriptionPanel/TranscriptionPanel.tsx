@@ -46,9 +46,7 @@ const TranscriptionPanel: React.FC<TranscriptionPanelProps> = ({ onClose, width 
     handleSendPrompt,
     clearTranscription,
     clearAiResponse,
-    toggleFontSize,
     toggleExpand,
-    fontSize,
     isExpanded,
     temporaryContext,
     setTemporaryContext,
@@ -162,8 +160,6 @@ const TranscriptionPanel: React.FC<TranscriptionPanelProps> = ({ onClose, width 
             value={temporaryContext}
             onChange={setTemporaryContext}
             onClear={() => setTemporaryContext("")}
-            fontSize={fontSize}
-            toggleFontSize={toggleFontSize}
             rows={3}
             placeholder="Add situational context (e.g., 'I'm in a neural session' or 'Help me stay focused')"
           />
@@ -242,8 +238,6 @@ const TranscriptionPanel: React.FC<TranscriptionPanelProps> = ({ onClose, width 
               setTexts(prev => ({ ...prev, transcription: value }));
             }}
             onClear={clearTranscription}
-            fontSize={fontSize}
-            toggleFontSize={toggleFontSize}
             forwardedRef={transcriptionRef as React.RefObject<HTMLTextAreaElement>}
             readOnly={true}
           />
@@ -304,8 +298,6 @@ const TranscriptionPanel: React.FC<TranscriptionPanelProps> = ({ onClose, width 
               setTexts(prev => ({ ...prev, aiResponse: value }));
             }}
             onClear={clearAiResponse}
-            fontSize={fontSize}
-            toggleFontSize={toggleFontSize}
             toggleExpand={toggleExpand}
             isExpanded={isExpanded}
             useAutosize={true}

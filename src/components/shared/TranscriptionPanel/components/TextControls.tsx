@@ -7,30 +7,23 @@ import styles from './TextControls.module.css';
 interface TextControlsProps {
   label: string;
   onClear: () => void;
-  onFontSize?: () => void;
   onExpand?: () => void;
   isExpanded?: boolean;
 }
 
-const TextControls: React.FC<TextControlsProps> = ({ label, onClear, onFontSize, onExpand, isExpanded }) => (
+const TextControls: React.FC<TextControlsProps> = ({ label, onClear, onExpand, isExpanded }) => (
   <div className="flex justify-between items-center py-2 mb-2">
     <h4 className="text-sm font-medium">{label}</h4>
     <div className="flex gap-3">
-      {onFontSize && (
-        <button
-          className={`${styles['orchos-btn-glass']} ${styles['orchos-btn-glow']} ${styles['orchos-btn-action']} px-2.5 py-1.5 transition-all duration-150 flex items-center justify-center group`}
-          onClick={onFontSize}
-          title="Increase font size"
-          aria-label="Increase font size"
-        >
-          <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><ellipse cx="8.5" cy="8.5" rx="7.5" ry="5.5" stroke="#00faff" strokeWidth="1.3"/><path d="M5 10h7" stroke="#00faff" strokeWidth="1.2"/><circle cx="8.5" cy="8.5" r="2.1" fill="#00faff"/></svg>
-          <span className="hidden md:inline ml-1 align-middle">A+</span>
-        </button>
-      )}
+
       {onExpand && (
         <button
           className={`${styles['orchos-btn-glass']} ${styles['orchos-btn-glow']} ${styles['orchos-btn-action']} px-2.5 py-1.5 transition-all duration-150 flex items-center justify-center group`}
-          onClick={onExpand}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onExpand();
+          }}
           title={isExpanded ? "Collapse" : "Expand"}
           aria-label={isExpanded ? "Collapse" : "Expand"}
         >

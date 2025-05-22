@@ -37,7 +37,7 @@ export interface ConnectionDiagnosticsProps {
 export interface TextControlsProps {
   label: string;
   onClear: () => void;
-  onFontSize: () => void;
+
   onExpand?: () => void;
 }
 

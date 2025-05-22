@@ -4,6 +4,7 @@
 import React from 'react';
 import CognitionTimeline from '../../CognitionTimeline/CognitionTimeline';
 import { CognitionEvent } from '../../../context/deepgram/types/CognitionEvent';
+import styles from '../components/TextControls.module.css';
 
 interface CognitionLogSectionProps {
   cognitionEvents: CognitionEvent[];
@@ -19,39 +20,33 @@ const CognitionLogSection: React.FC<CognitionLogSectionProps> = ({
   clearEvents
 }) => {
   return (
-    <div className="mb-4">
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-          </svg>
-          <h3 className="text-white font-semibold tracking-wide">Cognition Log</h3>
-        </div>
-        <div className="flex flex-wrap gap-2 justify-end">
-          {exporters.map(exporter => (
-            <button
-              key={exporter.label}
-              className="px-3 py-1 bg-indigo-700/80 hover:bg-indigo-700 text-white text-sm rounded-md font-medium transition-colors shadow-sm flex items-center"
-              onClick={() => exportEvents(exporter.label)}
-              title={`Export as ${exporter.label}`}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-              </svg>
-              {exporter.label}
-            </button>
-          ))}
-          <button
-            className="px-3 py-1 bg-red-700/80 hover:bg-red-700 text-white text-sm rounded-md font-medium transition-colors shadow-sm flex items-center"
-            onClick={clearEvents}
-            title="Clear all logs"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-            </svg>
-            Clear
-          </button>
-        </div>
+    <div>
+      {/* Button row - padrão CollapsibleCard/TextControls */}
+      <div className="flex justify-end items-center gap-3 py-2 mb-2">
+        <button
+          className={`${styles['orchos-btn-glass']} ${styles['orchos-btn-glow']} ${styles['orchos-btn-action']} px-2.5 py-1.5 flex items-center justify-center`}
+          onClick={() => exportEvents('Export cognitive log (JSON)')}
+          title="Export as JSON"
+        >
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><ellipse cx="8.5" cy="8.5" rx="7.5" ry="5.5" stroke="#00faff" strokeWidth="1.3"/><circle cx="8.5" cy="8.5" r="2.5" fill="#00faff" fillOpacity=".9"/></svg>
+          <span className="hidden md:inline ml-1 align-middle">Export JSON</span>
+        </button>
+        <button
+          className={`${styles['orchos-btn-glass']} ${styles['orchos-btn-glow']} ${styles['orchos-btn-action']} px-2.5 py-1.5 flex items-center justify-center`}
+          onClick={() => exportEvents('Export cognitive log (TXT)')}
+          title="Export as TXT"
+        >
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><ellipse cx="8.5" cy="8.5" rx="7.5" ry="5.5" stroke="#00faff" strokeWidth="1.3"/><circle cx="8.5" cy="8.5" r="2.5" fill="#00faff" fillOpacity=".9"/></svg>
+          <span className="hidden md:inline ml-1 align-middle">Export TXT</span>
+        </button>
+        <button
+          className={`${styles['orchos-btn-glass']} ${styles['orchos-btn-glow']} ${styles['orchos-btn-action']} px-2.5 py-1.5 flex items-center justify-center`}
+          onClick={clearEvents}
+          title="Clear all logs"
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><ellipse cx="8" cy="8" rx="6.5" ry="4.5" stroke="#ff4dd2" strokeWidth="1.2"/><path d="M6 6l4 4M10 6l-4 4" stroke="#ff4dd2" strokeWidth="1.3" strokeLinecap="round"/></svg>
+          <span className="hidden md:inline ml-1 align-middle">Clear</span>
+        </button>
       </div>
       <div className="bg-gray-900/40 backdrop-blur-sm rounded-lg overflow-hidden shadow-inner border border-gray-800/50 hover:border-gray-700/50 transition-all duration-300">
         <CognitionTimeline events={cognitionEvents} />

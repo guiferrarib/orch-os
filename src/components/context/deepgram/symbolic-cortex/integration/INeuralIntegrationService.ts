@@ -10,7 +10,6 @@ export interface INeuralIntegrationService {
       insights: Record<string, unknown>;
     }>,
     originalInput: string,
-    contextualMeta: Record<string, unknown>,
     language?: string
   ): Promise<string>;
 }

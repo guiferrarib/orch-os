@@ -10,8 +10,7 @@ import { NeuralSignal, NeuralSignalResponse } from '../../components/context/dee
 
 class MockOpenAIService implements IOpenAIService {
   mockNeuralResponse: NeuralSignalResponse = {
-    signals: [],
-    contextualMeta: {}
+    signals: []
   };
 
   constructor(mockSignals: NeuralSignal[] = []) {
@@ -122,20 +121,6 @@ describe('NeuralSignalExtractor - Phase 1: Neural Identification', () => {
     }
   });
 
-  test('Should include contextual metadata in the response', async () => {
-    openAIService.mockNeuralResponse.contextualMeta = {
-      dominant_theme: 'artificial_intelligence',
-      cognitive_state: 'analytical',
-      attention_focus: 'technical_details'
-    };
-
-    const result = await extractor.extractNeuralSignals(defaultConfig);
-
-    expect(result.contextualMeta).toBeDefined();
-    expect(result.contextualMeta.dominant_theme).toBe('artificial_intelligence');
-    expect(result.contextualMeta.cognitive_state).toBe('analytical');
-    expect(result.contextualMeta.attention_focus).toBe('technical_details');
-  });
 
   test('Should handle empty or invalid transcriptions', async () => {
     const emptyConfig = { ...defaultConfig, transcription: '' };

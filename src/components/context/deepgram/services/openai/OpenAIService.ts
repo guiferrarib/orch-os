@@ -659,22 +659,12 @@ IMPORTANT: If a LANGUAGE is specified in the user message, ALL symbolic queries 
         .filter((signal): signal is NeuralSignal => !!signal && typeof signal.core !== 'undefined');
 
       return {
-        signals,
-        contextualMeta: {
-          dominant_theme: "auto",
-          cognitive_state: "auto",
-          attention_focus: "auto"
-        }
+        signals
       };
     } catch (error: unknown) {
       LoggingUtils.logError("Error generating neural signals", error);
       return {
-        signals: [],
-        contextualMeta: {
-          dominant_theme: "error",
-          cognitive_state: "error",
-          attention_focus: "error"
-        }
+        signals: []
       };
     }
   }

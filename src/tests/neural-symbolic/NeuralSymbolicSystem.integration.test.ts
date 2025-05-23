@@ -50,13 +50,6 @@ class MockIntegratedOpenAIService implements IOpenAIService {
     }
   ];
 
-  contextualMeta = {
-    dominant_theme: 'artificial_intelligence',
-    cognitive_state: 'analytical',
-    attention_focus: 'technical_details',
-    symbolic_temperature: 0.8,
-    symbolic_deterministic: true
-  };
 
   coreResults = [
     {
@@ -89,8 +82,7 @@ class MockIntegratedOpenAIService implements IOpenAIService {
 
   async generateNeuralSignal(prompt: string, temporaryContext?: string): Promise<NeuralSignalResponse> {
     return Promise.resolve({
-      signals: this.neuralSignals,
-      contextualMeta: this.contextualMeta
+      signals: this.neuralSignals
     });
   }
 
@@ -182,13 +174,5 @@ describe('Neural Symbolic System - Integration Test', () => {
         expect(Math.abs(signal.intensity - matchingResult.intensity)).toBeLessThan(0.1);
       }
     });
-
-    // The integration result may not always include the dominant_theme verbatim. Only check if present.
-    if (neuralSignalResponse.contextualMeta?.dominant_theme) {
-      const theme = neuralSignalResponse.contextualMeta.dominant_theme.toString();
-      if (integrationResult.includes(theme)) {
-        expect(integrationResult).toContain(theme);
-      }
-    }
   });
 });

@@ -59,7 +59,6 @@ export class DefaultNeuralIntegrationService implements INeuralIntegrationServic
       insights: Record<string, unknown>;
     }>,
     originalInput: string,
-    contextualMeta: Record<string, unknown>,
     language: string = 'pt-BR' // Default to pt-BR if not provided
   ): Promise<string> {
     if (!neuralResults || neuralResults.length === 0) {
@@ -99,7 +98,6 @@ export class DefaultNeuralIntegrationService implements INeuralIntegrationServic
     }, 0) / neuralResults.length;
     
     // We'll use the original input text for the collapse strategy service to infer intent
-    // No need to extract intent data from contextualMeta as we'll let OpenAI infer it
     
     // Use our OpenAI-powered strategy service to make the decision
     const strategyDecision = await this.collapseStrategyService.decideCollapseStrategy({
@@ -370,10 +368,6 @@ Your task is:
 - Gently integrate polarities and apparent contradictions, without prematurely resolving tensions that may be productive.
 - Adjust the proportion between cognitive clarity and symbolic resonance according to the interaction context and implicit needs.
 - Develop responses that evolve organically during presentation, adapting to the implications of your own previous words, like a consciousness perceiving and responding to its own thought flow.
-
-Cognitive context: ${contextualMeta?.cognitive_state ?? 'neutral'}
-Dominant theme: ${contextualMeta?.dominant_theme ?? 'direct answer'}
-Attention focus: ${contextualMeta?.attention_focus ?? 'main content'}
 `;
     prompt += `\nORIGINAL STIMULUS: ${originalInput}\n\nACTIVATED AREAS INSIGHTS:\n`;
     

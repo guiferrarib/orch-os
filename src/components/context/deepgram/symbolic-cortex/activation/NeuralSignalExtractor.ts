@@ -92,12 +92,7 @@ export class NeuralSignalExtractor implements INeuralSignalExtractor {
                 intensity: "moderate"
               }
             }
-          ],
-          contextualMeta: {
-            dominant_theme: "information_processing",
-            cognitive_state: "analytical",
-            attention_focus: "content_analysis"
-          }
+          ]
         };
       }
 
@@ -120,17 +115,7 @@ export class NeuralSignalExtractor implements INeuralSignalExtractor {
       // Log the generated signals for diagnostic purposes
       LoggingUtils.logInfo(` ${neuralResponse.signals.length} neural signals extracted and optimized for Pinecone`);
 
-      // Add contextual metadata about the user's context to guide post-processing
-      if (!neuralResponse.contextualMeta) {
-        neuralResponse.contextualMeta = {};
-      }
-
-      // Add additional metadata for processing
-      neuralResponse.contextualMeta = {
-        ...neuralResponse.contextualMeta,
-        memory_retrieval_focus: neuralResponse.signals.some(s => s.core === 'memory'),
-        userContext_integrated: Object.keys(userContextData).length > 0
-      };
+      // Processamento de metadados de contexto removido (KISS/YAGNI)
 
       // Return the optimized neural response
       return neuralResponse;
@@ -147,12 +132,7 @@ export class NeuralSignalExtractor implements INeuralSignalExtractor {
             query: config.transcription.substring(0, 50)
           },
           symbolicInsights: {}
-        }],
-        contextualMeta: {
-          dominant_theme: "error_recovery",
-          cognitive_state: "resilient",
-          attention_focus: "system_stability"
-        }
+        }]
       };
     }
   }

@@ -102,16 +102,6 @@ export interface NeuralSignalResponse {
    * High-level analysis of generated signals and symbolic cognitive state
    */
   analysis?: string;
-  
-  /**
-   * Metadata about the global cognitive context
-   */
-  contextualMeta?: {
-    dominant_theme?: string;
-    cognitive_state?: string;
-    attention_focus?: string;
-    [key: string]: unknown;
-  };
 }
 
 /**

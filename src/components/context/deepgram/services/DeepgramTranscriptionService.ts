@@ -466,7 +466,6 @@ export class DeepgramTranscriptionService implements IDeepgramTranscriptionServi
       const integratedPrompt = await this.neuralIntegrationService.integrate(
         neuralProcessingResults,
         transcriptionToSend,
-        neuralActivation.contextualMeta || {},
         this.currentLanguage // Pass the current language to the neural integration service
       );
       // Symbolic context synthesis log

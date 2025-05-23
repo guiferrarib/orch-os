@@ -48,7 +48,7 @@ const CognitionLogSection: React.FC<CognitionLogSectionProps> = ({
           <span className="hidden md:inline ml-1 align-middle">Clear</span>
         </button>
       </div>
-      <div className="bg-gray-900/40 backdrop-blur-sm rounded-lg overflow-hidden shadow-inner border border-gray-800/50 hover:border-gray-700/50 transition-all duration-300">
+      <div className="bg-gray-900/40 backdrop-blur-sm rounded-lg overflow-hidden shadow-inner border border-cyan-400/20 hover:border-cyan-400/30 shadow-[0_0_5px_rgba(34,211,238,0.1)] transition-all duration-300">
         <CognitionTimeline events={cognitionEvents} />
       </div>
     </div>

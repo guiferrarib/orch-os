@@ -67,13 +67,13 @@ export const CognitionTimelineGroupedUI: React.FC<CognitionTimelineGroupedUIProp
   // If any group is expanded, render ONLY it and navigation controls
   if (expandedIdx !== null) {
     return (
-      <div style={{ height: 450, width: '100%', overflowY: 'auto', WebkitOverflowScrolling: 'touch' }}>
+      <div className="h-[450px] w-full overflow-y-auto overflow-scrolling-touch">
         {/* Neural-Symbolic Header - design reflecting cognitive orchestration */}
         <div
           className="flex items-center justify-between px-3 py-2 bg-gradient-to-r from-indigo-950/80 via-indigo-900/70 to-indigo-950/80 backdrop-blur-md border-b border-cyan-400/30 shadow-sm rounded-t-lg transition-all"
           style={{
             backgroundImage: `radial-gradient(circle at 15% 50%, rgba(99, 102, 241, 0.08) 0%, transparent 25%), 
-                           radial-gradient(circle at 85% 30%, rgba(6, 182, 212, 0.08) 0%, transparent 25%)`,
+                           radial-gradient(circle at 85% 30%, rgba(6, 182, 212, 0.08) 0%, transparent 25%)`
           }}
         >
           {/* Neural Button (Back) - cognitive return action */}
@@ -89,7 +89,7 @@ export const CognitionTimelineGroupedUI: React.FC<CognitionTimelineGroupedUIProp
           <div className="relative flex-1 text-center px-1">
             <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[1px] bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent"></div>
             <span className="relative inline-flex items-center gap-1.5 px-3 py-0.5 bg-indigo-900/40 rounded-full border border-indigo-700/30 shadow-inner">
-              <span className="inline-block w-1.5 h-1.5 rounded-full bg-cyan-400/80 animate-pulse"></span>
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-cyan-400/80"></span>
               <span className="text-cyan-100 font-medium text-sm tracking-wide">
                 Cycle #{expandedIdx + 1}
               </span>

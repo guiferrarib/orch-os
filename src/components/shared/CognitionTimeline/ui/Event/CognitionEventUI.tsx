@@ -186,13 +186,12 @@ export const CognitionEventUI: React.FC<CognitionEventUIProps> = React.memo(({ e
 
   return (
     <div 
-      className={`relative rounded-xl bg-gray-900/90 p-3 shadow-lg transition-colors cursor-pointer ${onClick ? 'hover:bg-gray-800/90' : ''} ${isGptResponse ? 'mb-6' : ''}`}
+      className={`relative rounded-xl bg-gray-900/90 p-3 shadow-lg transition-colors cursor-pointer ${onClick ? 'hover:bg-gray-800/90' : ''} ${isGptResponse ? 'mb-6 pb-4' : ''}`}
       onClick={() => onClick && onClick(event)}
-      style={isGptResponse ? { paddingBottom: '16px' } : {}}
     >
       {/* Vertical timeline line - visible between consecutive events */}
       {idx > 0 && (
-        <div className="absolute left-7 top-0 bottom-0 w-0.5 bg-indigo-900/60 -translate-y-3 h-4" />
+        <div className="absolute left-7 top-0 bottom-0 w-0.5 bg-cyan-800/30 -translate-y-3 h-4" />
       )}
       <div className="group flex items-stretch bg-gray-900/90 hover:bg-gray-800/90 rounded-lg border border-gray-800/80 hover:border-gray-700 transition-all duration-200 overflow-hidden cursor-pointer"
         tabIndex={0}
@@ -235,10 +234,10 @@ export const CognitionEventUI: React.FC<CognitionEventUIProps> = React.memo(({ e
               <span className={`${getNeuralTypeColor(neuralCore)} font-mono`}>{neuralValue}</span>
               {/* Barra de intensidade junto do percentual */}
               <div className="w-28 h-2 bg-gray-800/60 rounded-full overflow-hidden ml-1">
-                {/* Usando uma largura fixa baseada no valor percentual para garantir que funcione */}
+                {/* Aplicando largura dinâmica com classes CSS */}
                 <div 
                   className={`h-full ${getProgressBarColor(neuralCore)}`}
-                  style={{ width: intensityValue + '%' }}
+                  style={{ width: `${intensityValue}%` }}
                 />
               </div>
             </div>

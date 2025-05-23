@@ -24,15 +24,16 @@ const MAX_GROUP_HEIGHT = 450; // px, ajustado para o container global
 
 export const CognitionLogGroupUI: React.FC<CognitionLogGroupUIProps> = ({ events, groupIdx, onEventClick, getDuration, expanded = false, onExpand }) => {
   if (!events.length) return null;
+  const isExpanded = expanded;
   return (
-    <div className="mt-6 mb-0">
+    <div className="mt-3 mb-0">
       <button
         type="button"
         className="w-full relative flex items-center justify-between px-5 py-2.5 bg-[#121936] rounded-2xl border border-cyan-400/80 shadow-[0_0_6px_rgba(34,211,238,0.2)] group transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-cyan-400 focus:ring-opacity-50 min-h-[48px]"
         onClick={onExpand}
-        aria-expanded={expanded}
+        aria-expanded={isExpanded}
         aria-controls={`cognitive-group-${groupIdx}`}
-        aria-label={`Cognitive Cycle ${groupIdx + 1} with ${events.length} events. Click to ${expanded ? 'collapse' : 'expand'}`}
+        aria-label={`Cognitive Cycle ${groupIdx + 1} with ${events.length} events. Click to ${isExpanded ? 'collapse' : 'expand'}`}
       >
         {/* Left side with icon and title */}
         <div className="flex items-center gap-4">
@@ -56,7 +57,7 @@ export const CognitionLogGroupUI: React.FC<CognitionLogGroupUIProps> = ({ events
               <path d="M8.47192 13.5281L7.41116 14.5888" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
               <path d="M8.47192 7.47192L7.41116 6.41116" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
             </svg>
-            <div className="absolute inset-0 rounded-full bg-cyan-400/10"></div>
+            <div className="absolute inset-0 z-0 bg-[#121936]/85"></div>
           </div>
           
           {/* Title */}
@@ -74,7 +75,7 @@ export const CognitionLogGroupUI: React.FC<CognitionLogGroupUIProps> = ({ events
           
           {/* Chevron that changes direction when expanded */}
           <div className="flex items-center justify-center w-6 h-6 text-cyan-400">
-            <span className="text-xl font-bold transition-transform duration-200" style={{display: 'inline-block', transform: expanded ? 'rotate(90deg)' : 'rotate(0deg)'}}>
+            <span className={`text-xl font-bold transition-transform duration-200 inline-block ${isExpanded ? 'rotate-90' : 'rotate-0'}`}>
               &gt;
             </span>
           </div>

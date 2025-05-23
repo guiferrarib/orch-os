@@ -37,26 +37,26 @@
   min-height: 280px;
 }
 
-/* Styles for quantum legend */
+/* Styles for quantum legend - Reposicionada seguindo boas práticas UI/UX */
 .quantum-legend {
   position: absolute;
-  top: 10px; /* Moved to top right corner for better visibility */
-  right: 10px;
+  bottom: 20px; /* Reposicionada para o canto inferior direito para melhor acessibilidade */
+  right: 20px;
   display: flex;
   flex-direction: column;
   gap: 4px;
-  background-color: rgba(0, 0, 0, 0.75); /* Slightly more opaque for better readability */
-  border-radius: 8px;
-  padding: 10px;
-  -webkit-backdrop-filter: blur(10px); /* Increased blur for glass effect */
+  background-color: rgba(0, 0, 0, 0.85); /* Mais opaco para melhor legibilidade */
+  border-radius: 12px;
+  padding: 12px;
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
-  z-index: 5; /* Increased to ensure it's above other elements but below UI controls */
-  max-width: 180px;
-  font-size: 11px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Subtle shadow for better depth */
-  border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border for glass effect */
-  transition: opacity 0.3s ease, transform 0.3s ease; /* Smooth transitions */
-  opacity: 0.85; /* Slightly transparent by default */
+  z-index: 5;
+  max-width: 220px; /* Ligeiramente mais largo para melhor leitura */
+  font-size: 12px; /* Tamanho ligeiramente maior para melhor legibilidade */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); /* Sombra mais definida */
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0.9; /* Levemente mais visível por padrão */
 }
 
 .quantum-legend:hover {
@@ -67,9 +67,11 @@
 .quantum-legend-item {
   display: flex;
   align-items: center;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.8);
   transition: all 0.3s ease;
-  opacity: 0.6;
+  opacity: 0.7;
+  padding: 4px 0; /* Espaçamento vertical para melhor leitura */
+  border-radius: 4px; /* Leve arredondamento para cada item */
 }
 
 .quantum-legend-item.active {
@@ -129,28 +131,39 @@
 /* Legend toggle button */
 .quantum-legend-toggle {
   position: absolute;
-  top: 10px; /* Match position with legend */
-  right: 195px; /* Positioned to the left of the legend */
-  background-color: rgba(0, 0, 0, 0.75); /* Match legend background */
-  border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+  bottom: 20px; /* Alinhado com a parte inferior da legenda */
+  right: 246px; /* Posicionado à esquerda da legenda */
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
+  background: rgba(0, 0, 0, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  z-index: 5;
   cursor: pointer;
-  z-index: 5; /* Same as legend */
-  -webkit-backdrop-filter: blur(10px); /* Match legend blur */
+  opacity: 0.9;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
-  transition: all 0.2s ease; 
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Match legend shadow */
-  opacity: 0.85; /* Slightly transparent by default */
 }
 
-/* Estilo para o ícone de visibilidade - sem texto, apenas símbolo */
-.quantum-legend-toggle .material-symbols-outlined {
+.quantum-legend-toggle:hover {
+  transform: scale(1.1);
+  background-color: rgba(20, 20, 40, 0.9);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.quantum-legend-toggle svg {
+  width: 18px;
+  height: 18px;
+  color: rgba(255, 255, 255, 0.9);
+  vertical-align: middle;
+}
+
+.material-symbols-outlined {
   font-size: 18px !important;
   line-height: 1;
   font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
@@ -161,12 +174,7 @@
   text-rendering: optimizeLegibility;
 }
 
-.quantum-legend-toggle:hover {
-  opacity: 1;
-  transform: translateY(-2px) scale(1.02);
-  background-color: rgba(0, 0, 0, 0.8);
-}
-
-.quantum-legend-toggle .material-symbols-outlined {
+/* Material icons style - legacy support */
+.material-symbols-outlined {
   font-size: 16px;
 }

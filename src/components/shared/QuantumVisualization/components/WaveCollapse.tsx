@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: MIT OR Apache-2.0
+// Copyright (c) 2025 Guilherme Ferrari Brescia
+
 /* eslint-disable react/no-unknown-property */
 import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';

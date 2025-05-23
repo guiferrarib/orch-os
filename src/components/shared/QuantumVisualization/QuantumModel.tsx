@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: MIT OR Apache-2.0
+// Copyright (c) 2025 Guilherme Ferrari Brescia
+
 import React, { useState, useEffect, Suspense } from 'react';
 import './QuantumVisualizationCSS.css';
 import { Canvas } from '@react-three/fiber';

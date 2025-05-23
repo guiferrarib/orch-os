@@ -308,8 +308,18 @@ export const DeepgramProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }));
   }, []);
   
-  // Start transcription
+  /**
+   * Inicia o processamento de transcrição
+   * Implementa proteção contra processamentos simultâneos para evitar corrupção nos logs
+   */
   const startTranscription = useCallback(async (temporaryContext?: string) => {
+    // Verifica se já existe um processamento em andamento
+    if (state.isProcessing) {
+      console.warn("⚠️ Bloqueando novo prompt: um processamento já está em andamento");
+      // Retorna uma promessa rejeitada com mensagem explicativa
+      return Promise.reject(new Error("PROCESSING_IN_PROGRESS"));
+    }
+
     try {
       // Verify if the transcription service is available
       if (!deepgramTranscriptionRef.current) {
@@ -317,14 +327,18 @@ export const DeepgramProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         return;
       }
       
-      // Start processing
+      // Start processing - bloqueia novos processamentos
       dispatch({ type: 'SET_PROCESSING', payload: true });
+      
+      // Feedback visual/auditivo pode ser adicionado aqui
+      console.log("🔄 Iniciando processamento de prompt...");
       
       // Send to the transcription service that implements the complete logic
       await deepgramTranscriptionRef.current.sendTranscriptionPrompt(temporaryContext);
       
       // Update state after successful processing
       dispatch({ type: 'SET_PROCESSING', payload: false });
+      console.log("✅ Processamento de prompt concluído");
     } catch (error) {
       console.error("❌ Error processing prompt:", error);
       
@@ -334,7 +348,7 @@ export const DeepgramProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       // Propagate the error for handling in the component that called it
       throw error;
     }
-  }, []);
+  }, [state.isProcessing]); // Adicionamos state.isProcessing como dependência
   
   // Stop transcription
   const stopTranscription = useCallback(async () => {

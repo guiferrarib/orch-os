@@ -54,6 +54,17 @@ export class DeepgramTranscriptionService implements IDeepgramTranscriptionServi
     pattern?: string;
   }> = [];
   
+  // Processing prompt flag
+  private isProcessingPrompt: boolean = false;
+  
+  /**
+   * Returns the current state of prompt processing
+   * @returns true if a prompt is currently being processed, false otherwise
+   */
+  public isProcessingPromptRequest(): boolean {
+    return this.isProcessingPrompt;
+  }
+  
   // Neural signal extractor (first impulse of the artificial mind)
   private _neuralSignalExtractor: NeuralSignalExtractor;
 
@@ -212,7 +223,16 @@ export class DeepgramTranscriptionService implements IDeepgramTranscriptionServi
    * Processes the transcription and sends it to the OpenAI API
    */
   async sendTranscriptionPrompt(temporaryContext?: string): Promise<void> {
+    // If already processing a prompt, block new request
+    if (this.isProcessingPrompt) {
+      LoggingUtils.logWarning("Blocking prompt request: Already processing another prompt");
+      this.uiService.notifyPromptError("Please wait for the current prompt to be processed before sending a new one");
+      return;
+    }
+    
     try {
+      // Mark that we are processing a prompt
+      this.isProcessingPrompt = true;
       // Verify if there is text to process
       const hasTranscriptions = this.storageService.hasValidTranscriptions();
       
@@ -516,6 +536,10 @@ export class DeepgramTranscriptionService implements IDeepgramTranscriptionServi
       LoggingUtils.logError("Error processing prompt", error);
       this.uiService.updateUI({ aiResponse: `Error: ${errorMessage}` });
       this.uiService.notifyPromptError(errorMessage);
+    } finally {
+      // Always release the processing lock at the end, regardless of the result
+      this.isProcessingPrompt = false;
+      LoggingUtils.logInfo("Prompt processing completed, releasing lock");
     }
   }
   

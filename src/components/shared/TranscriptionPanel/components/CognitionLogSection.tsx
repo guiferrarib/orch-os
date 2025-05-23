@@ -20,7 +20,7 @@ const CognitionLogSection: React.FC<CognitionLogSectionProps> = ({
   clearEvents
 }) => {
   return (
-    <div>
+    <div className="pb-6">
       {/* Button row - padrão CollapsibleCard/TextControls */}
       <div className="flex justify-end items-center gap-3 py-2 mb-2">
         <button

@@ -56,7 +56,9 @@ const formatEventType = (type: string): string => {
     .join(' ');
 };
 
-export const CognitionEventUI: React.FC<CognitionEventUIProps> = ({ event, idx, onClick, duration }) => {
+export const CognitionEventUI: React.FC<CognitionEventUIProps> = React.memo(({ event, idx, onClick, duration }) => {
+  // Verificar se é um evento de resposta GPT (geralmente o último)
+  const isGptResponse = event.type === 'gpt_response';
   const icon = eventTypeIcons[event.type] || <span className="text-gray-400">⬛</span>;
   
   // Extract information based on event type
@@ -183,14 +185,16 @@ export const CognitionEventUI: React.FC<CognitionEventUIProps> = ({ event, idx, 
   })() : '';
 
   return (
-    <div className="relative">
+    <div 
+      className={`relative rounded-xl bg-gray-900/90 p-3 shadow-lg transition-colors cursor-pointer ${onClick ? 'hover:bg-gray-800/90' : ''} ${isGptResponse ? 'mb-6' : ''}`}
+      onClick={() => onClick && onClick(event)}
+      style={isGptResponse ? { paddingBottom: '16px' } : {}}
+    >
       {/* Vertical timeline line - visible between consecutive events */}
       {idx > 0 && (
         <div className="absolute left-7 top-0 bottom-0 w-0.5 bg-indigo-900/60 -translate-y-3 h-4" />
       )}
-      <div 
-        className="group flex items-stretch bg-gray-900/80 hover:bg-gray-800/90 rounded-lg border border-gray-800/80 hover:border-gray-700 transition-all duration-200 overflow-hidden cursor-pointer"
-        onClick={() => onClick?.(event)}
+      <div className="group flex items-stretch bg-gray-900/90 hover:bg-gray-800/90 rounded-lg border border-gray-800/80 hover:border-gray-700 transition-all duration-200 overflow-hidden cursor-pointer"
         tabIndex={0}
         role="button"
         aria-label={event.type}
@@ -259,6 +263,7 @@ export const CognitionEventUI: React.FC<CognitionEventUIProps> = ({ event, idx, 
       </div>
     </div>
   );
-};
+});
 
+// Exporta o componente memoizado
 export default CognitionEventUI;

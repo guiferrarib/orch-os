@@ -20,24 +20,29 @@ export interface CognitionLogGroupUIProps {
   onExpand?: () => void;
 }
 
-const MAX_GROUP_HEIGHT = 380; // px, ajustável conforme padrão dos cards do app
+const MAX_GROUP_HEIGHT = 450; // px, ajustado para o container global
 
 export const CognitionLogGroupUI: React.FC<CognitionLogGroupUIProps> = ({ events, groupIdx, onEventClick, getDuration, expanded = false, onExpand }) => {
   if (!events.length) return null;
   return (
-    <div className="my-6 border-2 border-indigo-800 rounded-xl shadow-lg bg-gray-950/70">
+    <div className="mt-6 mb-0 border-2 border-indigo-800 rounded-xl shadow-lg bg-gray-950/70">
       <button
+        type="button"
         className={
           'w-full px-4 py-2 bg-indigo-900/70 rounded-t-xl flex items-center space-x-3 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-all duration-200 ' +
           (expanded ? '' : 'border-b border-indigo-800')
         }
         onClick={onExpand}
-        aria-expanded={expanded}
-        aria-controls={`cognitive-group-${groupIdx}`}
+        {...{
+          'aria-expanded': expanded ? 'true' : 'false',
+          'aria-controls': `cognitive-group-${groupIdx}`
+        }}
+        role="button"
+        tabIndex={0}
       >
         <span className="text-indigo-300 font-bold text-sm tracking-wider flex-1 text-left">
-          Cognitive Cycle #{groupIdx + 1}
-        </span>
+            Cognitive Cycle #{groupIdx + 1}
+          </span>
         <span className="text-xs text-gray-400">({events.length} events)</span>
         <span className="ml-2 text-indigo-200 text-lg transition-transform duration-200" style={{transform: expanded ? 'rotate(0deg)' : 'rotate(-90deg)'}}>▼</span>
       </button>
@@ -45,25 +50,27 @@ export const CognitionLogGroupUI: React.FC<CognitionLogGroupUIProps> = ({ events
         id={`cognitive-group-${groupIdx}`}
         className={expanded ? `${styles.fadeIn}` : ''}
         style={{
-          maxHeight: expanded ? MAX_GROUP_HEIGHT : 0,
+          // Quando expandido, não limitar altura (controle feito pelo container externo)
+          maxHeight: expanded ? 'none' : 0,
           overflow: 'hidden',
-          transition: 'max-height 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.2s',
+          transition: expanded ? 'opacity 0.2s' : 'max-height 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.2s',
           opacity: expanded ? 1 : 0,
         }}
       >
         {expanded && (
           <div
-            className="px-2 py-3 space-y-1"
+            className="px-2"
             style={{
-              maxHeight: MAX_GROUP_HEIGHT - 50, // Deixa espaço pro header
+              maxHeight: MAX_GROUP_HEIGHT - 30,
               overflowY: 'auto',
-              overscrollBehavior: 'contain',
               scrollbarWidth: 'thin',
+              boxSizing: 'border-box',
+              WebkitOverflowScrolling: 'touch'
             }}
           >
             {events.map((event, idx) => (
               <CognitionEventUI
-                key={idx}
+                key={event.timestamp + '-' + event.type + '-' + groupIdx + '-' + idx}
                 event={event}
                 idx={idx}
                 onClick={onEventClick}

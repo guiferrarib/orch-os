@@ -25,26 +25,60 @@ const MAX_GROUP_HEIGHT = 450; // px, ajustado para o container global
 export const CognitionLogGroupUI: React.FC<CognitionLogGroupUIProps> = ({ events, groupIdx, onEventClick, getDuration, expanded = false, onExpand }) => {
   if (!events.length) return null;
   return (
-    <div className="mt-6 mb-0 border-2 border-indigo-800 rounded-xl shadow-lg bg-gray-950/70">
+    <div className="mt-6 mb-0">
       <button
         type="button"
-        className={
-          'w-full px-4 py-2 bg-indigo-900/70 rounded-t-xl flex items-center space-x-3 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-all duration-200 ' +
-          (expanded ? '' : 'border-b border-indigo-800')
-        }
+        className="w-full relative flex items-center justify-between px-5 py-2.5 bg-[#121936] rounded-2xl border border-cyan-400/80 shadow-[0_0_6px_rgba(34,211,238,0.2)] group transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-cyan-400 focus:ring-opacity-50 min-h-[48px]"
         onClick={onExpand}
-        {...{
-          'aria-expanded': expanded ? 'true' : 'false',
-          'aria-controls': `cognitive-group-${groupIdx}`
-        }}
-        role="button"
-        tabIndex={0}
+        aria-expanded={expanded}
+        aria-controls={`cognitive-group-${groupIdx}`}
+        aria-label={`Cognitive Cycle ${groupIdx + 1} with ${events.length} events. Click to ${expanded ? 'collapse' : 'expand'}`}
       >
-        <span className="text-indigo-300 font-bold text-sm tracking-wider flex-1 text-left">
+        {/* Left side with icon and title */}
+        <div className="flex items-center gap-4">
+          {/* Neural network brain icon with glow */}
+          <div className="relative flex-shrink-0 flex items-center justify-center h-9 w-9">
+            <svg 
+              className="w-6 h-6 text-cyan-400" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path d="M22 14.3529C22 19.0968 17.0751 23 10.9999 23C5.33439 23 1 19.2323 1 14.8235C1 10.9343 3.35098 8.34576 6.70584 7.21671C8.73574 6.5246 9.74705 6.17854 10.5291 5.15517C11.3112 4.13179 11.5349 2.74591 11.9823 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+              <path d="M16 10.5C16 8.01472 13.9853 6 11.5 6C9.01472 6 7 8.01472 7 10.5C7 12.9853 9.01472 15 11.5 15C13.9853 15 16 12.9853 16 10.5Z" stroke="currentColor" strokeWidth="1.5"/>
+              <path d="M11.5 6V4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+              <path d="M16 10.5H17.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+              <path d="M11.5 15V16.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+              <path d="M7 10.5H5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+              <path d="M14.5281 7.47192L15.5888 6.41116" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+              <path d="M14.5281 13.5281L15.5888 14.5888" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+              <path d="M8.47192 13.5281L7.41116 14.5888" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+              <path d="M8.47192 7.47192L7.41116 6.41116" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+            </svg>
+            <div className="absolute inset-0 rounded-full bg-cyan-400/10"></div>
+          </div>
+          
+          {/* Title */}
+          <h3 className="text-white font-bold text-xl tracking-wide select-none">
             Cognitive Cycle #{groupIdx + 1}
-          </span>
-        <span className="text-xs text-gray-400">({events.length} events)</span>
-        <span className="ml-2 text-indigo-200 text-lg transition-transform duration-200" style={{transform: expanded ? 'rotate(0deg)' : 'rotate(-90deg)'}}>▼</span>
+          </h3>
+        </div>
+        
+        {/* Right side with badge and arrow */}
+        <div className="flex items-center gap-3">
+          {/* Event count badge matching Export buttons */}
+          <div className="px-4 py-1 rounded-full bg-cyan-400 text-[#121936] text-base font-bold flex items-center justify-center min-w-[2.5rem] shadow-[0_0_5px_rgba(34,211,238,0.3)]">
+            {events.length}
+          </div>
+          
+          {/* Chevron that changes direction when expanded */}
+          <div className="flex items-center justify-center w-6 h-6 text-cyan-400">
+            <span className="text-xl font-bold transition-transform duration-200" style={{display: 'inline-block', transform: expanded ? 'rotate(90deg)' : 'rotate(0deg)'}}>
+              &gt;
+            </span>
+          </div>
+        </div>
       </button>
       <div
         id={`cognitive-group-${groupIdx}`}
